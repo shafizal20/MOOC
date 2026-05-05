@@ -7,9 +7,8 @@
 
 <style>
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: #f5f7fb;
-  margin: 0;
   padding: 20px;
 }
 
@@ -19,7 +18,6 @@ body {
   background: white;
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 h1 {
@@ -35,11 +33,6 @@ h1 {
   background: #fafafa;
 }
 
-.question:hover {
-  background: #f0f0f0;
-  transition: 0.3s;
-}
-
 .question img {
   max-width: 100%;
   margin: 10px 0;
@@ -48,18 +41,7 @@ h1 {
 
 label {
   display: block;
-  margin: 8px 0;
-  cursor: pointer;
-  padding: 5px;
-}
-
-label:hover {
-  background: #e8e8e8;
-  border-radius: 5px;
-}
-
-input[type="radio"] {
-  margin-right: 10px;
+  margin: 6px 0;
   cursor: pointer;
 }
 
@@ -72,18 +54,10 @@ button {
   border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
-  font-weight: bold;
-  margin-top: 10px;
 }
 
 button:hover {
   background: #1d4ed8;
-  transition: 0.3s;
-}
-
-button:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
 }
 
 .result {
@@ -91,68 +65,6 @@ button:disabled {
   font-weight: bold;
   text-align: center;
   font-size: 18px;
-  padding: 15px;
-  border-radius: 8px;
-}
-
-.result.success {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.result.error {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.small-text {
-  white-space: pre-line;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-.reset-btn {
-  background: #6c757d;
-  margin-top: 10px;
-}
-
-.reset-btn:hover {
-  background: #5a6268;
-}
-
-.score-highlight {
-  font-size: 24px;
-  color: #2563eb;
-}
-
-.answer-feedback {
-  margin-top: 10px;
-  padding: 8px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-.correct-feedback {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.wrong-feedback {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.submitted-disabled {
-  pointer-events: none;
-  opacity: 0.8;
-}
-
-.submitted-disabled label {
-  cursor: default;
-}
-
-.submitted-disabled label:hover {
-  background: transparent;
 }
 </style>
 </head>
@@ -164,355 +76,114 @@ button:disabled {
 
 <div id="quiz"></div>
 
-<button onclick="submitQuiz()" id="submitBtn">Submit Quiz</button>
-<button onclick="resetQuiz()" class="reset-btn" id="resetBtn">Reset All Answers</button>
+<button onclick="submitQuiz()">Submit Quiz</button>
 
 <div id="result" class="result"></div>
-<div id="detailedResult" style="margin-top: 20px;"></div>
 </div>
 
 <script>
 
-let isSubmitted = false; // Flag to track if quiz has been submitted
-
 const quizData = [
-  {
-    q: "38. The research design is like a blueprint and it describes the entire framework or plan for a research project.",
-    options: ["Yes", "No"],
-    answer: 0,
-    explanation: "Research design serves as a blueprint or framework for conducting research."
-  },
-
-  {
-    q: `39. The followings are the characteristics of ___ research:
-
-i. To gain qualitative insights and understanding of the problem (e.g. underlying reasons and motivations)
-ii. Sampling is less stringent on representativeness and randomness
-iii. Sample size is generally small
-iv. Unstructured and flexible in data collection`,
-    options: [
-      "Quantitative research",
-      "Qualitative research",
-      "Empirical research",
-      "Hypothetical research"
-    ],
-    answer: 1,
-    explanation: "These characteristics describe qualitative research, which focuses on understanding phenomena through non-numerical data."
-  },
-
-  {
-    q: "40. Quantitative research is more statistical in nature.",
-    options: ["Yes", "No"],
-    answer: 0,
-    explanation: "Quantitative research relies heavily on statistical analysis of numerical data."
-  },
-
-  {
-    q: `41. The above are characteristics of ____ data:
-i. For the problem at hand
-ii. Data collection process is complex and involved
-iii. Cost incurred is relatively high
+{
+q: "38. The research design is like a blueprint...",
+options: ["Yes","No"],
+answer: 0
+},
+{
+q: `39. The followings are the characteristics of ___ research:
+i. To gain qualitative insights
+ii. Sampling is less strict
+iii. Small sample size
+iv. Flexible data collection`,
+options: [
+"Quantitative",
+"Qualitative",
+"Experimental",
+"Survey"
+],
+answer: 1
+},
+{
+q: "40. Quantitative research is more statistical in nature.",
+options: ["Yes","No"],
+answer: 0
+},
+{
+q: `41. Characteristics of ____ data:
+i. For the problem
+ii. Complex collection
+iii. High cost
 iv. Time consuming`,
-    options: ["Secondary", "Tertiary", "Primary"],
-    answer: 2,
-    explanation: "Primary data is collected specifically for the research problem at hand, often involving complex, costly, and time-consuming processes."
-  },
-
-  {
-    q: `42. Which one of the followings is NOT the disadvantage of longitudinal research?`,
-    options: [
-      "Information takes a considerable period of time to collect",
-      "Need good cooperation from the respondents",
-      "Information is obtained for more than once and usually is more reliable",
-      "Relatively expensive to carry out since several studies will be conducted"
-    ],
-    answer: 2,
-    explanation: "Information being more reliable is an advantage, not a disadvantage of longitudinal research."
-  },
-
-  {
-    q: `43. The depth interview has the following advantages EXCEPT:`,
-    options: [
-      "It can uncover greater depth of insights",
-      "It is always much better than focus group",
-      "It attributes the responses directly to the respondents",
-      "It results in free exchange of information"
-    ],
-    answer: 1,
-    explanation: "Depth interviews are not 'always' better than focus groups; each method has its own strengths depending on the research context."
-  },
-
-  {
-    q: "44. Which link for categorization of the type of research design is NOT true?",
-    image: "https://raw.githubusercontent.com/shafizal20/MCQ/main/images/question44.png",
-    options: ["A", "B", "C", "D"],
-    answer: 1,
-    explanation: "Based on research design categorization, option B is not a true link."
-  },
-
-  {
-    q: "45. Descriptive research usually will answer the 6 Ws questions.",
-    options: ["Yes", "No"],
-    answer: 0,
-    explanation: "Descriptive research aims to answer Who, What, When, Where, Why, and How questions."
-  },
-
-  {
-    q: `46. Causal research includes the followings EXCEPT:`,
-    options: [
-      "Experiment",
-      "Cause-and-effect relationship",
-      "Manipulation of variable(s)",
-      "Cross-sectional descriptive research"
-    ],
-    answer: 3,
-    explanation: "Cross-sectional descriptive research is not part of causal research; it's descriptive in nature."
-  },
-
-  {
-    q: `47. The followings are the advantages of Focus Groups EXCEPT:`,
-    options: [
-      "Speed",
-      "Synergy",
-      "Structure",
-      "Size"
-    ],
-    answer: 3,
-    explanation: "Size is not typically listed as an advantage of focus groups; advantages include speed, synergy, and structure."
-  },
-
-  {
-    q: `48. The conditions for causality includes: Logical time sequence, ____ and control for other causal factor(s).`,
-    options: [
-      "Commitment",
-      "Concomitant variation",
-      "Concise measurement",
-      "Co-creation"
-    ],
-    answer: 1,
-    explanation: "Concomitant variation (correlation) is one of the three conditions for establishing causality."
-  },
-
-  {
-    q: `49. Which of the following is NOT a Projective Technique?`,
-    options: [
-      "Word association",
-      "Sentence completion",
-      "Projection",
-      "Construction"
-    ],
-    answer: 2,
-    explanation: "Projection is not a specific projective technique; projection refers to the psychological concept behind these techniques, while word association, sentence completion, and construction are actual projective techniques."
-  }
+options: ["Secondary","Tertiary","Primary"],
+answer: 2
+},
+{
+q: "44. Identify NOT true link.",
+image: "https://raw.githubusercontent.com/shafizal20/MCQ/main/images/question44.png",
+options: ["A","B","C","D"],
+answer: 1
+},
+{
+q: `48. Conditions for causality:
+Logical time sequence, ____ and control`,
+options: [
+"Commitment",
+"Concomitant variation",
+"Measurement",
+"Co-creation"
+],
+answer: 1
+},
+{
+q: `49. NOT a Projective Technique`,
+options: [
+"Word association",
+"Sentence completion",
+"Projection",
+"Construction"
+],
+answer: 2
+}
 ];
 
 const quiz = document.getElementById("quiz");
 
-// Build the quiz
+// BUILD QUIZ
 quizData.forEach((item, i) => {
-  let html = `<div class="question" id="question${i}">`;
-  html += `<p class="small-text">${item.q}</p>`;
-  
-  if (item.image && item.image !== "") {
-    html += `<img src="${item.image}" alt="question image" onerror="this.style.display='none'">`;
-  }
-  
-  item.options.forEach((opt, j) => {
-    html += `
-      <label>
-        <input type="radio" name="q${i}" value="${j}" onclick="clearFeedback(${i})">
-        ${opt}
-      </label>
-    `;
-  });
-  
-  html += `<div id="feedback${i}" class="answer-feedback"></div>`;
-  html += `</div>`;
-  quiz.innerHTML += html;
+let html = `<div class="question">`;
+html += `<p>${item.q.replace(/\n/g,"<br>")}</p>`;
+
+if(item.image){
+html += `<img src="${item.image}" alt="image">`;
+}
+
+item.options.forEach((opt,j)=>{
+html += `
+<label>
+<input type="radio" name="q${i}" value="${j}">
+${opt}
+</label>
+`;
 });
 
-// Function to clear previous feedback when user changes answer
-function clearFeedback(questionIndex) {
-  if (isSubmitted) {
-    // If already submitted, don't allow changes
-    return;
-  }
-  
-  const feedbackDiv = document.getElementById(`feedback${questionIndex}`);
-  if (feedbackDiv) {
-    feedbackDiv.innerHTML = '';
-    feedbackDiv.className = 'answer-feedback';
-  }
-  // Clear overall result when answers are changed
-  document.getElementById("result").innerHTML = '';
-  document.getElementById("result").className = 'result';
-  document.getElementById("detailedResult").innerHTML = '';
-}
-
-function submitQuiz() {
-  // Prevent multiple submissions
-  if (isSubmitted) {
-    alert("You have already submitted the quiz! Use Reset button if you want to try again.");
-    return;
-  }
-  
-  let score = 0;
-  let allAnswered = true;
-  let unansweredQuestions = [];
-  
-  // Check each question
-  quizData.forEach((item, i) => {
-    const selected = document.querySelector(`input[name="q${i}"]:checked`);
-    const feedbackDiv = document.getElementById(`feedback${i}`);
-    
-    if (!selected) {
-      allAnswered = false;
-      unansweredQuestions.push(i + 38); // Adding 38 because questions start at 38
-      if (feedbackDiv) {
-        feedbackDiv.innerHTML = '⚠️ Question not answered';
-        feedbackDiv.className = 'answer-feedback wrong-feedback';
-      }
-    } else {
-      const isCorrect = parseInt(selected.value) === item.answer;
-      if (isCorrect) {
-        score++;
-        if (feedbackDiv) {
-          feedbackDiv.innerHTML = `✅ Correct! ${item.explanation || ''}`;
-          feedbackDiv.className = 'answer-feedback correct-feedback';
-        }
-      } else {
-        const correctAnswerText = item.options[item.answer];
-        if (feedbackDiv) {
-          feedbackDiv.innerHTML = `❌ Incorrect. The correct answer is: ${correctAnswerText}. ${item.explanation || ''}`;
-          feedbackDiv.className = 'answer-feedback wrong-feedback';
-        }
-      }
-    }
-  });
-  
-  const resultDiv = document.getElementById("result");
-  const detailedDiv = document.getElementById("detailedResult");
-  
-  if (!allAnswered) {
-    resultDiv.innerHTML = `⚠️ Please answer all questions before submitting. ⚠️<br>
-                          Missing answers for questions: ${unansweredQuestions.join(', ')}`;
-    resultDiv.className = 'result error';
-    detailedDiv.innerHTML = '';
-    return;
-  }
-  
-  // Mark as submitted
-  isSubmitted = true;
-  
-  // Disable all radio buttons
-  const allRadios = document.querySelectorAll('input[type="radio"]');
-  allRadios.forEach(radio => {
-    radio.disabled = true;
-  });
-  
-  // Disable submit button, change reset button text
-  const submitBtn = document.getElementById("submitBtn");
-  const resetBtn = document.getElementById("resetBtn");
-  submitBtn.disabled = true;
-  resetBtn.textContent = "Start Over / Reset Quiz";
-  
-  const percentage = (score / quizData.length) * 100;
-  let gradeMessage = '';
-  if (percentage >= 90) {
-    gradeMessage = 'Excellent! 🌟';
-  } else if (percentage >= 75) {
-    gradeMessage = 'Good job! 👍';
-  } else if (percentage >= 60) {
-    gradeMessage = 'Not bad, but room for improvement! 📚';
-  } else {
-    gradeMessage = 'Need more practice. Keep studying! 💪';
-  }
-  
-  resultDiv.innerHTML = `<span class="score-highlight">Your Score: ${score} / ${quizData.length}</span><br>
-                        (${percentage}%)<br>
-                        ${gradeMessage}`;
-  resultDiv.className = 'result success';
-  
-  // Scroll to result
-  resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function resetQuiz() {
-  // Reset submission flag
-  isSubmitted = false;
-  
-  // Clear all radio selections
-  const allRadios = document.querySelectorAll('input[type="radio"]');
-  allRadios.forEach(radio => {
-    radio.checked = false;
-    radio.disabled = false;
-  });
-  
-  // Clear all feedback
-  for (let i = 0; i < quizData.length; i++) {
-    const feedbackDiv = document.getElementById(`feedback${i}`);
-    if (feedbackDiv) {
-      feedbackDiv.innerHTML = '';
-      feedbackDiv.className = 'answer-feedback';
-    }
-  }
-  
-  // Clear result displays
-  document.getElementById("result").innerHTML = '';
-  document.getElementById("result").className = 'result';
-  document.getElementById("detailedResult").innerHTML = '';
-  
-  // Re-enable submit button and reset reset button text
-  const submitBtn = document.getElementById("submitBtn");
-  const resetBtn = document.getElementById("resetBtn");
-  submitBtn.disabled = false;
-  resetBtn.textContent = "Reset All Answers";
-  
-  // Scroll to top
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  
-  // Show confirmation message
-  showTempMessage('Quiz has been reset! You can try again.', '#28a745');
-}
-
-function showTempMessage(message, color) {
-  const tempMsg = document.createElement('div');
-  tempMsg.textContent = message;
-  tempMsg.style.cssText = `position: fixed; top: 20px; right: 20px; background: ${color}; color: white; padding: 10px 20px; border-radius: 5px; z-index: 1000; animation: fadeInOut 2s ease-in-out;`;
-  document.body.appendChild(tempMsg);
-  
-  // Add animation
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: translateY(-20px); }
-      15% { opacity: 1; transform: translateY(0); }
-      85% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-20px); }
-    }
-  `;
-  document.head.appendChild(style);
-  
-  setTimeout(() => tempMsg.remove(), 2000);
-}
-
-// Add keyboard shortcut (Ctrl+Enter to submit only if not submitted)
-document.addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter' && !isSubmitted) {
-    e.preventDefault();
-    submitQuiz();
-  }
+html += `</div>`;
+quiz.innerHTML += html;
 });
 
-// Prevent accidental page refresh warning if quiz is in progress but not submitted
-window.addEventListener('beforeunload', function(e) {
-  const anyAnswered = Array.from(document.querySelectorAll('input[type="radio"]:checked')).length > 0;
-  if (anyAnswered && !isSubmitted) {
-    e.preventDefault();
-    e.returnValue = 'You have unanswered questions. Are you sure you want to leave?';
-    return e.returnValue;
-  }
+// SUBMIT FUNCTION
+function submitQuiz(){
+let score = 0;
+
+quizData.forEach((item,i)=>{
+const selected = document.querySelector(`input[name="q${i}"]:checked`);
+if(selected && parseInt(selected.value) === item.answer){
+score++;
+}
 });
+
+document.getElementById("result").innerHTML =
+`Your Score: ${score} / ${quizData.length}`;
+}
 
 </script>
 
