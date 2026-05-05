@@ -1,216 +1,509 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Topic 3 Quiz</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 3: Developing an Approach & Literature Review</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f7fb;
-  margin: 0;
-  padding: 20px;
-}
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f2f5f9;
+      padding: 24px 16px;
+    }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-}
+    .quiz-box {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 24px;
+      padding: 24px 28px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
-h1 {
-  text-align: center;
-}
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0a2b44;
+      text-align: center;
+      margin-bottom: 6px;
+    }
 
-.question {
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-}
+    .sub {
+      text-align: center;
+      color: #4a627a;
+      font-size: 0.85rem;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e9edf2;
+    }
 
-label {
-  display: block;
-  margin: 5px 0;
-}
+    .question {
+      background: #ffffff;
+      border: 1px solid #e9edf2;
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      transition: 0.1s;
+    }
 
-button {
-  width: 100%;
-  padding: 14px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
+    .question.correct-bg {
+      background: #f0fdf4;
+      border-left: 5px solid #22c55e;
+    }
 
-.result {
-  margin-top: 20px;
-  font-weight: bold;
-  text-align: center;
-}
-</style>
+    .question.wrong-bg {
+      background: #fef2f2;
+      border-left: 5px solid #ef4444;
+    }
+
+    .q-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .q-num {
+      background: #e9edf2;
+      padding: 3px 12px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1a3e60;
+    }
+
+    .q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0f2b3d;
+      line-height: 1.45;
+      flex: 1;
+    }
+
+    .q-text p {
+      margin: 0 0 4px;
+    }
+
+    .extra-list {
+      margin: 10px 0 12px 24px;
+      font-size: 0.9rem;
+      font-weight: normal;
+      color: #2c4c6e;
+    }
+
+    .extra-list li {
+      margin: 5px 0;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 12px 0 6px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      background: #fafcff;
+      border: 1px solid #e4e9f0;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+
+    .option:hover {
+      background: #f0f5ff;
+    }
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2563eb;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .option-text {
+      font-size: 0.94rem;
+      color: #1e2f44;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .feedback-correct {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 3px solid #22c55e;
+    }
+
+    .feedback-wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 3px solid #ef4444;
+    }
+
+    .feedback-missing {
+      background: #fff1e6;
+      color: #9a3412;
+      border-left: 3px solid #f97316;
+    }
+
+    .btn-submit {
+      background: #1e4a8a;
+      border: none;
+      width: 100%;
+      padding: 14px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      margin-top: 12px;
+      margin-bottom: 20px;
+      transition: 0.15s;
+    }
+
+    .btn-submit:hover {
+      background: #0f3a6e;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      background: #9bb5d0;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .score-area {
+      text-align: center;
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 8px;
+      border: 1px solid #e9edf2;
+    }
+
+    .score-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0a2b44;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #7c8ea0;
+      margin-top: 24px;
+    }
+  </style>
 </head>
-
 <body>
+<div class="quiz-box">
+  <h1>📊 Topic 3: Developing an Approach & Literature Review</h1>
+  <div class="sub">15 multiple choice questions · submit once</div>
 
-<div class="container">
-<h1>Topic 3: Developing an Approach & Literature Review</h1>
+  <div id="questionsContainer"></div>
 
-<div id="quiz"></div>
-
-<button onclick="submitQuiz()">Submit</button>
-
-<div id="result" class="result"></div>
+  <button id="submitBtn" class="btn-submit">✓ Submit</button>
+  <div id="scorePanel" style="display: none;"></div>
+  <footer>Problem statement, research questions, theoretical framework, hypothesis, literature review</footer>
 </div>
 
 <script>
-
-const quizData = [
-  {
-    q: "18. The right set of information helps managers make ____ decisions.",
-    options: ["economic", "informed", "important", "kind"],
-    answer: 1
-  },
-  {
-    q: "19. The 'problem statement' is a long essay.",
-    options: ["yes", "no"],
-    answer: 1
-  },
-  {
-    q: "20. Researchable problems involve ____ variables.",
-    options: [
-      "variables, measurement, analysis",
-      "relationships, variables, unit of analysis",
-      "case study, measurement, variables",
-      "pilot test, concept, relationships"
-    ],
-    answer: 1
-  },
-  {
-    q: "21. Researcher questions are questions asked to respondents.",
-    options: ["yes", "no"],
-    answer: 0
-  },
-  {
-    q: "22. Common verbs in research objectives include:",
-    options: [
-      "know, understand, conclude",
-      "identify, determine, measure, develop, examine",
-      "count, list, point",
-      "reduce, arrange, simplify"
-    ],
-    answer: 1
-  },
-  {
-    q: "23. Three Ws in research questions are:",
-    options: ["i, ii, iii", "iii, iv, v", "i, ii, vi", "ii, iii, vi"],
-    answer: 2
-  },
-  {
-    q: "24. Theoretical framework uses which variables?",
-    options: [
-      "independent, dependent, moderating, intervening",
-      "statistical, probability, case study",
-      "random, sample, error",
-      "pilot, test, design"
-    ],
-    answer: 0
-  },
-  {
-    q: "25. Directional hypothesis uses:",
-    options: [
-      "positive, negative, >, <",
-      "equal only",
-      "random words",
-      "no symbols"
-    ],
-    answer: 0
-  },
-  {
-    q: "26. Theoretical framework is aligned with research objectives.",
-    options: ["correct", "incorrect"],
-    answer: 1
-  },
-  {
-    q: "27. Literature review is a list of resources.",
-    options: ["yes", "no"],
-    answer: 1
-  },
-  {
-    q: "28. Literature review is a:",
-    options: ["sentence", "paragraph", "critique", "component"],
-    answer: 2
-  },
-  {
-    q: "29. Literature review EXCEPT:",
-    options: [
-      "identify variables",
-      "design methodology",
-      "uses primary data",
-      "avoid reinventing wheel"
-    ],
-    answer: 2
-  },
-  {
-    q: "30. Literature review follows steps.",
-    options: ["yes", "no"],
-    answer: 0
-  },
-  {
-    q: "31. EXCEPT negative behaviour in literature review:",
-    options: [
-      "ignore sources",
-      "wrong names",
-      "write good essay",
-      "bad documentation"
-    ],
-    answer: 2
-  },
-  {
-    q: "32. Annotated bibliography helps:",
-    options: ["accredited", "annotated", "extensive", "none"],
-    answer: 1
-  }
-];
-
-const quiz = document.getElementById("quiz");
-
-quizData.forEach((item, i) => {
-  let html = `<div class="question">
-    <p>${item.q}</p>`;
-
-  item.options.forEach((opt, j) => {
-    html += `
-      <label>
-        <input type="radio" name="q${i}" value="${j}">
-        ${opt}
-      </label>
-    `;
-  });
-
-  html += `</div>`;
-  quiz.innerHTML += html;
-});
-
-function submitQuiz() {
-  let score = 0;
-
-  quizData.forEach((item, i) => {
-    const selected = document.querySelector(`input[name="q${i}"]:checked`);
-    if (selected && parseInt(selected.value) === item.answer) {
-      score++;
+  // ==============================================================
+  // TOPIC 3: DEVELOPING AN APPROACH & LITERATURE REVIEW
+  // Questions 18-32 based on original specification
+  // Numbers shown only in bubble, not in question text
+  // ==============================================================
+  const quizData = [
+    { // Q18
+      text: "The right set of information helps managers make ____ decisions.",
+      options: ["economic", "informed", "important", "kind"],
+      answer: 1
+    },
+    { // Q19
+      text: "The 'problem statement' is a long essay.",
+      options: ["Yes", "No"],
+      answer: 1
+    },
+    { // Q20
+      text: "Researchable problems involve ____ variables.",
+      options: [
+        "variables, measurement, analysis",
+        "relationships, variables, unit of analysis",
+        "case study, measurement, variables",
+        "pilot test, concept, relationships"
+      ],
+      answer: 1
+    },
+    { // Q21
+      text: "Researcher questions are questions asked to respondents.",
+      options: ["Yes", "No"],
+      answer: 0
+    },
+    { // Q22
+      text: "Common verbs in research objectives include:",
+      options: [
+        "know, understand, conclude",
+        "identify, determine, measure, develop, examine",
+        "count, list, point",
+        "reduce, arrange, simplify"
+      ],
+      answer: 1
+    },
+    { // Q23
+      text: "Three Ws in research questions are:",
+      listItems: [
+        "i) What",
+        "ii) Why",
+        "iii) Where",
+        "iv) How",
+        "v) Which",
+        "vi) Who"
+      ],
+      options: ["A) i, ii, iii", "B) iii, iv, v", "C) i, ii, vi", "D) ii, iii, vi"],
+      answer: 2,  // What, Why, Who (i, ii, vi)
+      listBefore: true
+    },
+    { // Q24
+      text: "Theoretical framework uses which variables?",
+      options: [
+        "independent, dependent, moderating, intervening",
+        "statistical, probability, case study",
+        "random, sample, error",
+        "pilot, test, design"
+      ],
+      answer: 0
+    },
+    { // Q25
+      text: "Directional hypothesis uses:",
+      options: [
+        "positive, negative, >, <",
+        "equal only",
+        "random words",
+        "no symbols"
+      ],
+      answer: 0
+    },
+    { // Q26
+      text: "Theoretical framework is aligned with research objectives.",
+      options: ["Correct", "Incorrect"],
+      answer: 1  // Incorrect - theoretical framework is aligned with problem statement/research questions, not directly with objectives
+    },
+    { // Q27
+      text: "Literature review is a list of resources.",
+      options: ["Yes", "No"],
+      answer: 1
+    },
+    { // Q28
+      text: "Literature review is a:",
+      options: ["sentence", "paragraph", "critique", "component"],
+      answer: 2  // critique/synthesis of existing literature
+    },
+    { // Q29
+      text: "Literature review EXCEPT:",
+      options: [
+        "identify variables",
+        "design methodology",
+        "uses primary data",
+        "avoid reinventing wheel"
+      ],
+      answer: 2  // Literature review uses secondary data, not primary
+    },
+    { // Q30
+      text: "Literature review follows steps.",
+      options: ["Yes", "No"],
+      answer: 0
+    },
+    { // Q31
+      text: "EXCEPT negative behaviour in literature review:",
+      options: [
+        "ignore sources",
+        "wrong names",
+        "write good essay",
+        "bad documentation"
+      ],
+      answer: 2  // Writing good essay is positive, not negative
+    },
+    { // Q32
+      text: "Annotated bibliography helps:",
+      options: ["accredited", "annotated", "extensive", "none"],
+      answer: 1
     }
-  });
+  ];
 
-  document.getElementById("result").innerText =
-    `Your Score: ${score} / ${quizData.length}`;
-}
+  // user selections: -1 = unanswered
+  let selections = new Array(quizData.length).fill(-1);
+  let submitted = false;
 
+  const container = document.getElementById("questionsContainer");
+  const submitBtn = document.getElementById("submitBtn");
+  const scorePanel = document.getElementById("scorePanel");
+
+  // render all questions
+  function renderQuestions() {
+    let html = "";
+    for (let i = 0; i < quizData.length; i++) {
+      const q = quizData[i];
+      const selectedVal = selections[i];
+      const realNumber = 18 + i;   // Q18 to Q32
+      
+      let questionClass = "question";
+      if (submitted) {
+        const isCorrect = (selectedVal !== -1 && selectedVal === q.answer);
+        if (isCorrect) questionClass += " correct-bg";
+        else questionClass += " wrong-bg";
+      }
+      
+      html += `<div class="${questionClass}">`;
+      html += `<div class="q-header">`;
+      html += `<span class="q-num">${realNumber}</span>`;
+      html += `<div class="q-text">`;
+      
+      // handle question 23 with list BEFORE text
+      if (q.listBefore && q.listItems) {
+        html += `<div class="extra-list"><ul>`;
+        q.listItems.forEach(li => { html += `<li>${li}</li>`; });
+        html += `</ul></div>`;
+        html += `<p style="margin-top: 8px;">${q.text}</p>`;
+      } else {
+        html += `<div>${q.text}</div>`;
+      }
+      
+      html += `</div></div>`;
+      
+      // options
+      html += `<div class="options">`;
+      q.options.forEach((opt, optIdx) => {
+        const isChecked = (selectedVal === optIdx);
+        const disabledAttr = submitted ? "disabled" : "";
+        html += `
+          <label class="option" style="cursor: ${submitted ? 'default' : 'pointer'}">
+            <input type="radio" name="q${i}" value="${optIdx}" ${isChecked ? 'checked' : ''} ${disabledAttr}>
+            <span class="option-text">${opt}</span>
+          </label>
+        `;
+      });
+      html += `</div>`;
+      
+      // after submit: show feedback
+      if (submitted) {
+        if (selectedVal === -1) {
+          html += `<div class="feedback feedback-missing">⚠️ Not answered · Correct: ${q.options[q.answer]}</div>`;
+        } else if (selectedVal !== q.answer) {
+          html += `<div class="feedback feedback-wrong">❌ Incorrect · Your answer: ${q.options[selectedVal]}<br>✅ Correct: ${q.options[q.answer]}</div>`;
+        } else {
+          html += `<div class="feedback feedback-correct">✓ Correct</div>`;
+        }
+      }
+      
+      html += `</div>`;
+    }
+    container.innerHTML = html;
+    
+    // attach change events only if not submitted
+    if (!submitted) {
+      for (let i = 0; i < quizData.length; i++) {
+        const radios = document.querySelectorAll(`input[name="q${i}"]`);
+        radios.forEach(radio => {
+          radio.addEventListener("change", (e) => {
+            if (submitted) return;
+            selections[i] = parseInt(e.target.value);
+            renderQuestions();
+          });
+        });
+      }
+    }
+  }
+  
+  // compute score
+  function getScore() {
+    let correct = 0;
+    for (let i = 0; i < quizData.length; i++) {
+      const selected = selections[i];
+      if (selected !== -1 && selected === quizData[i].answer) correct++;
+    }
+    return correct;
+  }
+  
+  // submit handler: one-time submission, no reset button
+  function handleSubmit() {
+    if (submitted) {
+      return;
+    }
+    
+    const answeredCount = selections.filter(s => s !== -1).length;
+    if (answeredCount < quizData.length) {
+      if (!confirm(`You have answered ${answeredCount} out of ${quizData.length}. Submit anyway?`)) {
+        return;
+      }
+    }
+    
+    submitted = true;
+    const correct = getScore();
+    const total = quizData.length;
+    
+    // re-render with highlights & feedback
+    renderQuestions();
+    
+    // show score panel
+    scorePanel.style.display = "block";
+    let message = "";
+    const percent = (correct / total) * 100;
+    
+    if (percent >= 80) {
+      message = "Excellent! Mastery achieved. 🎉";
+    } else if (percent >= 60) {
+      message = "Great job! Review the ones in red.";
+    } else {
+      message = "Keep practicing. Review the explanations above.";
+    }
+    
+    scorePanel.innerHTML = `
+      <div class="score-area">
+        <div class="score-number">🏆 ${correct} / ${total}</div>
+        <div style="margin-top: 8px; font-size: 0.85rem; color: #2c5a6e;">${message}</div>
+      </div>
+    `;
+    
+    // disable submit button after submission
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = "0.6";
+    submitBtn.style.cursor = "default";
+    
+    // save progress to localStorage for LMS tracking
+    let completed = JSON.parse(localStorage.getItem("completedTopics")) || [];
+    if (!completed.includes("topic3")) {
+      completed.push("topic3");
+      localStorage.setItem("completedTopics", JSON.stringify(completed));
+    }
+    
+    // smooth scroll to score
+    setTimeout(() => {
+      scorePanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 80);
+  }
+  
+  submitBtn.addEventListener("click", handleSubmit);
+  
+  // initial render
+  renderQuestions();
 </script>
-
 </body>
 </html>
