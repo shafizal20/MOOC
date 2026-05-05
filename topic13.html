@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 13: Communicating Research Findings - Marketing Research Report</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f2f5f9;
+      padding: 24px 16px;
+    }
+
+    .quiz-box {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 24px;
+      padding: 24px 28px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0a2b44;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .sub {
+      text-align: center;
+      color: #4a627a;
+      font-size: 0.85rem;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e9edf2;
+    }
+
+    .question {
+      background: #ffffff;
+      border: 1px solid #e9edf2;
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      transition: 0.1s;
+    }
+
+    .question.correct-bg {
+      background: #f0fdf4;
+      border-left: 5px solid #22c55e;
+    }
+
+    .question.wrong-bg {
+      background: #fef2f2;
+      border-left: 5px solid #ef4444;
+    }
+
+    .q-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .q-num {
+      background: #e9edf2;
+      padding: 3px 12px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1a3e60;
+    }
+
+    .q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0f2b3d;
+      line-height: 1.45;
+      flex: 1;
+    }
+
+    .q-text p {
+      margin: 0 0 4px;
+    }
+
+    .extra-list {
+      margin: 10px 0 12px 24px;
+      font-size: 0.9rem;
+      font-weight: normal;
+      color: #2c4c6e;
+    }
+
+    .extra-list li {
+      margin: 5px 0;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 12px 0 6px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      background: #fafcff;
+      border: 1px solid #e4e9f0;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+
+    .option:hover {
+      background: #f0f5ff;
+    }
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2563eb;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .option-text {
+      font-size: 0.94rem;
+      color: #1e2f44;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .feedback-correct {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 3px solid #22c55e;
+    }
+
+    .feedback-wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 3px solid #ef4444;
+    }
+
+    .feedback-missing {
+      background: #fff1e6;
+      color: #9a3412;
+      border-left: 3px solid #f97316;
+    }
+
+    .btn-submit {
+      background: #1e4a8a;
+      border: none;
+      width: 100%;
+      padding: 14px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      margin-top: 12px;
+      margin-bottom: 20px;
+      transition: 0.15s;
+    }
+
+    .btn-submit:hover {
+      background: #0f3a6e;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      background: #9bb5d0;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .score-area {
+      text-align: center;
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 8px;
+      border: 1px solid #e9edf2;
+    }
+
+    .score-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0a2b44;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #7c8ea0;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+<div class="quiz-box">
+  <h1>📊 Topic 13: Communicating Research Findings</h1>
+  <div class="sub">Comprehensive Marketing Research Report · 5 questions · submit once</div>
+
+  <div id="questionsContainer"></div>
+
+  <button id="submitBtn" class="btn-submit">✓ Submit Quiz</button>
+  <div id="scorePanel" style="display: none;"></div>
+  <footer>Research report purpose, preliminary pages, report writing, oral presentation</footer>
+</div>
+
+<script>
+  // ==============================================================
+  // TOPIC 13: COMMUNICATING RESEARCH FINDINGS
+  // Questions 96-100 based on H5P specification
+  // Numbers shown only in bubble, not in question text
+  // ==============================================================
+  const quizData = [
+    { // Q96
+      text: "Why is a marketing research report necessary?",
+      listItems: [
+        "i) It serves as a historical record",
+        "ii) Research service",
+        "iii) It guides management decision",
+        "iv) A plan for research"
+      ],
+      options: ["A) i, ii, iii", "B) i, ii, iv", "C) i, iii, iv", "D) ii, iii, iv"],
+      answer: 0,  // i, ii, iii are correct (iv is plan for research = proposal, not report)
+      listBefore: true
+    },
+    { // Q97
+      text: "The followings are found in The Preliminary Pages.",
+      listItems: [
+        "i) Acknowledgements",
+        "ii) Letter of transmittal/Cover letter",
+        "iii) Letter of authorization",
+        "iv) Table of contents",
+        "v) List of tables",
+        "vi) List of graphs",
+        "vii) Executive summary"
+      ],
+      options: ["True", "False"],
+      answer: 0,  // True - all these are indeed in preliminary pages
+      listBefore: true,
+      isTrueFalse: true
+    },
+    { // Q98
+      text: "The followings are important in report-writing EXCEPT:",
+      options: [
+        "A) Write with the particular audiences in mind",
+        "B) Write a long report to impress the readers",
+        "C) Organized and with good physical appearance",
+        "D) It needs to be read through and re-checked by other persons"
+      ],
+      answer: 1,  // Writing long report to impress is NOT important
+      image: null
+    },
+    { // Q99
+      text: "What are important for an oral presentation?",
+      listItems: [
+        "i) Good preparation",
+        "ii) Body language",
+        "iii) Visual aids",
+        "iv) Language"
+      ],
+      options: ["A) i, ii, iii, iv", "B) i, ii, iv", "C) i, iii, iv", "D) ii, iii, iv"],
+      answer: 0,  // All four are important
+      listBefore: true
+    },
+    { // Q100
+      text: "The KISS principle in oral presentation is:",
+      options: [
+        "A) Keep it slow and steady",
+        "B) Keep insisting self-confidence and speed",
+        "C) Keep it short and simple",
+        "D) Keep impressive, simple and shocking"
+      ],
+      answer: 2,  // Keep It Short and Simple
+      image: null
+    }
+  ];
+
+  // user selections: -1 = unanswered
+  let selections = new Array(quizData.length).fill(-1);
+  let submitted = false;
+
+  const container = document.getElementById("questionsContainer");
+  const submitBtn = document.getElementById("submitBtn");
+  const scorePanel = document.getElementById("scorePanel");
+
+  // render all questions
+  function renderQuestions() {
+    let html = "";
+    for (let i = 0; i < quizData.length; i++) {
+      const q = quizData[i];
+      const selectedVal = selections[i];
+      const realNumber = 96 + i;   // Q96 to Q100
+      
+      let questionClass = "question";
+      if (submitted) {
+        const isCorrect = (selectedVal !== -1 && selectedVal === q.answer);
+        if (isCorrect) questionClass += " correct-bg";
+        else questionClass += " wrong-bg";
+      }
+      
+      html += `<div class="${questionClass}">`;
+      html += `<div class="q-header">`;
+      html += `<span class="q-num">${realNumber}</span>`;
+      html += `<div class="q-text">`;
+      
+      // handle questions with list BEFORE text (Q96, Q97, Q99)
+      if (q.listBefore && q.listItems) {
+        html += `<div class="extra-list"><ul>`;
+        q.listItems.forEach(li => { html += `<li>${li}</li>`; });
+        html += `</ul></div>`;
+        html += `<p style="margin-top: 8px;">${q.text}</p>`;
+      } else {
+        html += `<div>${q.text}</div>`;
+      }
+      
+      html += `</div></div>`;
+      
+      // options
+      html += `<div class="options">`;
+      q.options.forEach((opt, optIdx) => {
+        const isChecked = (selectedVal === optIdx);
+        const disabledAttr = submitted ? "disabled" : "";
+        html += `
+          <label class="option" style="cursor: ${submitted ? 'default' : 'pointer'}">
+            <input type="radio" name="q${i}" value="${optIdx}" ${isChecked ? 'checked' : ''} ${disabledAttr}>
+            <span class="option-text">${opt}</span>
+          </label>
+        `;
+      });
+      html += `</div>`;
+      
+      // after submit: show feedback
+      if (submitted) {
+        if (selectedVal === -1) {
+          html += `<div class="feedback feedback-missing">⚠️ Not answered · Correct: ${q.options[q.answer]}</div>`;
+        } else if (selectedVal !== q.answer) {
+          html += `<div class="feedback feedback-wrong">❌ Incorrect · Your answer: ${q.options[selectedVal]}<br>✅ Correct: ${q.options[q.answer]}</div>`;
+        } else {
+          html += `<div class="feedback feedback-correct">✓ Correct</div>`;
+        }
+      }
+      
+      html += `</div>`;
+    }
+    container.innerHTML = html;
+    
+    // attach change events only if not submitted
+    if (!submitted) {
+      for (let i = 0; i < quizData.length; i++) {
+        const radios = document.querySelectorAll(`input[name="q${i}"]`);
+        radios.forEach(radio => {
+          radio.addEventListener("change", (e) => {
+            if (submitted) return;
+            selections[i] = parseInt(e.target.value);
+            renderQuestions();
+          });
+        });
+      }
+    }
+  }
+  
+  // compute score
+  function getScore() {
+    let correct = 0;
+    for (let i = 0; i < quizData.length; i++) {
+      const selected = selections[i];
+      if (selected !== -1 && selected === quizData[i].answer) correct++;
+    }
+    return correct;
+  }
+  
+  // submit handler: one-time submission, no reset button
+  function handleSubmit() {
+    if (submitted) {
+      return;
+    }
+    
+    const answeredCount = selections.filter(s => s !== -1).length;
+    if (answeredCount < quizData.length) {
+      if (!confirm(`You have answered ${answeredCount} out of ${quizData.length}. Submit anyway?`)) {
+        return;
+      }
+    }
+    
+    submitted = true;
+    const correct = getScore();
+    const total = quizData.length;
+    
+    // re-render with highlights & feedback
+    renderQuestions();
+    
+    // show score panel
+    scorePanel.style.display = "block";
+    let message = "";
+    if (correct === total) message = "Perfect! Mastery achieved. 🎉";
+    else if (correct >= 4) message = "Great job! Review the ones in red.";
+    else message = "Keep practicing. Review the explanations above.";
+    
+    scorePanel.innerHTML = `
+      <div class="score-area">
+        <div class="score-number">🏆 ${correct} / ${total}</div>
+        <div style="margin-top: 8px; font-size: 0.85rem; color: #2c5a6e;">${message}</div>
+      </div>
+    `;
+    
+    // disable submit button after submission
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = "0.6";
+    submitBtn.style.cursor = "default";
+    
+    // smooth scroll to score
+    setTimeout(() => {
+      scorePanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 80);
+  }
+  
+  submitBtn.addEventListener("click", handleSubmit);
+  
+  // initial render
+  renderQuestions();
+</script>
+</body>
+</html>
