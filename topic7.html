@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 7: Sampling Design and Procedure</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f2f5f9;
+      padding: 24px 16px;
+    }
+
+    .quiz-box {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 24px;
+      padding: 24px 28px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0a2b44;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .sub {
+      text-align: center;
+      color: #4a627a;
+      font-size: 0.85rem;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e9edf2;
+    }
+
+    /* question card */
+    .question {
+      background: #ffffff;
+      border: 1px solid #e9edf2;
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      transition: 0.1s;
+    }
+
+    .question.correct-bg {
+      background: #f0fdf4;
+      border-left: 5px solid #22c55e;
+    }
+
+    .question.wrong-bg {
+      background: #fef2f2;
+      border-left: 5px solid #ef4444;
+    }
+
+    .q-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .q-num {
+      background: #e9edf2;
+      padding: 3px 12px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1a3e60;
+    }
+
+    .q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0f2b3d;
+      line-height: 1.45;
+      flex: 1;
+    }
+
+    .q-text p {
+      margin: 0 0 4px;
+    }
+
+    .extra-list {
+      margin: 10px 0 12px 24px;
+      font-size: 0.9rem;
+      font-weight: normal;
+      color: #2c4c6e;
+    }
+
+    .extra-list li {
+      margin: 5px 0;
+    }
+
+    .question-img {
+      margin: 12px 0 16px;
+      text-align: center;
+    }
+
+    .question-img img {
+      max-width: 100%;
+      max-height: 180px;
+      border-radius: 14px;
+      border: 1px solid #e2edf7;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 12px 0 6px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      background: #fafcff;
+      border: 1px solid #e4e9f0;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+
+    .option:hover {
+      background: #f0f5ff;
+    }
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2563eb;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .option-text {
+      font-size: 0.94rem;
+      color: #1e2f44;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .feedback-correct {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 3px solid #22c55e;
+    }
+
+    .feedback-wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 3px solid #ef4444;
+    }
+
+    .feedback-missing {
+      background: #fff1e6;
+      color: #9a3412;
+      border-left: 3px solid #f97316;
+    }
+
+    .btn-submit {
+      background: #1e4a8a;
+      border: none;
+      width: 100%;
+      padding: 14px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      margin-top: 12px;
+      margin-bottom: 20px;
+      transition: 0.15s;
+    }
+
+    .btn-submit:hover {
+      background: #0f3a6e;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      background: #9bb5d0;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .score-area {
+      text-align: center;
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 8px;
+      border: 1px solid #e9edf2;
+    }
+
+    .score-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0a2b44;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #7c8ea0;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+<div class="quiz-box">
+  <h1>📊 Topic 7: Sampling Design and Procedure</h1>
+  <div class="sub">7 multiple choice questions · submit once</div>
+
+  <div id="questionsContainer"></div>
+
+  <button id="submitBtn" class="btn-submit">✓ Submit Quiz</button>
+  <div id="scorePanel" style="display: none;"></div>
+  <footer>Sampling methods — probability vs non-probability, systematic sampling</footer>
+</div>
+
+<script>
+  // --------------------------------------------------------------
+  // QUIZ DATA (questions 69 to 75) 
+  // Numbers removed from text, shown only in bubble
+  // Based on H5P specification for Topic 7
+  // --------------------------------------------------------------
+  const quizData = [
+    { 
+      text: "The sample is a subset of the target population and the sampling units are the selected elements of the population.", 
+      options: ["Yes", "No"], 
+      answer: 0, 
+      image: null, 
+      listBefore: null, 
+      listItems: null 
+    },
+    { 
+      text: "The sampling process must be followed in marketing research and the probability sampling technique (with random selection) must be used.", 
+      options: ["True", "False"], 
+      answer: 1, 
+      image: null, 
+      listBefore: null, 
+      listItems: null 
+    },
+    { 
+      text: "Which of the followings is NOT a non-probability sampling technique?", 
+      options: ["A) Quota sampling", "B) Snowball sampling", "C) Convenience sampling", "D) Systematic sampling"], 
+      answer: 3, 
+      image: null, 
+      listBefore: null, 
+      listItems: null 
+    },
+    { 
+      text: "The appropriate sampling technique to be used is:",
+      listItems: [
+        "i. Conclusive research",
+        "ii. Sampling errors are large",
+        "iii. Variability in population is high",
+        "iv. Inferential statistical analysis"
+      ],
+      options: ["A) Probability", "B) Non-probability", "C) Mixed-methods", "D) Census"], 
+      answer: 0, 
+      image: null, 
+      listBefore: true   // show list before question text
+    },
+    { 
+      text: "In a systematic sampling process, the i th item or the ____ is calculated using N/n.", 
+      options: ["A) medium", "B) end", "C) interval", "D) whole"], 
+      answer: 2, 
+      image: null, 
+      listBefore: null, 
+      listItems: null 
+    }
+  ];
+
+  // NOTE: The H5P data showed 5 questions (69-73). 
+  // The second JSON had 3 more questions (71,72,73) but they overlap.
+  // Based on the content, I've compiled the unique questions:
+  // Q69, Q70, Q71, Q72, Q73 = 5 questions total.
+  // If more questions exist, please provide. The specification shows 5 distinct.
+
+  // user selections: -1 = unanswered
+  let selections = new Array(quizData.length).fill(-1);
+  let submitted = false;
+
+  const container = document.getElementById("questionsContainer");
+  const submitBtn = document.getElementById("submitBtn");
+  const scorePanel = document.getElementById("scorePanel");
+
+  // render all questions
+  function renderQuestions() {
+    let html = "";
+    for (let i = 0; i < quizData.length; i++) {
+      const q = quizData[i];
+      const selectedVal = selections[i];
+      const realNumber = 69 + i;   // Q69, Q70, Q71, Q72, Q73
+      
+      let questionClass = "question";
+      if (submitted) {
+        const isCorrect = (selectedVal !== -1 && selectedVal === q.answer);
+        if (isCorrect) questionClass += " correct-bg";
+        else questionClass += " wrong-bg";
+      }
+      
+      html += `<div class="${questionClass}">`;
+      html += `<div class="q-header">`;
+      html += `<span class="q-num">${realNumber}</span>`;
+      html += `<div class="q-text">`;
+      
+      // handle special case: question 72 (index 3) shows list BEFORE text
+      if (q.listBefore && q.listItems) {
+        html += `<div class="extra-list"><ul>`;
+        q.listItems.forEach(li => { html += `<li>${li}</li>`; });
+        html += `</ul></div>`;
+        html += `<p>${q.text}</p>`;
+      } else {
+        html += `<div>${q.text}</div>`;
+      }
+      
+      html += `</div></div>`;
+      
+      // image if exists
+      if (q.image) {
+        html += `<div class="question-img"><img src="${q.image}" alt="diagram" loading="lazy"></div>`;
+      }
+      
+      // options
+      html += `<div class="options">`;
+      q.options.forEach((opt, optIdx) => {
+        const isChecked = (selectedVal === optIdx);
+        const disabledAttr = submitted ? "disabled" : "";
+        html += `
+          <label class="option" style="cursor: ${submitted ? 'default' : 'pointer'}">
+            <input type="radio" name="q${i}" value="${optIdx}" ${isChecked ? 'checked' : ''} ${disabledAttr}>
+            <span class="option-text">${opt}</span>
+          </label>
+        `;
+      });
+      html += `</div>`;
+      
+      // after submit: show feedback
+      if (submitted) {
+        if (selectedVal === -1) {
+          html += `<div class="feedback feedback-missing">⚠️ Not answered · Correct: ${q.options[q.answer]}</div>`;
+        } else if (selectedVal !== q.answer) {
+          html += `<div class="feedback feedback-wrong">❌ Incorrect · Your answer: ${q.options[selectedVal]}<br>✅ Correct: ${q.options[q.answer]}</div>`;
+        } else {
+          html += `<div class="feedback feedback-correct">✓ Correct</div>`;
+        }
+      }
+      
+      html += `</div>`;
+    }
+    container.innerHTML = html;
+    
+    // attach change events only if not submitted
+    if (!submitted) {
+      for (let i = 0; i < quizData.length; i++) {
+        const radios = document.querySelectorAll(`input[name="q${i}"]`);
+        radios.forEach(radio => {
+          radio.addEventListener("change", (e) => {
+            if (submitted) return;
+            selections[i] = parseInt(e.target.value);
+            // re-render to keep visual state
+            renderQuestions();
+          });
+        });
+      }
+    }
+  }
+  
+  // compute score
+  function getScore() {
+    let correct = 0;
+    for (let i = 0; i < quizData.length; i++) {
+      const selected = selections[i];
+      if (selected !== -1 && selected === quizData[i].answer) correct++;
+    }
+    return correct;
+  }
+  
+  // submit handler: one-time submission, no reset button
+  function handleSubmit() {
+    if (submitted) {
+      return;
+    }
+    
+    const answeredCount = selections.filter(s => s !== -1).length;
+    if (answeredCount < quizData.length) {
+      if (!confirm(`You have answered ${answeredCount} out of ${quizData.length}. Submit anyway?`)) {
+        return;
+      }
+    }
+    
+    submitted = true;
+    const correct = getScore();
+    const total = quizData.length;
+    
+    // re-render with highlights & feedback
+    renderQuestions();
+    
+    // show score panel
+    scorePanel.style.display = "block";
+    let message = "";
+    if (correct === total) message = "Perfect! Mastery achieved. 🎉";
+    else if (correct >= 4) message = "Great job! Review the ones in red.";
+    else message = "Keep practicing. Review the explanations above.";
+    
+    scorePanel.innerHTML = `
+      <div class="score-area">
+        <div class="score-number">🏆 ${correct} / ${total}</div>
+        <div style="margin-top: 8px; font-size: 0.85rem; color: #2c5a6e;">${message}</div>
+      </div>
+    `;
+    
+    // disable submit button after submission
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = "0.6";
+    submitBtn.style.cursor = "default";
+    
+    // smooth scroll to score
+    setTimeout(() => {
+      scorePanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 80);
+  }
+  
+  submitBtn.addEventListener("click", handleSubmit);
+  
+  // initial render
+  renderQuestions();
+</script>
+</body>
+</html>
