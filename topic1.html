@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction to Marketing Research</title>
+  <title>Topic 1: Introduction to Marketing Research</title>
 
   <style>
     body {
@@ -105,9 +105,7 @@
 <body>
   <div class="container">
     <h1>Topic 1: Introduction to Marketing Research</h1>
-    <div class="subtitle">
-      Answer all questions. Click Submit to view your results.
-    </div>
+    <div class="subtitle">Answer all questions before submitting</div>
 
     <form id="quizForm"></form>
 
@@ -116,124 +114,145 @@
     <div id="resultBox" class="result"></div>
   </div>
 
-  <script>
-    const quizData = [
-      {
-        question: "1. What are the important characteristics of a marketing research?",
-        options: ["A) i & ii", "B) ii & iii", "C) i, ii & iii", "D) i, ii, iii & iv"],
-        answer: 3
-      },
-      {
-        question: "2. Marketing research is important for marketing and other functional managers.",
-        options: ["Yes", "No"],
-        answer: 0
-      },
-      {
-        question: "3. Marketing research is related to marketing mix, customers, environment and decisions.",
-        options: ["Yes", "No"],
-        answer: 0
-      },
-      {
-        question: "4. Which is NOT part of marketing environment (external factors)?",
-        options: ["Economy", "Product", "Social & cultural", "Technology"],
-        answer: 1
-      },
-      {
-        question: "5. Which is NOT a hallmark of scientific marketing research?",
-        options: ["Parsimonious", "Cheap", "Objective", "Rigorous"],
-        answer: 1
-      },
-      {
-        question: "6. There are ____ major steps in marketing research process.",
-        options: ["4", "5", "6", "7"],
-        answer: 2
-      },
-      {
-        question: "7. Most important step in marketing research process is:",
-        options: ["Reporting", "Data analysis", "Problem definition", "Research design"],
-        answer: 2
-      },
-      {
-        question: "8. Arrange research steps in correct sequence.",
-        options: [
-          "i, ii, iii, iv, v, vi",
-          "i, ii, iv, vi, v, iii",
-          "i, iii, ii, iv, v, vi",
-          "v, iv, vi, i, ii, iii"
-        ],
-        answer: 1
-      }
-    ];
+<script>
+const quizData = [
+  {
+    question: "1. What are the important characteristics of a marketing research?",
+    options: ["A) i & ii", "B) ii & iii", "C) i, ii & iii", "D) i, ii, iii & iv"],
+    answer: 3
+  },
+  {
+    question: "2. Marketing research is important for marketing and other functional managers.",
+    options: ["Yes", "No"],
+    answer: 0
+  },
+  {
+    question: "3. Marketing research is related to marketing mix, customers, environment and decisions.",
+    options: ["Yes", "No"],
+    answer: 0
+  },
+  {
+    question: "4. Which is NOT part of marketing environment (external factors)?",
+    options: ["Economy", "Product", "Social & cultural", "Technology"],
+    answer: 1
+  },
+  {
+    question: "5. Which is NOT a hallmark of scientific marketing research?",
+    options: ["Parsimonious", "Cheap", "Objective", "Rigorous"],
+    answer: 1
+  },
+  {
+    question: "6. There are ____ major steps in marketing research process.",
+    options: ["4", "5", "6", "7"],
+    answer: 2
+  },
+  {
+    question: "7. Most important step in marketing research process is:",
+    options: ["Reporting", "Data analysis", "Problem definition", "Research design"],
+    answer: 2
+  },
+  {
+    question: "8. Arrange research steps in correct sequence.",
+    options: [
+      "i, ii, iii, iv, v, vi",
+      "i, ii, iv, vi, v, iii",
+      "i, iii, ii, iv, v, vi",
+      "v, iv, vi, i, ii, iii"
+    ],
+    answer: 1
+  }
+];
 
-    const quizForm = document.getElementById("quizForm");
+const quizForm = document.getElementById("quizForm");
 
-    function loadQuiz() {
-      quizForm.innerHTML = "";
+function loadQuiz() {
+  quizForm.innerHTML = "";
 
-      quizData.forEach((q, index) => {
-        const div = document.createElement("div");
-        div.className = "question";
+  quizData.forEach((q, index) => {
+    const div = document.createElement("div");
+    div.className = "question";
 
-        let html = `<h3>${q.question}</h3>`;
+    let html = `<h3>${q.question}</h3>`;
 
-        q.options.forEach((opt, i) => {
-          html += `
-            <label>
-              <input type="radio" name="q${index}" value="${i}">
-              ${opt}
-            </label>
-          `;
-        });
+    q.options.forEach((opt, i) => {
+      html += `
+        <label>
+          <input type="radio" name="q${index}" value="${i}">
+          ${opt}
+        </label>
+      `;
+    });
 
-        html += `<div class="feedback" id="fb${index}"></div>`;
-        div.innerHTML = html;
-        quizForm.appendChild(div);
-      });
-    }
+    html += `<div class="feedback" id="fb${index}"></div>`;
+    div.innerHTML = html;
+    quizForm.appendChild(div);
+  });
+}
 
-    function submitQuiz() {
-      let score = 0;
+function submitQuiz() {
+  let score = 0;
+  let allAnswered = true;
 
-      quizData.forEach((q, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        const fb = document.getElementById(`fb${i}`);
+  quizData.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const fb = document.getElementById(`fb${i}`);
 
-        if (selected && parseInt(selected.value) === q.answer) {
-          score++;
-          fb.innerHTML = `<span class="correct">Correct ✓</span>`;
-        } else {
-          fb.innerHTML = `<span class="wrong">Incorrect ✗</span>`;
-        }
-      });
-
-      const resultBox = document.getElementById("resultBox");
-      resultBox.style.display = "block";
-
-      let gradeText = "";
-      let className = "";
-
-      const percent = (score / quizData.length) * 100;
-
-      if (percent >= 80) {
-        gradeText = "Excellent Performance";
-        className = "excellent";
-      } else if (percent >= 60) {
-        gradeText = "Good Performance";
-        className = "good";
-      } else if (percent >= 50) {
-        gradeText = "Pass";
-        className = "pass";
+    if (!selected) {
+      allAnswered = false;
+      fb.innerHTML = `<span class="wrong">Please answer this question</span>`;
+    } else {
+      if (parseInt(selected.value) === q.answer) {
+        score++;
+        fb.innerHTML = `<span class="correct">Correct ✓</span>`;
       } else {
-        gradeText = "Needs Improvement";
-        className = "fail";
+        fb.innerHTML = `<span class="wrong">Incorrect ✗</span>`;
       }
-
-      resultBox.className = "result " + className;
-      resultBox.innerHTML =
-        `Score: ${score} / ${quizData.length}<br>${gradeText}`;
     }
+  });
 
-    loadQuiz();
-  </script>
+  if (!allAnswered) {
+    alert("Please answer ALL questions before submitting.");
+    return;
+  }
+
+  const resultBox = document.getElementById("resultBox");
+  resultBox.style.display = "block";
+
+  const percent = (score / quizData.length) * 100;
+
+  let gradeText = "";
+  let className = "";
+
+  if (percent >= 80) {
+    gradeText = "Excellent Performance";
+    className = "excellent";
+  } else if (percent >= 60) {
+    gradeText = "Good Performance";
+    className = "good";
+  } else if (percent >= 50) {
+    gradeText = "Pass";
+    className = "pass";
+  } else {
+    gradeText = "Needs Improvement";
+    className = "fail";
+  }
+
+  resultBox.className = "result " + className;
+  resultBox.innerHTML =
+    `Score: ${score} / ${quizData.length}<br>${gradeText}`;
+
+  // LMS PROGRESS SAVE
+  let completed = JSON.parse(localStorage.getItem("completedTopics")) || [];
+
+  if (!completed.includes("topic1")) {
+    completed.push("topic1");
+  }
+
+  localStorage.setItem("completedTopics", JSON.stringify(completed));
+}
+
+loadQuiz();
+</script>
+
 </body>
 </html>
