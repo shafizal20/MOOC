@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 8: Measurement and Questionnaire Design</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f2f5f9;
+      padding: 24px 16px;
+    }
+
+    .quiz-box {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 24px;
+      padding: 24px 28px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0a2b44;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .sub {
+      text-align: center;
+      color: #4a627a;
+      font-size: 0.85rem;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e9edf2;
+    }
+
+    .question {
+      background: #ffffff;
+      border: 1px solid #e9edf2;
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      transition: 0.1s;
+    }
+
+    .question.correct-bg {
+      background: #f0fdf4;
+      border-left: 5px solid #22c55e;
+    }
+
+    .question.wrong-bg {
+      background: #fef2f2;
+      border-left: 5px solid #ef4444;
+    }
+
+    .q-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .q-num {
+      background: #e9edf2;
+      padding: 3px 12px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1a3e60;
+    }
+
+    .q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0f2b3d;
+      line-height: 1.45;
+      flex: 1;
+    }
+
+    .q-text p {
+      margin: 0 0 4px;
+    }
+
+    .extra-list {
+      margin: 10px 0 12px 24px;
+      font-size: 0.9rem;
+      font-weight: normal;
+      color: #2c4c6e;
+    }
+
+    .extra-list li {
+      margin: 5px 0;
+    }
+
+    .scale-example {
+      background: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin: 12px 0 8px 0;
+      font-family: monospace;
+      font-size: 0.9rem;
+      border: 1px solid #e2edf7;
+      text-align: center;
+      white-space: pre-line;
+    }
+
+    .question-img {
+      margin: 12px 0 8px 0;
+      text-align: center;
+    }
+
+    .question-img img {
+      max-width: 100%;
+      max-height: 150px;
+      border-radius: 8px;
+      border: 1px solid #e2edf7;
+    }
+
+    .question-statement {
+      margin-top: 12px;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #2c3e66;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 12px 0 6px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      background: #fafcff;
+      border: 1px solid #e4e9f0;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+
+    .option:hover {
+      background: #f0f5ff;
+    }
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2563eb;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .option-text {
+      font-size: 0.94rem;
+      color: #1e2f44;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .feedback-correct {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 3px solid #22c55e;
+    }
+
+    .feedback-wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 3px solid #ef4444;
+    }
+
+    .feedback-missing {
+      background: #fff1e6;
+      color: #9a3412;
+      border-left: 3px solid #f97316;
+    }
+
+    .btn-submit {
+      background: #1e4a8a;
+      border: none;
+      width: 100%;
+      padding: 14px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      margin-top: 12px;
+      margin-bottom: 20px;
+      transition: 0.15s;
+    }
+
+    .btn-submit:hover {
+      background: #0f3a6e;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      background: #9bb5d0;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .score-area {
+      text-align: center;
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 8px;
+      border: 1px solid #e9edf2;
+    }
+
+    .score-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0a2b44;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #7c8ea0;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+<div class="quiz-box">
+  <h1>📊 Topic 8: Measurement and Questionnaire Design</h1>
+  <div class="sub">13 multiple choice questions · submit once</div>
+
+  <div id="questionsContainer"></div>
+
+  <button id="submitBtn" class="btn-submit">✓ Submit Quiz</button>
+  <div id="scorePanel" style="display: none;"></div>
+  <footer>Scales of measurement, reliability & validity, questionnaire design</footer>
+</div>
+
+<script>
+  // ==============================================================
+  // TOPIC 8: MEASUREMENT AND QUESTIONNAIRE DESIGN
+  // Questions 53-65 based on H5P specification
+  // For Q57 and Q58: image/example appears FIRST, then question statement
+  // ==============================================================
+  const quizData = [
+    { // Q53
+      text: "Which one of the followings is NOT a type of scale of measurement?",
+      options: ["A) Interval scale", "B) Nominal scale", "C) Ordinal scale", "D) Ratio scale"],
+      answer: 3,
+      image: null, listBefore: null, listItems: null
+    },
+    { // Q54
+      text: "____ scale has the characteristics of distance and order.",
+      options: ["A) Interval scale", "B) Nominal scale", "C) Ordinal scale", "D) Ratio scale"],
+      answer: 0,
+      image: null, listBefore: null, listItems: null
+    },
+    { // Q55
+      text: "Which one of the following scales is considered as the lowest level?",
+      options: ["A) Interval scale", "B) Nominal scale", "C) Ordinal scale", "D) Ratio scale"],
+      answer: 1,
+      image: null, listBefore: null, listItems: null
+    },
+    { // Q56
+      text: "The scaling techniques commonly used in marketing research can be categorized into comparative and non-comparative techniques.",
+      options: ["Yes", "No"],
+      answer: 0,
+      image: null, listBefore: null, listItems: null
+    },
+    { // Q57 - with external image file question57.png (image FIRST, then question)
+      imageUrl: "https://raw.githubusercontent.com/shafizal20/MCQ/main/images/question57.png",
+      questionText: "The above is an example of ____ scale.",
+      options: ["A) Likert scale", "B) Numerical scale", "C) Ratio scale", "D) Paired comparison"],
+      answer: 1,
+      hasMediaFirst: true
+    },
+    { // Q58 - Semantic differential scale (example FIRST, then question)
+      scaleExample: true,
+      scaleText: "Rational  :---:---:---:---:---:---:---:  Emotional\n\nEfficient  :---:---:---:---:---:---:---:  Inefficient",
+      questionText: "The above is an example of ____ scale.",
+      options: ["A) Dichotomous scale", "B) Numerical scale", "C) Semantic differential", "D) Paired comparison"],
+      answer: 2,
+      hasMediaFirst: true
+    },
+    { // Q59
+      text: "Test-retest, equivalent-form and split-half are commonly used types of reliability test in marketing research.",
+      options: ["True", "False"],
+      answer: 0,
+      image: null, listBefore: null, listItems: null
+    },
+    { // Q60
+      text: "What are the analyses for the goodness of measurement that a marketing research should perform in order to ensure that the multi-item measurement is good?",
+      options: ["A) Nominal, ordinal and interval", "B) Reliability and validity", "C) Balanced and unbiased", "D) Comparative and non-comparative"],
+      answer: 1,
+      image: null, listBefore: null, listItems: null
+    },
+    { // Q61
+      text: "A structured questionnaire is a commonly used research instrument in a marketing research.",
+      options: ["Yes", "No"],
+      answer: 0,
+      image: null, listBefore: null, listItems: null
+    },
+    { // Q62 - Missing steps in questionnaire design process
+      text: "The questionnaire design process is ideally systematic and the main objective is to get the reliable and valid information from the targeted respondents. Which steps are missing?",
+      listItems: [
+        "1. Identify the information needed,",
+        "2. Choose the most appropriate interviewing method,",
+        "3. Decide on the content of individual questions,",
+        "4. Decide on the structure of the questions,",
+        "5. Determine the wording of the questions,",
+        "6. Arrange the questions in the proper order,",
+        "7. ____ ,",
+        "8. Reproduce the questionnaire, and",
+        "9. ____ ."
+      ],
+      options: ["A) Identify the form and layout and Pretest the questionnaire.", "B) Commercialize and Launching of questionnaire", "C) Organize the questions and Large scale production", "D) Checking the contents and Identify the weakness in Pretest"],
+      answer: 0,
+      listBefore: true,
+      image: null
+    },
+    { // Q63 - Factors affecting electronic interviews
+      text: "Which of the above is NOT the factor affecting the use of electronic interviews?",
+      listItems: [
+        "i) speed", "ii) literacy", "iii) cost", 
+        "iv) respondent type", "v) sensitivity", "vi) internet usage"
+      ],
+      options: ["A) i", "B) ii", "C) iv", "D) vi"],
+      answer: 2,
+      listBefore: true,
+      image: null
+    },
+    { // Q64
+      text: "Which one of the followings is NOT the desired quality of a questionnaire?",
+      options: ["A) The respondents will not feel threatened to answer", "B) Able to obtain reliable and valid data", "C) Respondent knows the purpose of the questionnaire", "D) Long and technical to get more data"],
+      answer: 3,
+      image: null, listBefore: null, listItems: null
+    },
+    { // Q65 - Cover letter quality
+      text: "Which one of the followings is NOT the desired quality of a cover letter?",
+      options: ["A) It addresses the potential respondent appropriately", "B) It tells respondents the objective(s) of the study", "C) It is precise and objective", "D) It is long and detailed"],
+      answer: 3,
+      image: null, listBefore: null, listItems: null
+    }
+  ];
+
+  // user selections: -1 = unanswered
+  let selections = new Array(quizData.length).fill(-1);
+  let submitted = false;
+
+  const container = document.getElementById("questionsContainer");
+  const submitBtn = document.getElementById("submitBtn");
+  const scorePanel = document.getElementById("scorePanel");
+
+  // render all questions
+  function renderQuestions() {
+    let html = "";
+    for (let i = 0; i < quizData.length; i++) {
+      const q = quizData[i];
+      const selectedVal = selections[i];
+      const realNumber = 53 + i;   // Q53 to Q65
+      
+      let questionClass = "question";
+      if (submitted) {
+        const isCorrect = (selectedVal !== -1 && selectedVal === q.answer);
+        if (isCorrect) questionClass += " correct-bg";
+        else questionClass += " wrong-bg";
+      }
+      
+      html += `<div class="${questionClass}">`;
+      html += `<div class="q-header">`;
+      html += `<span class="q-num">${realNumber}</span>`;
+      html += `<div class="q-text">`;
+      
+      // ==============================================
+      // SPECIAL HANDLING for questions with media FIRST (Q57, Q58)
+      // ==============================================
+      if (q.hasMediaFirst) {
+        // Show image or scale example first
+        if (q.imageUrl) {
+          html += `<div class="question-img"><img src="${q.imageUrl}" alt="Scale example" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%2250%22 viewBox=%220 0 400 50%22%3E%3Crect width=%22400%22 height=%2250%22 fill=%22%23f0f4f8%22 rx=%228%22/%3E%3Ctext x=%2220%22 y=%2232%22 font-size=%2218%22 fill=%22%23334155%22%3ENumerical scale: 1-7%3C/text%3E%3C/svg%3E'"></div>`;
+        }
+        if (q.scaleExample) {
+          html += `<div class="scale-example">${q.scaleText}</div>`;
+        }
+        // Then show the question statement
+        html += `<div class="question-statement">${q.questionText}</div>`;
+      }
+      // handle special case: question 62 (index 9) and 63 (index 10) show list BEFORE text
+      else if (q.listBefore && q.listItems) {
+        html += `<div class="extra-list"><ul>`;
+        q.listItems.forEach(li => { html += `<li>${li}</li>`; });
+        html += `</ul></div>`;
+        html += `<p style="margin-top: 8px;">${q.text}</p>`;
+      }
+      else {
+        html += `<div>${q.text}</div>`;
+      }
+      
+      html += `</div></div>`;
+      
+      // options
+      html += `<div class="options">`;
+      const opts = q.options || (q.hasMediaFirst ? q.options : null);
+      if (opts) {
+        opts.forEach((opt, optIdx) => {
+          const isChecked = (selectedVal === optIdx);
+          const disabledAttr = submitted ? "disabled" : "";
+          html += `
+            <label class="option" style="cursor: ${submitted ? 'default' : 'pointer'}">
+              <input type="radio" name="q${i}" value="${optIdx}" ${isChecked ? 'checked' : ''} ${disabledAttr}>
+              <span class="option-text">${opt}</span>
+            </label>
+          `;
+        });
+      }
+      html += `</div>`;
+      
+      // after submit: show feedback
+      if (submitted) {
+        const correctAnswerText = opts ? opts[q.answer] : "N/A";
+        if (selectedVal === -1) {
+          html += `<div class="feedback feedback-missing">⚠️ Not answered · Correct: ${correctAnswerText}</div>`;
+        } else if (selectedVal !== q.answer) {
+          html += `<div class="feedback feedback-wrong">❌ Incorrect · Your answer: ${opts[selectedVal]}<br>✅ Correct: ${correctAnswerText}</div>`;
+        } else {
+          html += `<div class="feedback feedback-correct">✓ Correct</div>`;
+        }
+      }
+      
+      html += `</div>`;
+    }
+    container.innerHTML = html;
+    
+    // attach change events only if not submitted
+    if (!submitted) {
+      for (let i = 0; i < quizData.length; i++) {
+        const radios = document.querySelectorAll(`input[name="q${i}"]`);
+        radios.forEach(radio => {
+          radio.addEventListener("change", (e) => {
+            if (submitted) return;
+            selections[i] = parseInt(e.target.value);
+            renderQuestions();
+          });
+        });
+      }
+    }
+  }
+  
+  // compute score
+  function getScore() {
+    let correct = 0;
+    for (let i = 0; i < quizData.length; i++) {
+      const selected = selections[i];
+      if (selected !== -1 && selected === quizData[i].answer) correct++;
+    }
+    return correct;
+  }
+  
+  // submit handler: one-time submission
+  function handleSubmit() {
+    if (submitted) {
+      return;
+    }
+    
+    const answeredCount = selections.filter(s => s !== -1).length;
+    if (answeredCount < quizData.length) {
+      if (!confirm(`You have answered ${answeredCount} out of ${quizData.length}. Submit anyway?`)) {
+        return;
+      }
+    }
+    
+    submitted = true;
+    const correct = getScore();
+    const total = quizData.length;
+    
+    renderQuestions();
+    
+    scorePanel.style.display = "block";
+    let message = "";
+    if (correct === total) message = "Perfect! Mastery achieved. 🎉";
+    else if (correct >= 10) message = "Great job! Review the ones in red.";
+    else message = "Keep practicing. Review the explanations above.";
+    
+    scorePanel.innerHTML = `
+      <div class="score-area">
+        <div class="score-number">🏆 ${correct} / ${total}</div>
+        <div style="margin-top: 8px; font-size: 0.85rem; color: #2c5a6e;">${message}</div>
+      </div>
+    `;
+    
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = "0.6";
+    submitBtn.style.cursor = "default";
+    
+    setTimeout(() => {
+      scorePanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 80);
+  }
+  
+  submitBtn.addEventListener("click", handleSubmit);
+  
+  renderQuestions();
+</script>
+</body>
+</html>
