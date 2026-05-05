@@ -58,6 +58,10 @@ button {
   font-weight: bold;
   text-align: center;
 }
+
+.small-text {
+  white-space: pre-line;
+}
 </style>
 </head>
 
@@ -74,71 +78,128 @@ button {
 </div>
 
 <script>
+
 const quizData = [
   {
     q: "38. The research design is like a blueprint and it describes the entire framework or plan for a research project.",
     options: ["Yes", "No"],
     answer: 0
   },
+
   {
-    q: "39. The characteristics of qualitative research.",
-    options: ["Quantitative", "Qualitative", "Empirical", "Hypothetical"],
+    q: `39. The followings are the characteristics of ___ research:
+
+i. To gain qualitative insights and understanding of the problem (e.g. underlying reasons and motivations)
+ii. Sampling is less stringent on representativeness and randomness
+iii. Sample size is generally small
+iv. Unstructured and flexible in data collection`,
+    options: [
+      "Quantitative research",
+      "Qualitative research",
+      "Empirical research",
+      "Hypothetical research"
+    ],
     answer: 1
   },
+
   {
     q: "40. Quantitative research is more statistical in nature.",
     options: ["Yes", "No"],
     answer: 0
   },
+
   {
-    q: "41. The above are characteristics of ____ data.",
-    options: ["Secondary", "Tertiary", "Primary"],
-    answer: 2
-  },
-  {
-    q: "42. Which is NOT the disadvantage of longitudinal research?",
+    q: `41.The above are characteristics of ____ data.`,
+i. For the problem at hand
+ii. Data collection process is complex and involved
+iii. Cost incurred is relatively high
+iv. Time consuming
+
+
     options: [
-      "Time consuming",
-      "Need cooperation",
-      "Repeated data more reliable",
-      "Expensive"
+      "Secondary",
+      "Tertiary",
+      "Primary"
     ],
     answer: 2
   },
+
   {
-    q: "43. The depth interview has the following advantages EXCEPT:",
-    options: ["Depth insight", "Better than focus group", "Direct responses", "Free exchange"],
+    q: `42. Which one of the followings is NOT the disadvantage of longitudinal research?`,
+    options: [
+      "Information takes a considerable period of time to collect",
+      "Need good cooperation from the respondents",
+      "Information is obtained for more than once and usually is more reliable",
+      "Relatively expensive to carry out since several studies will be conducted"
+    ],
+    answer: 2
+  },
+
+  {
+    q: `43. The depth interview has the following advantages EXCEPT:`,
+    options: [
+      "It can uncover greater depth of insights",
+      "It is always much better than focus group",
+      "It attributes the responses directly to the respondents",
+      "It results in free exchange of information"
+    ],
     answer: 1
   },
+
   {
-    q: "44. Which link for categorization of research design is NOT true?",
-    image: "https://raw.githubusercontent.com/shafizal20/MCQ/main/question44.png",
+    q: "44. Which link for categorization of the type of research design is NOT true?",
+    image: "images/question44.png",
     options: ["A", "B", "C", "D"],
     answer: 1
   },
+
   {
-    q: "45. Descriptive research usually answers the 6 Ws questions.",
+    q: "45. Descriptive research usually will answer the 6 Ws questions.",
     options: ["Yes", "No"],
     answer: 0
   },
+
   {
-    q: "46. Causal research includes the followings EXCEPT:",
-    options: ["Experiment", "Cause-effect", "Manipulation", "Cross-sectional descriptive"],
+    q: `46. Causal research includes the followings EXCEPT:`,
+    options: [
+      "Experiment",
+      "Cause-and-effect relationship",
+      "Manipulation of variable(s)",
+      "Cross-sectional descriptive research"
+    ],
     answer: 3
   },
+
   {
-    q: "47. The advantages of Focus Groups EXCEPT:",
-    options: ["Speed", "Synergy", "Structure", "Size"],
+    q: `47. The followings are the advantages of Focus Groups EXCEPT:`,
+    options: [
+      "Speed",
+      "Synergy",
+      "Structure",
+      "Size"
+    ],
     answer: 3
   },
+
   {
-    q: "48. Conditions for causality include logical time sequence, ____ and control.",
-    options: ["Commitment", "Concomitant variation", "Measurement", "Co-creation"],
+    q: `48. The conditions for causality includes: Logical time sequence, ____ and control for other causal factor(s).`,
+    options: [
+      "Commitment",
+      "Concomitant variation",
+      "Concise measurement",
+      "Co-creation"
+    ],
     answer: 1
   },
+
   {
-    q: "49. Which is NOT a projective technique?",
-    options: ["Word association", "Sentence completion", "Projection", "Construction"],
+    q: `49. Which of the following is NOT a Projective Technique?`,
+    options: [
+      "Word association",
+      "Sentence completion",
+      "Projection",
+      "Construction"
+    ],
     answer: 2
   }
 ];
@@ -146,8 +207,9 @@ const quizData = [
 const quiz = document.getElementById("quiz");
 
 quizData.forEach((item, i) => {
-  let html = `<div class="question">
-    <p>${item.q}</p>`;
+  let html = `<div class="question">`;
+
+  html += `<p class="small-text">${item.q}</p>`;
 
   if (item.image) {
     html += `<img src="${item.image}" alt="question image">`;
@@ -179,6 +241,7 @@ function submitQuiz() {
   document.getElementById("result").innerText =
     `Your Score: ${score} / ${quizData.length}`;
 }
+
 </script>
 
 </body>
