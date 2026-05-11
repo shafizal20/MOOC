@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Marketing Research Assistant - Smart Chatbot (No API Key Required)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 700px;
+            height: 90vh;
+            min-height: 650px;
+            background: #0f172a;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .chat-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+        .header-info h2 {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .header-info p {
+            color: #94a3b8;
+            font-size: 0.7rem;
+        }
+        .badge {
+            background: #10b981;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            color: white;
+            font-weight: 500;
+        }
+        .clear-btn {
+            background: #334155;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            color: #e2e8f0;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+        .clear-btn:hover {
+            background: #475569;
+        }
+
+        /* Messages Area */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: #0f172a;
+        }
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 10px;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 85%;
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .user-message { align-self: flex-end; }
+        .bot-message { align-self: flex-start; }
+
+        .bubble {
+            padding: 12px 18px;
+            border-radius: 24px;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            word-wrap: break-word;
+        }
+        .user-bubble {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+        .bot-bubble {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-bottom-left-radius: 6px;
+            border: 1px solid #334155;
+        }
+        .message-time {
+            font-size: 0.65rem;
+            margin-top: 6px;
+            color: #64748b;
+            padding-left: 12px;
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            padding: 10px 16px;
+            background: #1e293b;
+            border-radius: 24px;
+            width: fit-content;
+            border: 1px solid #334155;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: blink 1.3s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink {
+            0%, 60%, 100% { opacity: 0.3; transform: scale(0.8);}
+            30% { opacity: 1; transform: scale(1);}
+        }
+
+        /* Input area */
+        .chat-input-area {
+            background: #1e293b;
+            padding: 16px;
+            border-top: 1px solid #334155;
+        }
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 28px;
+            padding: 4px 6px 4px 18px;
+            transition: all 0.2s;
+        }
+        .input-wrapper:focus-within {
+            border-color: #10b981;
+            box-shadow: 0 0 0 2px rgba(16,185,129,0.2);
+        }
+        .input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 0;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: inherit;
+        }
+        .input-wrapper input::placeholder {
+            color: #64748b;
+        }
+        .input-wrapper button {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .input-wrapper button:hover:not(:disabled) {
+            transform: scale(1.02);
+        }
+        .input-wrapper button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .suggestion-chip {
+            background: #334155;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #cbd5e1;
+        }
+        .suggestion-chip:hover {
+            background: #475569;
+            transform: translateY(-1px);
+        }
+
+        .footer {
+            font-size: 0.6rem;
+            text-align: center;
+            padding: 8px;
+            color: #475569;
+            background: #0f172a;
+        }
+        
+        .message pre {
+            background: #0f172a;
+            padding: 8px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 8px 0;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="chat-header">
+        <div class="header-left">
+            <div class="avatar">📚</div>
+            <div class="header-info">
+                <h2>MR Research Assistant</h2>
+                <p>Marketing Report Expert • No API Key Required</p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <div class="badge">100% Free</div>
+            <button id="clearChatBtn" class="clear-btn">Clear Chat</button>
+        </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+        <div class="message bot-message">
+            <div class="bubble bot-bubble">
+                📊 <strong>Welcome to the Marketing Research Assistant!</strong><br><br>
+                I'm trained on comprehensive marketing research reporting content. I can help you with:<br><br>
+                ✅ <strong>Importance of reporting</strong> in marketing research<br>
+                ✅ <strong>Research report format</strong> (3 parts + 5 chapters)<br>
+                ✅ <strong>Writing principles</strong> for professional reports<br>
+                ✅ <strong>Oral presentation guidelines</strong> (voice, body language, visuals)<br>
+                ✅ <strong>Executive summary, methodology, findings & recommendations</strong><br><br>
+                Just ask me anything about marketing research reporting! 🎯
+            </div>
+            <div class="message-time">Just now</div>
+        </div>
+    </div>
+
+    <div class="chat-input-area">
+        <div class="input-wrapper">
+            <input type="text" id="userInput" placeholder="Ask about marketing research reporting..." autocomplete="off">
+            <button id="sendBtn">➤</button>
+        </div>
+        <div class="suggestions" id="suggestionsPanel">
+            <div class="suggestion-chip">What is the importance of reporting in marketing research?</div>
+            <div class="suggestion-chip">Explain the research report structure</div>
+            <div class="suggestion-chip">How to write a good marketing research report?</div>
+            <div class="suggestion-chip">Oral presentation tips for research</div>
+            <div class="suggestion-chip">What goes in an executive summary?</div>
+            <div class="suggestion-chip">Explain Chapter 3: Research Methodology</div>
+        </div>
+        <div class="footer">💡 Smart responses based on marketing research best practices • Works offline</div>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // MARKETING RESEARCH KNOWLEDGE BASE (Based on your content)
+    // No API required - fully self-contained smart responses
+    // ============================================================
+    
+    let conversationHistory = [];
+    let isThinking = false;
+
+    // DOM Elements
+    const messagesDiv = document.getElementById('chatMessages');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const clearChatBtn = document.getElementById('clearChatBtn');
+
+    // Smart response generator based on keywords and context
+    function getSmartResponse(userMessage, history) {
+        const q = userMessage.toLowerCase().trim();
+        
+        // ========== IMPORTANCE OF REPORTING ==========
+        if (q.includes("importance of reporting") || (q.includes("why") && q.includes("reporting")) || 
+            (q.includes("importance") && q.includes("marketing research")) ||
+            (q.includes("why is reporting") && q.includes("important"))) {
+            return `📢 **Why Reporting is CRITICAL in Marketing Research**\n\n` +
+                   `According to the module, a useful research that is not communicated is **incomplete work**. The major reasons for good reporting include:\n\n` +
+                   `**1️⃣ Historical Record**\n` +
+                   `• The written report and presentation represent tangible proof of work done\n` +
+                   `• Serves as a reference for future research to improve current research\n\n` +
+                   `**2️⃣ Guide Management Decisions**\n` +
+                   `• A comprehensive report helps management understand problems better\n` +
+                   `• Poor writing can lead to misunderstandings and organizational risk\n` +
+                   `• Bad decisions based on poor reports can cause great losses\n\n` +
+                   `**3️⃣ Quality Evaluation**\n` +
+                   `• Marketing managers evaluate the entire project based on report quality\n` +
+                   `• The involvement of managers is often limited to the report and presentation\n\n` +
+                   `**4️⃣ Research Service**\n` +
+                   `• Management decides to reuse researchers based on report usefulness\n` +
+                   `• If reports fail expectations, clients will turn to other researchers\n\n` +
+                   `💡 *"A useful research that is not communicated is equal to an incomplete work"*`;
+        }
+        
+        // ========== REPORT FORMAT / STRUCTURE ==========
+        if (q.includes("report format") || q.includes("structure") || q.includes("components") || 
+            q.includes("3 parts") || (q.includes("what") && q.includes("report") && q.includes("consist"))) {
+            return `📑 **Marketing Research Report Format – The 3 Main Parts**\n\n` +
+                   `**PART I – PRELIMINARY PAGES**\n` +
+                   `• Title page (study name, researcher, recipient, date)\n` +
+                   `• Acknowledgements (thank contributors)\n` +
+                   `• Letter of transmittal & Letter of authorization\n` +
+                   `• Table of contents, List of tables, graphs, appendices, exhibits\n` +
+                   `• **Executive Summary** – Major findings, conclusions, recommendations (≈5 pages)\n\n` +
+                   `**PART II – CONTENTS (5 CHAPTERS)**\n` +
+                   `• **Chapter 1: Introduction** – Problem definition, statement, objectives, scope, limitations\n` +
+                   `• **Chapter 2: Literature Review** – Theory, framework, hypotheses\n` +
+                   `• **Chapter 3: Research Methodology** – Design, sampling, instrumentation, data collection\n` +
+                   `• **Chapter 4: Data Analysis & Findings** – Results, interpretations, discussions\n` +
+                   `• **Chapter 5: Conclusions & Recommendations** – Based on objectives + future research\n\n` +
+                   `**PART III – REFERENCES & APPENDICES**\n` +
+                   `• List of references (APA/Harvard style)\n` +
+                   `• Sample questionnaire, pictures, forms, supporting documents`;
+        }
+        
+        // ========== WRITING PRINCIPLES ==========
+        if ((q.includes("write a good") && q.includes("report")) || q.includes("writing principles") || 
+            (q.includes("how to write") && q.includes("report")) || q.includes("criteria for good report")) {
+            return `✍️ **6 Principles for Writing an Excellent Marketing Research Report**\n\n` +
+                   `**1️⃣ Audience**\n` +
+                   `• Write with particular audiences in mind (busy managers)\n` +
+                   `• Put important facts and figures in the executive summary\n\n` +
+                   `**2️⃣ Clarity**\n` +
+                   `• Without clarity, the report is meaningless\n` +
+                   `• Unclear reports cause managers to make wrong decisions\n\n` +
+                   `**3️⃣ Simplicity**\n` +
+                   `• Keep language simple but comprehensive\n` +
+                   `• Avoid difficult words and specific jargon\n` +
+                   `• Reports are judged by quality, NOT length\n\n` +
+                   `**4️⃣ Organized**\n` +
+                   `• Format must be in sequence to show research direction\n` +
+                   `• Use tables and graphs to visualize results\n` +
+                   `• Appearance should be presentable and professional\n\n` +
+                   `**5️⃣ Tenses**\n` +
+                   `• Past tense for past records\n` +
+                   `• Present tense for general truth or referring to tables/figures\n` +
+                   `• Keep tenses consistent throughout\n\n` +
+                   `**6️⃣ Check**\n` +
+                   `• Read through and re-check to avoid mistakes\n` +
+                   `• Have others review to ensure intended meaning is clear`;
+        }
+        
+        // ========== ORAL PRESENTATION ==========
+        if (q.includes("oral presentation") || q.includes("presentation tips") || q.includes("presentation guidelines") || 
+            q.includes("how to present") || q.includes("voice") && q.includes("body language")) {
+            return `🎤 **Mastering Marketing Research Oral Presentations (20-30 minutes)**\n\n` +
+                   `**CONTENT (Quality & Logical Flow):**\n` +
+                   `• Clear problem statement → objectives → methodology → findings\n` +
+                   `• No generalizations; be specific and data-driven\n` +
+                   `• Absence of mistakes is critical\n\n` +
+                   `**DELIVERY (The Game-Changer):**\n\n` +
+                   `**1. Preparation** – Plan everything + have a backup plan (handouts if projector fails)\n` +
+                   `**2. Organizing Content** – Introduce yourself, provide outline, Keep It Short & Simple (KISS)\n` +
+                   `**3. Voice** – Clear projection, vary tone for emphasis, control speed (no monotone!)\n` +
+                   `**4. Body Language** – Positive posture, appropriate gestures, good eye contact, sense of humor\n` +
+                   `**5. Language** – Explain jargon, avoid filler words, use simple language\n` +
+                   `**6. Time Management** – Sample 30-min: Problem (5) → Lit review (5) → Method (5) → Findings (10) → Q&A (5)\n` +
+                   `**7. Visual Aids** – Tables and graphs for quick comparisons\n\n` +
+                   `💡 *Great ideas have no value unless communicated well to the audience*`;
+        }
+        
+        // ========== EXECUTIVE SUMMARY ==========
+        if (q.includes("executive summary") || (q.includes("executive") && q.includes("summary"))) {
+            return `📄 **Executive Summary – The Most Critical Section**\n\n` +
+                   `**What it MUST include:**\n` +
+                   `• **Major findings** from your research\n` +
+                   `• **Key conclusions** derived from analysis\n` +
+                   `• **Actionable recommendations** for management\n\n` +
+                   `**Critical Rules:**\n` +
+                   `• ❌ NO new material (just summarize the completed report)\n` +
+                   `• ✅ Ideal length: ~5 pages\n` +
+                   `• ✅ Placed after table of contents in PART I (Preliminary Pages)\n\n` +
+                   `**Why it matters:**\n` +
+                   `• Helps busy managers obtain comprehensive understanding without reading the whole report\n` +
+                   `• Often the ONLY section executives read before making decisions\n` +
+                   `• Creates the first impression of your entire research effort`;
+        }
+        
+        // ========== RESEARCH METHODOLOGY ==========
+        if (q.includes("methodology") || q.includes("research design") || q.includes("sampling") || 
+            q.includes("chapter 3") || (q.includes("data collection") && q.includes("method"))) {
+            return `🔬 **Chapter 3: Research Methodology**\n\n` +
+                   `**Key Components explained in this chapter:**\n\n` +
+                   `**Research Design** – Exploratory, descriptive, or causal?\n` +
+                   `• Influences whether to use qualitative or quantitative methods\n\n` +
+                   `**Time Horizon** – Cross-sectional (one time) or Longitudinal (over time)\n\n` +
+                   `**Unit of Analysis** – Individual, dyad, group, or organizational level\n\n` +
+                   `**Measurement & Instrumentation**\n` +
+                   `• Development or sources of measurement used in the study\n\n` +
+                   `**Sampling**\n` +
+                   `• Number of respondents and who the respondents are\n` +
+                   `• Sampling frame and technique\n\n` +
+                   `**Data Collection & Preparation**\n` +
+                   `• Methods used to gather data\n` +
+                   `• Data preparation and analysis strategies\n\n` +
+                   `💡 *This chapter provides transparency and replicability for your research*`;
+        }
+        
+        // ========== DATA ANALYSIS & FINDINGS ==========
+        if (q.includes("data analysis") || q.includes("findings") || q.includes("chapter 4") || 
+            (q.includes("results") && q.includes("research"))) {
+            return `📊 **Chapter 4: Data Analysis and Findings**\n\n` +
+                   `**This is the INTEGRAL part of the report**\n\n` +
+                   `**What to include:**\n` +
+                   `• **Results** from statistical analysis using software (SPSS, AMOS, SmartPLS, etc.)\n` +
+                   `• **Tables and charts** to present results visually\n` +
+                   `• **Interpretations** of what the findings mean\n` +
+                   `• **Discussions** linking findings to theories and past research\n\n` +
+                   `**Best Practices:**\n` +
+                   `• Don't just show numbers — explain their business implications\n` +
+                   `• Use visual aids for quick comparisons\n` +
+                   `• Findings should be discussed in relation to theories and relevant past research\n\n` +
+                   `💡 *What does this mean for the marketing manager? That's what matters most!*`;
+        }
+        
+        // ========== CONCLUSIONS & RECOMMENDATIONS ==========
+        if (q.includes("conclusion") || q.includes("recommendations") || q.includes("chapter 5")) {
+            return `📌 **Chapter 5: Conclusions and Recommendations**\n\n` +
+                   `**Conclusions:**\n` +
+                   `• Based directly on the research objectives\n` +
+                   `• Discuss whether findings support or contradict previous studies\n` +
+                   `• ⚠️ Writer's biases and desires should NOT influence conclusions\n` +
+                   `• Provide a clear summary of what was learned\n\n` +
+                   `**Recommendations:**\n` +
+                   `• Actionable steps for management to address the problem\n` +
+                   `• Logical and practical — directly tied to findings\n` +
+                   `• Help decision-makers overcome the problem at hand\n\n` +
+                   `**Directions for Future Research**\n` +
+                   `• What questions remain unanswered?\n` +
+                   `• How could the current research be improved?\n\n` +
+                   `💡 *This is what decision-makers are waiting for — give them clear, confident guidance!*`;
+        }
+        
+        // ========== LITERATURE REVIEW ==========
+        if (q.includes("literature review") || q.includes("theoretical framework") || q.includes("hypotheses") || q.includes("chapter 2")) {
+            return `📖 **Chapter 2: Literature Review & Theoretical Framework**\n\n` +
+                   `**Purpose:**\n` +
+                   `• Presents theoretical background of the problem area\n` +
+                   `• Provides proper reasoning with help of prior studies and findings\n\n` +
+                   `**Components:**\n` +
+                   `• **Literature Review** – Related research and prior findings\n` +
+                   `• **Theoretical Framework** – Explains variables, their roles, and relationships\n` +
+                   `• **Hypotheses** – Testable predictions based on theory\n\n` +
+                   `**Requirements:**\n` +
+                   `• All explanations must have relevant literature citations\n` +
+                   `• Framework shows association and/or relationships among variables\n\n` +
+                   `💡 *This chapter establishes the scholarly foundation for your study*`;
+        }
+        
+        // ========== INTRODUCTION CHAPTER ==========
+        if ((q.includes("introduction") && q.includes("chapter")) || q.includes("problem statement") || 
+            q.includes("research objectives") || q.includes("scope of study")) {
+            return `📘 **Chapter 1: Introduction**\n\n` +
+                   `**Key Elements:**\n\n` +
+                   `**Problem Definition & Problem Statement**\n` +
+                   `• Clearly identifies the issue — tells researcher what to do next\n\n` +
+                   `**Research Questions**\n` +
+                   `• Specific questions the research aims to answer\n\n` +
+                   `**Research Objectives**\n` +
+                   `• Provides clear direction for what the research wants to achieve\n` +
+                   `• Serves as a measure of successful completion\n\n` +
+                   `**Significance of the Study**\n` +
+                   `• Stresses the importance of the study\n\n` +
+                   `**Definition of Terms**\n` +
+                   `• Lists terms with short explanations (with literature citations)\n\n` +
+                   `**Scope & Limitations**\n` +
+                   `• Boundaries of the study and potential constraints`;
+        }
+        
+        // ========== GRAB BAG: VISUAL AIDS, Q&A, TENSES ==========
+        if (q.includes("visual aids") || (q.includes("slides") && q.includes("presentation"))) {
+            return `📊 **Visual Aids for Oral Presentations**\n\n` +
+                   `**Why use them:**\n` +
+                   `• Facilitate understanding for the audience, especially practitioners\n` +
+                   `• Tables and graphs help listeners see the whole picture\n` +
+                   `• Enable quick comparisons and evaluations\n\n` +
+                   `**Best Practices:**\n` +
+                   `• Keep each visual clear and focused on one key message\n` +
+                   `• Label everything clearly\n` +
+                   `• Don't read slides verbatim — use them as visual support\n` +
+                   `• Ensure visuals are large enough to read from the back of the room\n\n` +
+                   `💡 *Evaluating results during a presentation is harder without visuals — use them!*`;
+        }
+        
+        if (q.includes("q&a") || q.includes("question and answer") || (q.includes("answer") && q.includes("presentation"))) {
+            return `❓ **Handling the Q&A Session**\n\n` +
+                   `**Golden Rules:**\n` +
+                   `• Stay calm and composed — even if questions sound challenging or irrelevant\n` +
+                   `• Answer based on RESULTS and FINDINGS from your study\n` +
+                   `• Avoid defensive reactions\n\n` +
+                   `**Pro Tips:**\n` +
+                   `• A good presentation limits the audience's need to pose questions\n` +
+                   `• If you don't know something, say so honestly (offer to follow up)\n` +
+                   `• Listen fully before responding\n` +
+                   `• Keep answers concise and relevant\n\n` +
+                   `💡 *The Q&A is your chance to show expertise and confidence!*`;
+        }
+        
+        if (q.includes("tense") || (q.includes("tenses") && q.includes("report"))) {
+            return `⏳ **Using Correct Tenses in Research Reports**\n\n` +
+                   `**Past Tense – Use for:**\n` +
+                   `• Description of past procedures (e.g., "The survey was conducted...")\n` +
+                   `• Results obtained (e.g., "The data showed that...")\n` +
+                   `• Literature review (e.g., "Smith (2020) found that...")\n\n` +
+                   `**Present Tense – Use for:**\n` +
+                   `• General truths and established facts\n` +
+                   `• Referring to tables, figures, or chapters (e.g., "Table 3 shows...")\n` +
+                   `• Your interpretations and conclusions (e.g., "The findings indicate...")\n\n` +
+                   `**Key Rule:** Be consistent — mixing tenses creates confusion!\n\n` +
+                   `💡 *Wrong usage of tenses can make your report confusing and unprofessional*`;
+        }
+        
+        // ========== GREETINGS & HELP ==========
+        if (q.match(/^(hi|hello|hey|gm|good morning|good afternoon)/i)) {
+            return `👋 Hello! Welcome to the Marketing Research Assistant.\n\nI'm here to help you with:\n• 📊 Importance of reporting in MR\n• 📑 Research report format (3 parts + 5 chapters)\n• ✍️ Writing principles for professional reports\n• 🎤 Oral presentation guidelines\n• 📄 Executive summary, methodology, findings, and recommendations\n\nWhat would you like to learn about today?`;
+        }
+        
+        if (q.includes("what can you do") || q.includes("help") || q === "?" || q === "help me") {
+            return `📋 **I can help you with:**\n\n` +
+                   `**Reports:** Format, structure, writing principles, executive summary\n\n` +
+                   `**Presentations:** Voice modulation, body language, visual aids, Q&A\n\n` +
+                   `**Research Chapters:** Introduction, Literature Review, Methodology (Ch3), Findings (Ch4), Conclusions (Ch5)\n\n` +
+                   `**Best Practices:** Clarity, simplicity, audience awareness, tenses, proofreading\n\n` +
+                   `**Try asking:**\n` +
+                   `• "What is the importance of reporting?"\n` +
+                   `• "Explain the report structure"\n` +
+                   `• "How to write a good report?"\n` +
+                   `• "Oral presentation tips"`;
+        }
+        
+        // ========== DEFAULT SMART RESPONSE ==========
+        return `📘 **I specialize in Marketing Research Reporting based on your module content.**\n\n` +
+               `You can ask me about:\n\n` +
+               `📌 **Reporting Importance** – Why reporting matters (historical record, decisions, quality, service)\n` +
+               `📑 **Report Format** – 3 parts: Preliminary, Contents (5 chapters), References\n` +
+               `✍️ **Writing Principles** – Audience, clarity, simplicity, organization, tenses, checking\n` +
+               `🎤 **Oral Presentations** – Preparation, voice, body language, visual aids, time management\n` +
+               `📄 **Executive Summary** – What to include (findings, conclusions, recommendations)\n` +
+               `🔬 **Methodology** – Research design, sampling, instrumentation\n` +
+               `📊 **Findings & Conclusions** – Data analysis, interpretations, recommendations\n\n` +
+               `**Try being more specific** or click one of the suggestion chips above! 🎯`;
+    }
+    
+    // Streaming effect for typing
+    async function streamResponse(bubbleElement, fullText) {
+        bubbleElement.innerHTML = '';
+        let currentText = '';
+        
+        for (let i = 0; i < fullText.length; i++) {
+            currentText += fullText[i];
+            // Apply markdown formatting
+            let formatted = currentText
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>');
+            bubbleElement.innerHTML = formatted + '<span class="streaming-cursor"></span>';
+            scrollToBottom();
+            // Variable speed for natural feel
+            const delay = fullText[i] === '\n' ? 40 : (fullText[i] === ' ' ? 15 : 25);
+            await new Promise(r => setTimeout(r, delay));
+        }
+        bubbleElement.innerHTML = currentText
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>');
+    }
+    
+    function addUserMessageToUI(text) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message user-message';
+        messageDiv.innerHTML = `
+            <div class="bubble user-bubble">${escapeHtml(text)}</div>
+            <div class="message-time">${getTime()}</div>
+        `;
+        messagesDiv.appendChild(messageDiv);
+        scrollToBottom();
+    }
+    
+    function addTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message bot-message';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = `
+            <div class="typing-indicator">
+                <span></span><span></span><span></span>
+                <span style="width:auto; background:transparent; margin-left:8px; color:#94a3b8;">Thinking...</span>
+            </div>
+        `;
+        messagesDiv.appendChild(typingDiv);
+        scrollToBottom();
+    }
+    
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+    }
+    
+    function createStreamingMessage() {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message';
+        messageDiv.id = 'streamingMessage';
+        messageDiv.innerHTML = `
+            <div class="bubble bot-bubble" id="streamingBubble"></div>
+            <div class="message-time">${getTime()}</div>
+        `;
+        messagesDiv.appendChild(messageDiv);
+        scrollToBottom();
+        return document.getElementById('streamingBubble');
+    }
+    
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    function getTime() {
+        return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    
+    function scrollToBottom() {
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+    
+    async function sendMessage() {
+        if (isThinking) return;
+        const message = userInput.value.trim();
+        if (!message) return;
+        
+        isThinking = true;
+        userInput.disabled = true;
+        sendBtn.disabled = true;
+        
+        // Add user message
+        addUserMessageToUI(message);
+        conversationHistory.push({ role: "user", content: message });
+        userInput.value = '';
+        
+        // Show typing indicator
+        addTypingIndicator();
+        
+        // Simulate thinking time (200-500ms for natural feel)
+        await new Promise(r => setTimeout(r, 300 + Math.random() * 300));
+        
+        // Get smart response
+        const response = getSmartResponse(message, conversationHistory);
+        
+        // Remove typing indicator
+        removeTypingIndicator();
+        
+        // Create streaming bubble and stream response
+        const bubbleElement = createStreamingMessage();
+        await streamResponse(bubbleElement, response);
+        
+        // Save to history
+        conversationHistory.push({ role: "assistant", content: response });
+        
+        // Clean up
+        const streamingDiv = document.getElementById('streamingMessage');
+        if (streamingDiv) streamingDiv.removeAttribute('id');
+        
+        isThinking = false;
+        userInput.disabled = false;
+        sendBtn.disabled = false;
+        userInput.focus();
+    }
+    
+    // Clear chat
+    clearChatBtn.addEventListener('click', () => {
+        conversationHistory = [];
+        messagesDiv.innerHTML = '';
+        const welcomeDiv = document.createElement('div');
+        welcomeDiv.className = 'message bot-message';
+        welcomeDiv.innerHTML = `
+            <div class="bubble bot-bubble">
+                🧹 Chat cleared! I'm ready to help with your marketing research questions.<br><br>
+                Ask me about report writing, presentations, methodology, or any topic from your module!
+            </div>
+            <div class="message-time">${getTime()}</div>
+        `;
+        messagesDiv.appendChild(welcomeDiv);
+        scrollToBottom();
+    });
+    
+    // Event listeners
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !isThinking && userInput.value.trim()) {
+            sendMessage();
+        }
+    });
+    
+    // Suggestion chips
+    document.querySelectorAll('.suggestion-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            if (isThinking) return;
+            userInput.value = chip.textContent;
+            sendMessage();
+        });
+    });
+    
+    userInput.focus();
+</script>
+</body>
+</html>
