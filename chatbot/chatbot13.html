@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Marketing Research Assistant - Smart Chatbot (No API Key Required)</title>
+    <title>MR Research Assistant | Green & White Learning Platform</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: #f5f7f0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -26,22 +26,23 @@
             max-width: 700px;
             height: 90vh;
             min-height: 650px;
-            background: #0f172a;
-            border-radius: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            border: 1px solid #e8ece0;
         }
 
-        /* Header */
+        /* Header - Green theme */
         .chat-header {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: #2e7d32;
             padding: 1rem 1.5rem;
-            border-bottom: 1px solid #334155;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 1px solid #1b5e20;
         }
         .header-left {
             display: flex;
@@ -49,46 +50,47 @@
             gap: 12px;
         }
         .avatar {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #10b981, #059669);
+            width: 42px;
+            height: 42px;
+            background: #ffffff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
+            color: #2e7d32;
         }
         .header-info h2 {
             color: white;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
         }
         .header-info p {
-            color: #94a3b8;
+            color: #c8e6c9;
             font-size: 0.7rem;
         }
         .badge {
-            background: #10b981;
+            background: rgba(255,255,255,0.2);
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 0.65rem;
             color: white;
-            font-weight: 500;
         }
         .clear-btn {
-            background: #334155;
-            border: none;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
             padding: 6px 12px;
             border-radius: 20px;
-            color: #e2e8f0;
+            color: white;
             cursor: pointer;
             font-size: 0.7rem;
+            transition: all 0.2s;
         }
         .clear-btn:hover {
-            background: #475569;
+            background: rgba(255,255,255,0.25);
         }
 
-        /* Messages Area */
+        /* Messages Area - White background */
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -96,17 +98,17 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            background: #0f172a;
+            background: #ffffff;
         }
         .chat-messages::-webkit-scrollbar {
             width: 6px;
         }
         .chat-messages::-webkit-scrollbar-track {
-            background: #1e293b;
+            background: #f0f2e8;
             border-radius: 10px;
         }
         .chat-messages::-webkit-scrollbar-thumb {
-            background: #475569;
+            background: #bdc9a4;
             border-radius: 10px;
         }
 
@@ -125,44 +127,42 @@
 
         .bubble {
             padding: 12px 18px;
-            border-radius: 24px;
+            border-radius: 20px;
             line-height: 1.5;
             font-size: 0.9rem;
             word-wrap: break-word;
         }
         .user-bubble {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            background: #2e7d32;
             color: white;
-            border-bottom-right-radius: 6px;
+            border-bottom-right-radius: 4px;
         }
         .bot-bubble {
-            background: #1e293b;
-            color: #e2e8f0;
-            border-bottom-left-radius: 6px;
-            border: 1px solid #334155;
+            background: #f0f2e8;
+            color: #1a2e1f;
+            border-bottom-left-radius: 4px;
         }
         .message-time {
             font-size: 0.65rem;
             margin-top: 6px;
-            color: #64748b;
+            color: #8f9b7a;
             padding-left: 12px;
         }
 
-        /* Typing indicator */
+        /* Typing indicator - Green dots */
         .typing-indicator {
             display: flex;
             gap: 5px;
             align-items: center;
             padding: 10px 16px;
-            background: #1e293b;
-            border-radius: 24px;
+            background: #f0f2e8;
+            border-radius: 20px;
             width: fit-content;
-            border: 1px solid #334155;
         }
         .typing-indicator span {
             width: 8px;
             height: 8px;
-            background: #10b981;
+            background: #2e7d32;
             border-radius: 50%;
             animation: blink 1.3s infinite ease-in-out;
         }
@@ -170,44 +170,59 @@
         .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes blink {
             0%, 60%, 100% { opacity: 0.3; transform: scale(0.8);}
-            30% { opacity: 1; transform: scale(1);}
+            30% { opacity: 1; transform: scale(1.2);}
+        }
+
+        /* Streaming cursor */
+        .streaming-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background-color: #2e7d32;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blinkCursor 1s step-end infinite;
+        }
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         /* Input area */
         .chat-input-area {
-            background: #1e293b;
+            background: #ffffff;
             padding: 16px;
-            border-top: 1px solid #334155;
+            border-top: 1px solid #e8ece0;
         }
         .input-wrapper {
             display: flex;
             gap: 12px;
             align-items: center;
-            background: #0f172a;
-            border: 1px solid #334155;
+            background: #f8faf3;
+            border: 1px solid #d4dbc8;
             border-radius: 28px;
             padding: 4px 6px 4px 18px;
             transition: all 0.2s;
         }
         .input-wrapper:focus-within {
-            border-color: #10b981;
-            box-shadow: 0 0 0 2px rgba(16,185,129,0.2);
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 2px rgba(46,125,50,0.1);
         }
         .input-wrapper input {
             flex: 1;
             background: transparent;
             border: none;
             padding: 12px 0;
-            color: white;
+            color: #1a2e1f;
             font-size: 0.9rem;
             outline: none;
             font-family: inherit;
         }
         .input-wrapper input::placeholder {
-            color: #64748b;
+            color: #b0bba0;
         }
         .input-wrapper button {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: #2e7d32;
             border: none;
             color: white;
             width: 44px;
@@ -221,6 +236,7 @@
             justify-content: center;
         }
         .input-wrapper button:hover:not(:disabled) {
+            background: #1b5e20;
             transform: scale(1.02);
         }
         .input-wrapper button:disabled {
@@ -235,34 +251,37 @@
             margin-top: 12px;
         }
         .suggestion-chip {
-            background: #334155;
+            background: #f0f2e8;
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.7rem;
             cursor: pointer;
             transition: all 0.2s;
-            color: #cbd5e1;
+            color: #2e7d32;
+            font-weight: 500;
+            border: 1px solid #d4dbc8;
         }
         .suggestion-chip:hover {
-            background: #475569;
-            transform: translateY(-1px);
+            background: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
         }
 
         .footer {
             font-size: 0.6rem;
             text-align: center;
             padding: 8px;
-            color: #475569;
-            background: #0f172a;
+            color: #b0bba0;
+            background: #ffffff;
+            border-top: 1px solid #e8ece0;
         }
         
-        .message pre {
-            background: #0f172a;
-            padding: 8px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 8px 0;
-            font-size: 0.8rem;
+        .bot-bubble strong {
+            color: #2e7d32;
+        }
+        
+        .bot-bubble a {
+            color: #2e7d32;
         }
     </style>
 </head>
@@ -273,26 +292,27 @@
             <div class="avatar">📚</div>
             <div class="header-info">
                 <h2>MR Research Assistant</h2>
-                <p>Marketing Report Expert • No API Key Required</p>
+                <p>Marketing Report Expert</p>
             </div>
         </div>
         <div style="display: flex; gap: 8px;">
-            <div class="badge">100% Free</div>
-            <button id="clearChatBtn" class="clear-btn">Clear Chat</button>
+            <div class="badge">Learning Activities</div>
+            <button id="clearChatBtn" class="clear-btn">Clear</button>
         </div>
     </div>
 
     <div class="chat-messages" id="chatMessages">
         <div class="message bot-message">
             <div class="bubble bot-bubble">
-                📊 <strong>Welcome to the Marketing Research Assistant!</strong><br><br>
-                I'm trained on comprehensive marketing research reporting content. I can help you with:<br><br>
+                🌿 <strong>Welcome to the Marketing Research Assistant!</strong><br><br>
+                I'm here to help you master marketing research reporting based on your course module.<br><br>
+                <strong>📌 What I can help you with:</strong><br><br>
                 ✅ <strong>Importance of reporting</strong> in marketing research<br>
                 ✅ <strong>Research report format</strong> (3 parts + 5 chapters)<br>
                 ✅ <strong>Writing principles</strong> for professional reports<br>
                 ✅ <strong>Oral presentation guidelines</strong> (voice, body language, visuals)<br>
                 ✅ <strong>Executive summary, methodology, findings & recommendations</strong><br><br>
-                Just ask me anything about marketing research reporting! 🎯
+                Just type your question below or click a suggestion! 🎯
             </div>
             <div class="message-time">Just now</div>
         </div>
@@ -304,33 +324,31 @@
             <button id="sendBtn">➤</button>
         </div>
         <div class="suggestions" id="suggestionsPanel">
-            <div class="suggestion-chip">What is the importance of reporting in marketing research?</div>
+            <div class="suggestion-chip">What is the importance of reporting?</div>
             <div class="suggestion-chip">Explain the research report structure</div>
-            <div class="suggestion-chip">How to write a good marketing research report?</div>
-            <div class="suggestion-chip">Oral presentation tips for research</div>
+            <div class="suggestion-chip">How to write a good report?</div>
+            <div class="suggestion-chip">Oral presentation tips</div>
             <div class="suggestion-chip">What goes in an executive summary?</div>
-            <div class="suggestion-chip">Explain Chapter 3: Research Methodology</div>
+            <div class="suggestion-chip">Explain research methodology</div>
         </div>
-        <div class="footer">💡 Smart responses based on marketing research best practices • Works offline</div>
+        <div class="footer">💡 Based on your Marketing Research module • No API key required</div>
     </div>
 </div>
 
 <script>
     // ============================================================
-    // MARKETING RESEARCH KNOWLEDGE BASE (Based on your content)
-    // No API required - fully self-contained smart responses
+    // MARKETING RESEARCH KNOWLEDGE BASE (Green & White Edition)
+    // Based on your complete course module content
     // ============================================================
     
     let conversationHistory = [];
     let isThinking = false;
 
-    // DOM Elements
     const messagesDiv = document.getElementById('chatMessages');
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
     const clearChatBtn = document.getElementById('clearChatBtn');
 
-    // Smart response generator based on keywords and context
     function getSmartResponse(userMessage, history) {
         const q = userMessage.toLowerCase().trim();
         
@@ -358,7 +376,8 @@
         
         // ========== REPORT FORMAT / STRUCTURE ==========
         if (q.includes("report format") || q.includes("structure") || q.includes("components") || 
-            q.includes("3 parts") || (q.includes("what") && q.includes("report") && q.includes("consist"))) {
+            q.includes("3 parts") || (q.includes("what") && q.includes("report") && q.includes("consist")) ||
+            (q.includes("parts") && q.includes("report"))) {
             return `📑 **Marketing Research Report Format – The 3 Main Parts**\n\n` +
                    `**PART I – PRELIMINARY PAGES**\n` +
                    `• Title page (study name, researcher, recipient, date)\n` +
@@ -379,7 +398,8 @@
         
         // ========== WRITING PRINCIPLES ==========
         if ((q.includes("write a good") && q.includes("report")) || q.includes("writing principles") || 
-            (q.includes("how to write") && q.includes("report")) || q.includes("criteria for good report")) {
+            (q.includes("how to write") && q.includes("report")) || q.includes("criteria for good report") ||
+            (q.includes("good report") && q.includes("how"))) {
             return `✍️ **6 Principles for Writing an Excellent Marketing Research Report**\n\n` +
                    `**1️⃣ Audience**\n` +
                    `• Write with particular audiences in mind (busy managers)\n` +
@@ -401,12 +421,14 @@
                    `• Keep tenses consistent throughout\n\n` +
                    `**6️⃣ Check**\n` +
                    `• Read through and re-check to avoid mistakes\n` +
-                   `• Have others review to ensure intended meaning is clear`;
+                   `• Have others review to ensure intended meaning is clear\n\n` +
+                   `💡 *A professionally written report reflects the entire research effort*`;
         }
         
         // ========== ORAL PRESENTATION ==========
         if (q.includes("oral presentation") || q.includes("presentation tips") || q.includes("presentation guidelines") || 
-            q.includes("how to present") || q.includes("voice") && q.includes("body language")) {
+            q.includes("how to present") || (q.includes("voice") && q.includes("body language")) ||
+            q.includes("oral") && q.includes("presentation")) {
             return `🎤 **Mastering Marketing Research Oral Presentations (20-30 minutes)**\n\n` +
                    `**CONTENT (Quality & Logical Flow):**\n` +
                    `• Clear problem statement → objectives → methodology → findings\n` +
@@ -531,7 +553,7 @@
                    `• Boundaries of the study and potential constraints`;
         }
         
-        // ========== GRAB BAG: VISUAL AIDS, Q&A, TENSES ==========
+        // ========== VISUAL AIDS, Q&A, TENSES ==========
         if (q.includes("visual aids") || (q.includes("slides") && q.includes("presentation"))) {
             return `📊 **Visual Aids for Oral Presentations**\n\n` +
                    `**Why use them:**\n` +
@@ -592,7 +614,7 @@
                    `• "Oral presentation tips"`;
         }
         
-        // ========== DEFAULT SMART RESPONSE ==========
+        // ========== DEFAULT RESPONSE ==========
         return `📘 **I specialize in Marketing Research Reporting based on your module content.**\n\n` +
                `You can ask me about:\n\n` +
                `📌 **Reporting Importance** – Why reporting matters (historical record, decisions, quality, service)\n` +
@@ -612,14 +634,12 @@
         
         for (let i = 0; i < fullText.length; i++) {
             currentText += fullText[i];
-            // Apply markdown formatting
             let formatted = currentText
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\n/g, '<br>');
             bubbleElement.innerHTML = formatted + '<span class="streaming-cursor"></span>';
             scrollToBottom();
-            // Variable speed for natural feel
-            const delay = fullText[i] === '\n' ? 40 : (fullText[i] === ' ' ? 15 : 25);
+            const delay = fullText[i] === '\n' ? 35 : (fullText[i] === ' ' ? 12 : 22);
             await new Promise(r => setTimeout(r, delay));
         }
         bubbleElement.innerHTML = currentText
@@ -645,7 +665,7 @@
         typingDiv.innerHTML = `
             <div class="typing-indicator">
                 <span></span><span></span><span></span>
-                <span style="width:auto; background:transparent; margin-left:8px; color:#94a3b8;">Thinking...</span>
+                <span style="width:auto; background:transparent; margin-left:8px; color:#8f9b7a;">Thinking...</span>
             </div>
         `;
         messagesDiv.appendChild(typingDiv);
@@ -693,31 +713,22 @@
         userInput.disabled = true;
         sendBtn.disabled = true;
         
-        // Add user message
         addUserMessageToUI(message);
         conversationHistory.push({ role: "user", content: message });
         userInput.value = '';
         
-        // Show typing indicator
         addTypingIndicator();
+        await new Promise(r => setTimeout(r, 250 + Math.random() * 250));
         
-        // Simulate thinking time (200-500ms for natural feel)
-        await new Promise(r => setTimeout(r, 300 + Math.random() * 300));
-        
-        // Get smart response
         const response = getSmartResponse(message, conversationHistory);
         
-        // Remove typing indicator
         removeTypingIndicator();
         
-        // Create streaming bubble and stream response
         const bubbleElement = createStreamingMessage();
         await streamResponse(bubbleElement, response);
         
-        // Save to history
         conversationHistory.push({ role: "assistant", content: response });
         
-        // Clean up
         const streamingDiv = document.getElementById('streamingMessage');
         if (streamingDiv) streamingDiv.removeAttribute('id');
         
@@ -727,7 +738,6 @@
         userInput.focus();
     }
     
-    // Clear chat
     clearChatBtn.addEventListener('click', () => {
         conversationHistory = [];
         messagesDiv.innerHTML = '';
@@ -744,7 +754,6 @@
         scrollToBottom();
     });
     
-    // Event listeners
     sendBtn.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !isThinking && userInput.value.trim()) {
@@ -752,7 +761,6 @@
         }
     });
     
-    // Suggestion chips
     document.querySelectorAll('.suggestion-chip').forEach(chip => {
         chip.addEventListener('click', () => {
             if (isThinking) return;
