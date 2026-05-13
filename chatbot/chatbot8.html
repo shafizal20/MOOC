@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Topic 8: Measurement & Questionnaire Design | Marketing Research Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+            background: #f5f7f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 750px;
+            height: 90vh;
+            min-height: 650px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e8ece0;
+        }
+
+        .chat-header {
+            background: #2e7d32;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #1b5e20;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar {
+            width: 42px;
+            height: 42px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #2e7d32;
+        }
+        .header-info h2 {
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        .header-info p {
+            color: #c8e6c9;
+            font-size: 0.65rem;
+        }
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            color: white;
+        }
+        .clear-btn {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.2s;
+        }
+        .clear-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: #ffffff;
+        }
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f0f2e8;
+            border-radius: 10px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #bdc9a4;
+            border-radius: 10px;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 85%;
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .user-message { align-self: flex-end; }
+        .bot-message { align-self: flex-start; }
+
+        .bubble {
+            padding: 12px 18px;
+            border-radius: 20px;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            word-wrap: break-word;
+        }
+        .user-bubble {
+            background: #2e7d32;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .bot-bubble {
+            background: #f0f2e8;
+            color: #1a2e1f;
+            border-bottom-left-radius: 4px;
+        }
+        .message-time {
+            font-size: 0.65rem;
+            margin-top: 6px;
+            color: #8f9b7a;
+            padding-left: 12px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            padding: 10px 16px;
+            background: #f0f2e8;
+            border-radius: 20px;
+            width: fit-content;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #2e7d32;
+            border-radius: 50%;
+            animation: blink 1.3s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink {
+            0%, 60%, 100% { opacity: 0.3; transform: scale(0.8);}
+            30% { opacity: 1; transform: scale(1.2);}
+        }
+
+        .streaming-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background-color: #2e7d32;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blinkCursor 1s step-end infinite;
+        }
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .chat-input-area {
+            background: #ffffff;
+            padding: 16px;
+            border-top: 1px solid #e8ece0;
+        }
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: #f8faf3;
+            border: 1px solid #d4dbc8;
+            border-radius: 28px;
+            padding: 4px 6px 4px 18px;
+            transition: all 0.2s;
+        }
+        .input-wrapper:focus-within {
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 2px rgba(46,125,50,0.1);
+        }
+        .input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 0;
+            color: #1a2e1f;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: inherit;
+        }
+        .input-wrapper input::placeholder {
+            color: #b0bba0;
+        }
+        .input-wrapper button {
+            background: #2e7d32;
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .input-wrapper button:hover:not(:disabled) {
+            background: #1b5e20;
+            transform: scale(1.02);
+        }
+        .input-wrapper button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .suggestion-chip {
+            background: #f0f2e8;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #2e7d32;
+            font-weight: 500;
+            border: 1px solid #d4dbc8;
+        }
+        .suggestion-chip:hover {
+            background: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
+        }
+
+        .footer {
+            font-size: 0.6rem;
+            text-align: center;
+            padding: 8px;
+            color: #b0bba0;
+            background: #ffffff;
+            border-top: 1px solid #e8ece0;
+        }
+        
+        .bot-bubble strong {
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="chat-header">
+        <div class="header-left">
+            <div class="avatar">📊</div>
+            <div class="header-info">
+                <h2>Topic 8: Measurement & Questionnaire Design</h2>
+                <p>Scales • Operational Definition • Scaling Techniques • Reliability • Validity • Questionnaire Design</p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <div class="badge">Learning Activities</div>
+            <button id="clearChatBtn" class="clear-btn">Clear</button>
+        </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+        <div class="message bot-message">
+            <div class="bubble bot-bubble">
+                📊 <strong>Welcome to Topic 8: Measurement & Questionnaire Design!</strong><br><br>
+                I'm here to help you master measurement concepts and questionnaire design for marketing research.<br><br>
+                <strong>📌 Learning Outcomes:</strong><br><br>
+                ✅ <strong>Types of measurement scales</strong> – Nominal, Ordinal, Interval, Ratio<br>
+                ✅ <strong>Define and operationalize variables</strong> – Make abstract concepts measurable<br>
+                ✅ <strong>Scaling techniques</strong> – Comparative & Non-comparative (Likert, Semantic Differential, Stapel)<br>
+                ✅ <strong>Goodness of variables</strong> – Reliability (Cronbach's alpha) & Validity<br>
+                ✅ <strong>Role of research instrument</strong> – Questionnaire as data collection tool<br>
+                ✅ <strong>Design a good questionnaire</strong> – 9 steps process<br>
+                ✅ <strong>Develop an observation form</strong> – 6 Ws framework<br><br>
+                <strong>🔍 What I can help with:</strong><br>
+                • Nominal, Ordinal, Interval, Ratio scales with examples<br>
+                • Operational definition of concepts<br>
+                • Likert, Semantic Differential, Stapel scales<br>
+                • Reliability (Cronbach's alpha) & Validity (content, construct, criterion)<br>
+                • 9 steps in questionnaire design<br>
+                • Question wording guidelines (Dos and Don'ts)<br>
+                • Cover letter requirements<br>
+                • Observation form design<br><br>
+                Just type your question below or click a suggestion! 🎯
+            </div>
+            <div class="message-time">Just now</div>
+        </div>
+    </div>
+
+    <div class="chat-input-area">
+        <div class="input-wrapper">
+            <input type="text" id="userInput" placeholder="Ask about measurement scales, Likert scale, reliability, validity, questionnaire design steps..." autocomplete="off">
+            <button id="sendBtn">➤</button>
+        </div>
+        <div class="suggestions" id="suggestionsPanel">
+            <div class="suggestion-chip">What are the 4 scales of measurement? (Nominal, Ordinal, Interval, Ratio)</div>
+            <div class="suggestion-chip">What is operational definition? Give examples</div>
+            <div class="suggestion-chip">Explain Likert scale with example</div>
+            <div class="suggestion-chip">What is Cronbach's alpha? (Reliability)</div>
+            <div class="suggestion-chip">Difference between reliability and validity</div>
+            <div class="suggestion-chip">9 steps in questionnaire design</div>
+            <div class="suggestion-chip">How to write good questions? (question wording guidelines)</div>
+            <div class="suggestion-chip">What is a cover letter and what should it include?</div>
+            <div class="suggestion-chip">Semantic Differential scale vs Stapel scale</div>
+            <div class="suggestion-chip">Forced vs non-forced scales</div>
+        </div>
+        <div class="footer">💡 Based on Topic 8: Measurement & Questionnaire Design • Green & White Learning Platform</div>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // TOPIC 8: MEASUREMENT & QUESTIONNAIRE DESIGN
+    // Based on complete module content: Scales, Operational Definition,
+    // Scaling Techniques, Reliability, Validity, Questionnaire Design, Observation Form
+    // ============================================================
+    
+    let conversationHistory = [];
+    let isThinking = false;
+
+    const messagesDiv = document.getElementById('chatMessages');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const clearChatBtn = document.getElementById('clearChatBtn');
+
+    function getSmartResponse(userMessage, history) {
+        const q = userMessage.toLowerCase().trim();
+        
+        // ========== SCALES OF MEASUREMENT ==========
+        if ((q.includes("scales of measurement") || q.includes("nominal") || q.includes("ordinal") || 
+             q.includes("interval") || q.includes("ratio")) && !q.includes("likert") && !q.includes("reliability")) {
+            return `📏 **Four Scales of Measurement**\n\n` +
+                   `**1. NOMINAL SCALE (Lowest level / Least powerful)**\n` +
+                   `• Numbers serve only as labels or tags for identifying and classifying objects\n` +
+                   `• No order, no distance, no absolute zero\n` +
+                   `• Examples: Gender (1=Male, 2=Female), Race, Marital status, Religion\n` +
+                   `• Permissible statistics: Mode, Frequency, Chi-square, Percentage\n\n` +
+                   `**2. ORDINAL SCALE**\n` +
+                   `• Ranking scale - indicates relative order but not magnitude of difference\n` +
+                   `• Has order, but no distance, no absolute zero\n` +
+                   `• Examples: Income brackets (<1000, 1001-2000, 2001-3000), Ranking preferences (1st, 2nd, 3rd)\n` +
+                   `• Permissible statistics: Median, Percentile, Rank correlation, Mann-Whitney\n\n` +
+                   `**3. INTERVAL SCALE**\n` +
+                   `• Equal distances between numbers represent equal distances in property measured\n` +
+                   `• Has order AND distance, but no true zero\n` +
+                   `• Examples: Temperature (Celsius/Fahrenheit), Likert scale (1-5, 1-7)\n` +
+                   `• Permissible statistics: Mean, Standard deviation, Pearson correlation, t-test, ANOVA\n\n` +
+                   `**4. RATIO SCALE (Highest level / Most powerful)**\n` +
+                   `• Has order, distance, AND absolute zero point\n` +
+                   `• Ratios between numbers can be meaningfully interpreted\n` +
+                   `• Examples: Age, Income (RM), Years of experience, Sales (units), Number of children\n` +
+                   `• Permissible statistics: All statistics (Geometric mean, Coefficient of variation)\n\n` +
+                   `**Key Insight:**\n` +
+                   `• Measurement is the process of assigning numerical values or symbols to characteristics\n` +
+                       `• The characteristics of objects are being measured, not the objects themselves\n` +
+                   `💡 *Nominal = labels, Ordinal = order, Interval = equal distance, Ratio = true zero*`;
+        }
+        
+        // ========== OPERATIONAL DEFINITION ==========
+        if (q.includes("operational definition") || q.includes("operationalization") || q.includes("define variables")) {
+            return `🔧 **Operational Definition – Making Abstract Concepts Measurable**\n\n` +
+                   `**Definition:**\n` +
+                   `The definition of a construct in measurable terms by reducing it from its level of abstraction through the delineation of its dimensions and elements. It specifies ways of measuring the concept.\n\n` +
+                   `**Why it's important:**\n` +
+                   `• Gives practical meaning to abstract concepts\n` +
+                   `• Makes measurement possible\n` +
+                   `• Provides a working definition that is clear, precise, and practical\n\n` +
+                   `**Example 1: Job Satisfaction (Koustelios, 1991)**\n` +
+                   `"Job satisfaction measures employee satisfaction in six aspects of a job: the work itself, pay, promotion, supervision, working conditions and organization as a whole."\n\n` +
+                   `**Example 2: Organizational Commitment (Linz, 2003)**\n` +
+                   `Measured using 7 statements on a 7-point Likert scale:\n` +
+                   `• "I feel myself to be part of the organization"\n` +
+                   `• "I am quite proud to tell people about the company where I work"\n` +
+                   `• "I sometimes feel like leaving this company for good" (reverse coded)\n\n` +
+                   `**Example 3: Employee Turnover**\n` +
+                   `Operationalized as "ratio of new employees to old employees"\n\n` +
+                   `**Example 4: Patient Satisfaction (Grace Hospital)**\n` +
+                   `Satisfaction measures the difference between a person's expectation and a person's perception.\n\n` +
+                   `**Note:** Operational definitions are never completely adequate to capture rich, complex ideas, but they are necessary for scientific research.\n\n` +
+                   `💡 *In social sciences, many attitudinal measures required and operationalizations will be subjective*`;
+        }
+        
+        // ========== LIKERT SCALE ==========
+        if ((q.includes("likert") || q.includes("likert scale")) && !q.includes("semantic")) {
+            return `📊 **Likert Scale – Most Commonly Used Scaling Technique**\n\n` +
+                   `**Definition:**\n` +
+                   `A scaling technique consisting of a series of statements concerning an issue/object where evaluations are based on degree of agreement. Commonly assumed to be an interval scale.\n\n` +
+                   `**Standard 5-point Format:**\n` +
+                   `1 = Strongly Disagree\n` +
+                   `2 = Disagree\n` +
+                   `3 = Neither Agree nor Disagree (Neutral point)\n` +
+                   `4 = Agree\n` +
+                   `5 = Strongly Agree\n\n` +
+                   `**Other variations:** 4-point (forced choice, no neutral), 6-point, 7-point, 10-point\n\n` +
+                   `**Example (Job Satisfaction):**\n` +
+                   `"I am satisfied with my current job."\n` +
+                   `☐ Strongly Disagree ☐ Disagree ☐ Neutral ☐ Agree ☐ Strongly Agree\n\n` +
+                   `**Example (Service Quality):**\n` +
+                   `"The hospital staff are courteous and professional."\n` +
+                   `☐ Strongly Disagree ☐ Disagree ☐ Neutral ☐ Agree ☐ Strongly Agree\n\n` +
+                   `**Advantages:**\n` +
+                   `• Easy to construct and administer\n` +
+                   `• Provides interval-level data for statistical analysis\n` +
+                   `• High reliability\n` +
+                   `• Respondents familiar with format\n\n` +
+                   `**Challenge:**\n` +
+                   `• Deriving good items/statements from secondary sources or original design\n` +
+                   `• Descriptions of scale categories must secure characteristics of 'distance' and difference\n\n` +
+                   `💡 *Most researchers use at least 5-point Likert scale for reliable, valid, and sensitive measurement*`;
+        }
+        
+        // ========== SEMANTIC DIFFERENTIAL & STAPEL SCALES ==========
+        if (q.includes("semantic differential") || q.includes("stapel scale")) {
+            return `🎭 **Semantic Differential & Stapel Scales**\n\n` +
+                   `**SEMANTIC DIFFERENTIAL SCALE**\n\n` +
+                   `**Definition:**\n` +
+                   `A seven-point scale with end-points associated with bipolar words or labels that have opposite meanings.\n\n` +
+                   `**Format:**\n` +
+                   `Respondents place 'X' on the most appropriate location along a continuum of seven spaces between bipolar adjectives.\n\n` +
+                   `**Example (Hospital Service Quality):**\n` +
+                   `Friendly     ☐ ☐ ☐ ☐ ☐ ☐ ☐     Unfriendly\n` +
+                   `Clean        ☐ ☐ ☐ ☐ ☐ ☐ ☐     Dirty\n` +
+                   `Efficient    ☐ ☐ ☐ ☐ ☐ ☐ ☐     Inefficient\n` +
+                   `Modern       ☐ ☐ ☐ ☐ ☐ ☐ ☐     Outdated\n\n` +
+                   `**Numerical Scale (Enhanced version):**\n` +
+                   `Similar but with numbers allocated (e.g., 1 2 3 4 5 6 7)\n\n` +
+                   `**STAPEL SCALE**\n\n` +
+                   `**Definition:**\n` +
+                   `A scale for measuring attitudes that consists of a single adjective in the middle point of the continuum that has an even-numbered category (no neutral point like 0).\n\n` +
+                   `**Format (10-category scale, arranged horizontally for space saving):**\n` +
+                   `+5 +4 +3 +2 +1 ADJECTIVE -1 -2 -3 -4 -5\n\n` +
+                   `**Example:**\n` +
+                   `+5 +4 +3 +2 +1  QUALITY  -1 -2 -3 -4 -5\n` +
+                   `+5 +4 +3 +2 +1  SERVICE  -1 -2 -3 -4 -5\n\n` +
+                   `**Key Differences:**\n` +
+                   `• Semantic Differential uses bipolar adjectives at both ends\n` +
+                   `• Stapel scale uses single adjective in the middle\n` +
+                   `• Stapel has no neutral point (forced choice)\n\n` +
+                   `💡 *Both scales are excellent for measuring brand, company, or product perceptions*`;
+        }
+        
+        // ========== RELIABILITY (CRONBACH'S ALPHA) ==========
+        if ((q.includes("reliability") || q.includes("cronbach") || q.includes("alpha") || q.includes("internal consistency")) && !q.includes("validity")) {
+            return `✅ **Reliability – Consistency of Measurement**\n\n` +
+                   `**Definition:**\n` +
+                   `The extent to which a measure is without bias and offers consistent measurement across time and items. Indicates the extent to which the measure is without bias.\n\n` +
+                   `**Cronbach's Coefficient Alpha (α) – Most Common**\n` +
+                   `• Measures INTERNAL CONSISTENCY reliability\n` +
+                   `• How well do all items in an instrument measure the same construct?\n` +
+                   `• Commonly used in social science research\n\n` +
+                   `**Interpretation of Alpha (α):**\n` +
+                   `• α ≥ 0.90 → Excellent reliability\n` +
+                   `• 0.80 ≤ α < 0.90 → Good reliability\n` +
+                   `• 0.70 ≤ α < 0.80 → Acceptable reliability\n` +
+                   `• 0.60 ≤ α < 0.70 → Questionable (exploratory research only)\n` +
+                   `• α < 0.60 → Poor (needs revision or scale may need to be dropped)\n\n` +
+                   `**Other Types of Reliability:**\n` +
+                   `• Test-retest reliability – Same scale administered to same respondents at two separate points in time\n` +
+                   `• Equivalent-form reliability – Correlation between two alternative instruments\n` +
+                   `• Split-half reliability – Check one half of results against the other half\n\n` +
+                   `💡 *The higher the number of scale categories, the higher the reliability*`;
+        }
+        
+        // ========== VALIDITY ==========
+        if ((q.includes("validity") && !q.includes("reliability")) || q.includes("content validity") || q.includes("construct validity") || q.includes("criterion validity") || q.includes("face validity")) {
+            return `🎯 **Validity – Does It Measure What It Intends to Measure?**\n\n` +
+                   `**Definition:**\n` +
+                   `The ability of a scale to measure the intended concept. Ensures that the measure actually measures what it claims to measure.\n\n` +
+                   `**Types of Validity:**\n\n` +
+                   `**1. CONTENT VALIDITY**\n` +
+                   `• Does the measure adequately cover all aspects of the construct?\n` +
+                   `• Assessed by professional agreement (expert judgment)\n` +
+                   `• Self-help question: "Does the measure include all relevant dimensions?"\n\n` +
+                   `**2. FACE VALIDITY**\n` +
+                   `• Does it appear to measure what it's supposed to on the surface?\n` +
+                   `• Subjective assessment by looking at the measure\n\n` +
+                   `**3. CRITERION-RELATED VALIDITY**\n` +
+                   `• Ability of the measure to correlate with other measures of the same construct\n` +
+                   `• Concurrent validity – At the same time\n` +
+                   `• Predictive validity – Predicts future outcomes\n\n` +
+                   `**4. CONSTRUCT VALIDITY**\n` +
+                   `• Ability of the measure to confirm a network of related hypotheses generated from theory\n` +
+                   `• Convergent validity – High correlation with measures of similar constructs\n` +
+                   `• Discriminant validity – Low correlation with measures of dissimilar concepts\n\n` +
+                   `**Self-help Questions (Sekaran & Bougie, 2013):**\n` +
+                   `• Content: "Does the measure include all relevant dimensions?"\n` +
+                   `• Criterion: "Does the measure correlate with other measures of the same construct?"\n` +
+                   `• Construct: "Does the measure confirm hypothesized relationships?"\n\n` +
+                   `💡 *Reliability is necessary but NOT sufficient for validity*`;
+        }
+        
+        // ========== RELIABILITY VS VALIDITY ==========
+        if (q.includes("reliability and validity") || q.includes("difference between reliability and validity") || (q.includes("reliability") && q.includes("validity") && (q.includes("vs") || q.includes("difference")))) {
+            return `⚖️ **Reliability vs Validity – Key Differences**\n\n` +
+                   `| Aspect | Reliability | Validity |\n` +
+                   `|--------|-------------|----------|\n` +
+                   `| Definition | Consistency of measurement | Accuracy of measurement |\n` +
+                   `| Question | Does it give consistent results? | Does it measure what it intends? |\n` +
+                   `| Focus | Stability and consistency | Relevance and accuracy |\n` +
+                   `| Assessed by | Cronbach's alpha, test-retest, split-half | Content, criterion, construct |\n` +
+                   `| Relationship | Necessary but not sufficient for validity | Requires reliability |\n\n` +
+                   `**Analogy – A Target:**\n` +
+                   `• Reliable but NOT valid: Hitting the same wrong spot consistently (precise but inaccurate)\n` +
+                   `• Valid but NOT reliable: Hitting the right spot rarely (inconsistent)\n` +
+                   `• Both reliable AND valid: Hitting the bullseye consistently\n\n` +
+                   `**Marketing Research Implication:**\n` +
+                   `• A measure must be reliable to be valid\n` +
+                   `• But reliability does NOT guarantee validity\n` +
+                   `• Both are essential for good measurement\n\n` +
+                   `💡 *Good measurement requires BOTH reliability and validity*`;
+        }
+        
+        // ========== QUESTIONNAIRE DESIGN STEPS (9 STEPS) ==========
+        if ((q.includes("questionnaire design steps") || q.includes("steps in questionnaire design") || q.includes("9 steps") || q.includes("design a questionnaire"))) {
+            return `📝 **9 Steps in Questionnaire Design**\n\n` +
+                   `**Step 1: Identify the information needed**\n` +
+                   `• Specify all information needed to accomplish study objectives\n` +
+                   `• Review research questions, hypotheses, and measurement items\n` +
+                   `• Use list of measurement items from existing literature\n\n` +
+                   `**Step 2: Choose the most appropriate interviewing method**\n` +
+                   `• Personal interview (in-home, mall-intercept, computer-assisted)\n` +
+                   `• Telephone interview (traditional, computer-assisted)\n` +
+                   `• Mail interview (mail, mail panel)\n` +
+                   `• Electronic interview (email, internet, mobile)\n\n` +
+                   `**Step 3: Decide on the content of individual questions**\n` +
+                   `• Every question should contribute to information needed\n` +
+                   `• Use neutral questions at beginning for sensitive topics\n` +
+                   `• Questions must meet criteria of validity and reliability\n\n` +
+                   `**Step 4: Decide on the structure of the questions**\n` +
+                   `• Unstructured (open-ended) – Wider range of responses, general reactions\n` +
+                   `• Structured (closed-ended) – Multiple choice, dichotomous, scales\n\n` +
+                   `**Step 5: Determine the wording of the questions**\n` +
+                   `• Define issue clearly, use ordinary words\n` +
+                   `• Avoid ambiguous words, leading questions, double-barreled questions\n` +
+                   `• Avoid implicit alternatives and assumptions\n\n` +
+                   `**Step 6: Arrange the questions in proper order**\n` +
+                   `• Logical flow: introduction → first question → demographics later\n` +
+                   `• Use funnel (broad to specific) or inverted-funnel\n` +
+                   `• Use filter questions when needed\n\n` +
+                   `**Step 7: Identify the form and layout**\n` +
+                   `• Visually appealing, use booklets, blank space, colour coding\n` +
+                   `• Vertical response columns, grids for related questions\n` +
+                   `• Avoid crowding questions\n\n` +
+                   `**Step 8: Reproduce the questionnaire**\n` +
+                   `• Good quality paper, professional appearance\n` +
+                   `• Booklet format for long questionnaires\n` +
+                   `• Instructions placed close to questions\n\n` +
+                   `**Step 9: Pretest the questionnaire**\n` +
+                   `• Test on small sample (30-50 respondents similar to target)\n` +
+                   `• Use personal interviews for initial pretest\n` +
+                   `• Identify and eliminate potential problems\n` +
+                   `• ALL aspects should be tested (content, wording, sequence, layout)\n\n` +
+                   `💡 *A well-designed and tested questionnaire means every person is asked the same question*`;
+        }
+        
+        // ========== QUESTION WORDING GUIDELINES ==========
+        if ((q.includes("question wording") || q.includes("how to write questions") || q.includes("good questions") || q.includes("wording guidelines"))) {
+            return `✍️ **Question Wording Guidelines – Dos and Don'ts**\n\n` +
+                   `**DO – Good Practices:**\n` +
+                   `✓ Define the issue clearly\n` +
+                   `✓ Use ordinary, natural, familiar words\n` +
+                   `✓ State explicit alternatives\n` +
+                   `✓ Use positive and negative statements\n` +
+                   `✓ Keep questions short and simple\n` +
+                   `✓ Ensure response choices do not overlap\n\n` +
+                   `**DON'T – Avoid These Common Errors:**\n\n` +
+                   `**1. Avoid ambiguous words**\n` +
+                   `• BAD: "regularly", "occasionally", "usually"\n` +
+                   `• GOOD: Specify time frames ("once a week", "2-3 times per month")\n\n` +
+                   `**2. Avoid leading questions**\n` +
+                   `• BAD: "Don't you agree that service quality is poor?"\n` +
+                   `• GOOD: "How would you rate the service quality?"\n\n` +
+                   `**3. Avoid double-barreled questions**\n` +
+                   `• BAD: "Are you satisfied with the pay and working conditions?"\n` +
+                   `• GOOD: Split into two separate questions\n\n` +
+                   `**4. Avoid implicit alternatives**\n` +
+                   `• BAD: "Would you like to have flexible working hours?"\n` +
+                   `• GOOD: "Which do you prefer: flexible hours OR fixed schedule?"\n\n` +
+                   `**5. Avoid implicit assumptions**\n` +
+                   `• BAD: "How satisfied are you with your current supervisor?" (assumes they have one)\n` +
+                   `• GOOD: First ask "Do you have a direct supervisor?"\n\n` +
+                   `**6. Avoid generalizations and estimates**\n` +
+                   `• BAD: "How many times do you shop per month?"\n` +
+                   `• GOOD: Provide ranges ("1-2 times", "3-5 times", "6+ times")\n\n` +
+                   `💡 *Every question should meet criteria of validity and reliability*`;
+        }
+        
+        // ========== COVER LETTER ==========
+        if (q.includes("cover letter")) {
+            return `📨 **Cover Letter – Critical for Mail Surveys**\n\n` +
+                   `**Purpose:**\n` +
+                   `In a mail survey, the cover letter acts on behalf of the researcher who is not present in front of the respondent. A well-designed cover letter helps increase response rate.\n\n` +
+                   `**Critical Requirements (must include):**\n\n` +
+                   `✓ Address potential respondents appropriately (e.g., "Dear Sir/Madam")\n` +
+                   `✓ Tell respondents the objective(s) of the study\n` +
+                   `✓ Convince respondents of the importance of the study\n` +
+                   `✓ Be precise and objective\n` +
+                   `✓ Appear neat and appealing professionally\n` +
+                   `✓ Write with good and easy-to-understand language\n` +
+                   `✓ Assure respondents of anonymity (confidentiality)\n` +
+                   `✓ Offer to send a summary of the report upon request\n` +
+                   `✓ Include necessary contact details (phone number, postal and/or email address)\n` +
+                   `✓ Tell respondents the next course of action after the questionnaire is answered\n` +
+                   `✓ Show appreciation and courtesy (e.g., "Thank you for your time and cooperation")\n\n` +
+                   `💡 *A good cover letter engages respondents and stimulates interest in providing complete and accurate answers*`;
+        }
+        
+        // ========== OBSERVATION FORM ==========
+        if (q.includes("observation form") || q.includes("observational form") || q.includes("6 ws")) {
+            return `👁️ **Observation Form – Recording Behavioral Data**\n\n` +
+                   `**Definition:**\n` +
+                   `A form for recording observational data, especially for behavioral studies. Easier to construct than questionnaires because the researcher does not need to be concerned with psychological impact of questions.\n\n` +
+                   `**The 6 Ws – What to specify in an observation form:**\n\n` +
+                   `• **WHO** – Purchasers, browsers, males, females, parents, sales clerks, etc.\n` +
+                   `• **WHAT** – Products considered, products purchased, product categories, etc.\n` +
+                   `• **WHEN** – Day, hour, date of observation, time of day\n` +
+                   `• **WHERE** – Inside store, checkout counters, specific location, department\n` +
+                   `• **WHY** – Influence of price, brand name, package size, promotion, displays\n` +
+                   `• **WAY** – Personal observer will disguise as clerk or customer, unobtrusive observation\n\n` +
+                   `**Guidelines for Observation Forms:**\n` +
+                   `• Follow same guidelines as questionnaires for form, layout, reproduction\n` +
+                   `• Permit field workers to record individual observations (NOT to summarize observations – this could lead to error)\n` +
+                   `• Requires adequate pre-testing\n` +
+                   `• Should be clear and easy to use in field conditions\n\n` +
+                   `💡 *Observation forms are particularly useful for behavioral studies where self-report may be biased*`;
+        }
+        
+        // ========== FORCED VS NON-FORCED SCALES ==========
+        if (q.includes("forced scale") || q.includes("non-forced scale") || q.includes("neutral point") || q.includes("balanced scale")) {
+            return `⚖️ **Forced vs Non-Forced / Balanced vs Unbalanced Scales**\n\n` +
+                   `**FORCED SCALE**\n` +
+                   `• Respondents are forced to express an opinion\n` +
+                   `• NO 'no opinion' or neutral category provided\n` +
+                   `• Example: 4-point Likert scale (Strongly Disagree, Disagree, Agree, Strongly Agree)\n` +
+                   `• Forces a directional response\n\n` +
+                   `**NON-FORCED SCALE**\n` +
+                   `• Includes a neutral or 'no opinion' option\n` +
+                   `• Example: 5-point Likert scale with 'Neither Agree nor Disagree'\n` +
+                   `• More appropriate for academic research and scale development\n\n` +
+                   `**BALANCED SCALE**\n` +
+                   `• Equal number of favourable and unfavourable categories\n` +
+                   `• Example: 5-point scale (2 positive, 2 negative, 1 neutral)\n` +
+                   `• Most researchers choose BALANCED scales\n\n` +
+                   `**UNBALANCED SCALE**\n` +
+                   `• Unequal number of favourable and unfavourable categories\n` +
+                   `• May be used when expecting most responses on one side\n\n` +
+                   `**Recommendations:**\n` +
+                   `• Odd number of categories = neutral point included\n` +
+                   `• Even number = forced choice\n` +
+                   `• Most researchers use 5 to 9 categories\n` +
+                   `• 11-point scales yield more valid results than 3,5,7 point scales\n` +
+                   `• Consider respondent culture (e.g., Chinese respondents may prefer 10-point scale)\n\n` +
+                   `💡 *The higher the number of scale categories, the higher the reliability*`;
+        }
+        
+        // ========== QUALITIES OF GOOD QUESTIONNAIRE ==========
+        if (q.includes("qualities of a good questionnaire") || q.includes("good questionnaire")) {
+            return `✅ **Qualities of a Good Questionnaire**\n\n` +
+                   `**A good questionnaire must engage respondents and stimulate interest in providing complete and accurate answers.**\n\n` +
+                   `**Content & Design Qualities:**\n\n` +
+                   `✓ Obtains reliable and valid data\n` +
+                   `✓ Questions are easy to understand and answer\n` +
+                   `✓ Respondent feels no threat to answer\n` +
+                   `✓ Respondent knows the purpose of the questionnaire\n` +
+                   `✓ Nicely designed and appears neat/professional\n` +
+                   `✓ Asks for answer on ONLY ONE issue at a time\n` +
+                   `✓ Accommodates all possible answers\n` +
+                   `✓ Options are mutually exclusive\n` +
+                   `✓ Does not presuppose a certain state of affairs\n` +
+                   `✓ Does not imply a desired answer\n` +
+                   `✓ Does not use emotionally charged questions or statements\n` +
+                   `✓ Does not ask loaded questions\n` +
+                   `✓ Does not use unfamiliar words or technical terms\n` +
+                   `✓ Does not use unexplained acronyms or abbreviations\n` +
+                   `✓ Does not ask respondent to order/rank more than ten items\n\n` +
+                   `**Engagement Qualities:**\n` +
+                   `✓ Creates common understanding of questions and answers among all respondents\n` +
+                   `✓ Stimulates respondent's interest\n` +
+                   `✓ Builds rapport from beginning to end\n\n` +
+                   `💡 *A well-designed and tested questionnaire is the means of structuring the interview process so that every person is asked the same question*`;
+        }
+        
+        // ========== GREETINGS ==========
+        if (q.match(/^(hi|hello|hey|gm|good morning|good afternoon|greetings)/i)) {
+            return `📊 **Hello! Welcome to Topic 8: Measurement & Questionnaire Design Assistant**\n\n` +
+                   `I'm here to help you master measurement and instrument design for marketing research.\n\n` +
+                   `**📌 What I can help with:**\n\n` +
+                   `📏 **Scales of Measurement** – Nominal, Ordinal, Interval, Ratio\n` +
+                   `🔧 **Operational Definition** – Making abstract concepts measurable\n` +
+                   `📊 **Likert Scale** – 5-point/7-point agreement scale\n` +
+                   `🎭 **Semantic Differential** – 7-point bipolar adjectives\n` +
+                   `📋 **Stapel Scale** – Single adjective with positive/negative numbers\n` +
+                   `✅ **Reliability** – Cronbach's alpha, internal consistency\n` +
+                   `🎯 **Validity** – Content, criterion, construct, discriminant\n` +
+                   `📝 **Questionnaire Design** – 9 steps from information to pretesting\n` +
+                   `✍️ **Question Wording** – Dos and Don'ts\n` +
+                   `📨 **Cover Letter** – Essential elements for mail surveys\n` +
+                   `👁️ **Observation Form** – 6 Ws framework\n` +
+                   `⚖️ **Forced vs Non-Forced Scales** – Neutral point considerations\n\n` +
+                   `What would you like to learn about today?`;
+        }
+        
+        // ========== HELP ==========
+        if (q.includes("what can you do") || q.includes("help") || q === "?" || q === "help me")) {
+            return `📋 **Topic 8: Measurement & Questionnaire Design – What I Can Help With**\n\n` +
+                   `**Measurement & Scaling:**\n` +
+                   `• Nominal, Ordinal, Interval, Ratio scales with examples\n` +
+                   `• Operational definition (abstract → measurable) with job satisfaction and organizational commitment examples\n` +
+                   `• Likert scale (1-5, 1-7 agreement scales) – most common\n` +
+                   `• Semantic Differential scale (bipolar adjectives, 7-point)\n` +
+                   `• Stapel scale (single adjective, even number, no neutral)\n` +
+                   `• Reliability (Cronbach's alpha: 0.7+ acceptable, 0.8+ good)\n` +
+                   `• Validity (content, criterion, construct, discriminant, face)\n` +
+                   `• Reliability vs Validity differences (with target analogy)\n` +
+                   `• Comparative scaling (paired comparison, rank order, constant sum)\n` +
+                   `• Non-comparative scaling (Likert, semantic differential, Stapel)\n\n` +
+                   `**Instrument Design (Questionnaire & Observation):**\n` +
+                   `• 9 steps in questionnaire design (detailed)\n` +
+                   `• Question wording guidelines (avoid ambiguity, leading, double-barreled)\n` +
+                   `• Unstructured (open-ended) vs Structured (closed-ended)\n` +
+                   `• Question order (funnel, inverted-funnel, filter questions)\n` +
+                   `• Cover letter requirements (11 critical elements)\n` +
+                   `• Observation form (who, what, when, where, why, way)\n` +
+                   `• Forced vs non-forced scales\n` +
+                   `• Balanced vs unbalanced scales\n` +
+                   `• Qualities of a good questionnaire\n\n` +
+                   `**Try asking specific questions like:** "Explain Likert scale" or "What is Cronbach's alpha?" or "What are the 9 steps in questionnaire design?"` +
+                   `\n\nOr click one of the suggestion chips above! 🎯`;
+        }
+        
+        // ========== DEFAULT ==========
+        return `📘 **Topic 8: Measurement & Questionnaire Design**\n\n` +
+               `I can help you understand:\n\n` +
+               `📏 **Scales of Measurement** – Nominal (labels), Ordinal (rank), Interval (equal distance), Ratio (true zero)\n` +
+               `🔧 **Operational Definition** – Making abstract concepts measurable (with job satisfaction example)\n` +
+               `📊 **Likert Scale** – 5-point/7-point agreement scale (most common scaling technique)\n` +
+               `🎭 **Semantic Differential** – 7-point scale with bipolar adjectives\n` +
+               `📋 **Stapel Scale** – Single adjective with +5 to -5 range, no neutral\n` +
+               `✅ **Reliability** – Cronbach's alpha (0.7+ acceptable), internal consistency\n` +
+               `🎯 **Validity** – Content, criterion, construct, discriminant validity\n` +
+               `⚖️ **Reliability vs Validity** – Reliability = consistency, Validity = accuracy\n` +
+               `📝 **Questionnaire Design** – 9 steps from identifying information to pretesting\n` +
+               `✍️ **Question Wording** – Avoid ambiguous, leading, double-barreled questions\n` +
+               `📨 **Cover Letter** – Essential for mail surveys (objectives, confidentiality, appreciation)\n` +
+               `👁️ **Observation Form** – Record who, what, when, where, why, way\n` +
+               `⚖️ **Forced vs Non-Forced** – Even number (forced) vs odd number (neutral point)\n\n` +
+               `**Try asking:**\n` +
+               `• "Explain the 4 scales of measurement with examples"\n` +
+               `• "What is the difference between reliability and validity?"\n` +
+               `• "What are the 9 steps in questionnaire design?"\n` +
+               `• "How to write good questions without bias?"\n` +
+               `• "What should a cover letter include?"\n\n` +
+               `Or click one of the suggestion chips above! 🎯`;
+    }
+    
+    // Streaming effect for typing
+    async function streamResponse(bubbleElement, fullText) {
+        bubbleElement.innerHTML = '';
+        let currentText = '';
+        
+        for (let i = 0; i < fullText.length; i++) {
+            currentText += fullText[i];
+            let formatted = currentText
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>')
+                .replace(/\|/g, '•');
+            bubbleElement.innerHTML = formatted + '<span class="streaming-cursor"></span>';
+            scrollToBottom();
+            const delay = fullText[i] === '\n' ? 35 : (fullText[i] === ' ' ? 12 : 22);
+            await new Promise(r => setTimeout(r, delay));
+        }
+        bubbleElement.innerHTML = currentText
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>');
+    }
+    
+    function addUserMessageToUI(text) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message user-message';
+        messageDiv.innerHTML = `
+            <div class="bubble user-bubble">${escapeHtml(text)}</div>
+            <div class="message-time">${getTime()}</div>
+        `;
+        messagesDiv.appendChild(messageDiv);
+        scrollToBottom();
+    }
+    
+    function addTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message bot-message';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = `
+            <div class="typing-indicator">
+                <span></span><span></span><span></span>
+                <span style="width:auto; background:transparent; margin-left:8px; color:#8f9b7a;">Thinking...</span>
+            </div>
+        `;
+        messagesDiv.appendChild(typingDiv);
+        scrollToBottom();
+    }
+    
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+    }
+    
+    function createStreamingMessage() {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message';
+        messageDiv.id = 'streamingMessage';
+        messageDiv.innerHTML = `
+            <div class="bubble bot-bubble" id="streamingBubble"></div>
+            <div class="message-time">${getTime()}</div>
+        `;
+        messagesDiv.appendChild(messageDiv);
+        scrollToBottom();
+        return document.getElementById('streamingBubble');
+    }
+    
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    function getTime() {
+        return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    
+    function scrollToBottom() {
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+    
+    async function sendMessage() {
+        if (isThinking) return;
+        const message = userInput.value.trim();
+        if (!message) return;
+        
+        isThinking = true;
+        userInput.disabled = true;
+        sendBtn.disabled = true;
+        
+        addUserMessageToUI(message);
+        conversationHistory.push({ role: "user", content: message });
+        userInput.value = '';
+        
+        addTypingIndicator();
+        await new Promise(r => setTimeout(r, 250 + Math.random() * 250));
+        
+        const response = getSmartResponse(message, conversationHistory);
+        
+        removeTypingIndicator();
+        
+        const bubbleElement = createStreamingMessage();
+        await streamResponse(bubbleElement, response);
+        
+        conversationHistory.push({ role: "assistant", content: response });
+        
+        const streamingDiv = document.getElementById('streamingMessage');
+        if (streamingDiv) streamingDiv.removeAttribute('id');
+        
+        isThinking = false;
+        userInput.disabled = false;
+        sendBtn.disabled = false;
+        userInput.focus();
+    }
+    
+    clearChatBtn.addEventListener('click', () => {
+        conversationHistory = [];
+        messagesDiv.innerHTML = '';
+        const welcomeDiv = document.createElement('div');
+        welcomeDiv.className = 'message bot-message';
+        welcomeDiv.innerHTML = `
+            <div class="bubble bot-bubble">
+                🧹 Chat cleared! I'm ready to help with Topic 8: Measurement & Questionnaire Design.<br><br>
+                Ask me about measurement scales, operational definition, Likert scale, reliability, validity, questionnaire design steps, question wording, cover letters, or observation forms!
+            </div>
+            <div class="message-time">${getTime()}</div>
+        `;
+        messagesDiv.appendChild(welcomeDiv);
+        scrollToBottom();
+    });
+    
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !isThinking && userInput.value.trim()) {
+            sendMessage();
+        }
+    });
+    
+    document.querySelectorAll('.suggestion-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            if (isThinking) return;
+            userInput.value = chip.textContent;
+            sendMessage();
+        });
+    });
+    
+    userInput.focus();
+</script>
+</body>
+</html>
