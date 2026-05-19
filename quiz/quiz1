@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Topic 1: Intro to Marketing Research | Matching Quiz</title>
+    <title>Topic 1: Intro to Marketing Research | Quick Quiz</title>
     <style>
         * {
             margin: 0;
@@ -12,32 +12,26 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', 'Helvetica Neue', sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif;
             background: #eef2f8;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 1.5rem;
-            position: relative;
         }
 
-        /* main quiz container */
         .quiz-box {
             max-width: 1000px;
             width: 100%;
-            background: #ffffff;
+            background: white;
             border-radius: 2rem;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            transition: all 0.2s ease;
-            position: relative;
-            z-index: 10;
         }
 
-        /* header with final score badge (shown after completion) */
         .quiz-header {
-            padding: 1.2rem 2rem 0.8rem 2rem;
+            padding: 1.2rem 2rem;
             background: white;
             border-bottom: 1px solid #eef2f6;
             display: flex;
@@ -48,157 +42,118 @@
         }
 
         .title-area h2 {
-            font-size: 1.65rem;
-            font-weight: 600;
+            font-size: 1.5rem;
             color: #1a3b4f;
-            letter-spacing: -0.2px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .title-area h2:before {
-            content: "📊";
-            font-size: 1.7rem;
-        }
-
-        .topic-sub {
-            font-size: 0.75rem;
-            color: #5e7a93;
-            margin-top: 0.2rem;
-            font-weight: normal;
         }
 
         .final-score-badge {
-            background: linear-gradient(135deg, #f0f6fa 0%, #e4edf5 100%);
+            background: linear-gradient(135deg, #f0f6fa, #e4edf5);
             border-radius: 3rem;
-            padding: 0.4rem 1.4rem;
+            padding: 0.3rem 1.2rem;
             text-align: center;
-            border: 1px solid #cbdde9;
-            transition: all 0.3s ease;
         }
 
         .final-score-label {
             font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             font-weight: 700;
             color: #2c7da0;
         }
 
         .final-score-value {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: #1f5e7e;
             line-height: 1.2;
         }
 
-        .final-score-value span {
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
         .perfect-score-top {
             background: linear-gradient(135deg, #ffecb3, #ffe0a3);
-            border-color: #e6b422;
         }
 
-        .perfect-score-top .final-score-value {
-            color: #b45f06;
-        }
-
-        .step-badge {
-            display: inline-flex;
-            align-items: center;
-            background: #e4edf5;
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
-            font-size: 0.75rem;
+        .progress-text {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.8rem 2rem;
+            background: white;
+            border-bottom: 1px solid #eef2f6;
+            font-size: 0.95rem;
             font-weight: 500;
-            color: #1f5e7e;
-            margin-top: 0.25rem;
         }
 
-        /* matching area */
+        .progress-item {
+            cursor: pointer;
+            color: #8ba0b5;
+            padding: 0.2rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .progress-item.active-progress {
+            color: #1f5e7e;
+            font-weight: 700;
+            border-bottom-color: #2c7da0;
+        }
+
+        .progress-item.completed-progress {
+            color: #2b8c4a;
+        }
+
+        .progress-item.disabled-progress {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
         .match-area {
             position: relative;
             display: flex;
             gap: 2rem;
-            padding: 2rem 2rem 1.8rem 2rem;
-            background: #fefefe;
-            flex-wrap: wrap;
+            padding: 2rem;
+            min-height: 350px;
         }
 
         .col {
             flex: 1;
-            min-width: 220px;
         }
 
         .col-title {
             font-size: 0.7rem;
-            text-transform: uppercase;
             font-weight: 700;
-            letter-spacing: 1px;
             color: #5e7a93;
             margin-bottom: 1rem;
             padding-left: 0.5rem;
         }
 
-        /* cards style */
         .card {
             background: white;
             border: 1.5px solid #e2edf2;
             border-radius: 1.2rem;
             padding: 1rem 1.2rem;
             margin-bottom: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
             font-weight: 500;
             font-size: 0.95rem;
             line-height: 1.4;
             color: #1e2f3e;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
 
         .left .card {
             border-left: 5px solid #2c7da0;
+            background: #f1f9ff;
         }
 
         .right .card {
-            border-left: 3px solid transparent;
-        }
-
-        .card.active {
-            background: #f1f9ff;
-            border-color: #2c7da0;
-            box-shadow: 0 4px 10px rgba(44,125,160,0.1);
-        }
-
-        .card.selected {
-            background: #fff0cf;
-            border-color: #e6b422;
-            transform: scale(1.01);
-        }
-
-        .card:active {
-            transform: scale(0.99);
-        }
-
-        .left .card:hover:not(.disabled-touch) {
-            background: #f5fafd;
-            border-left-color: #1f6e8c;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
         .right .card:hover {
             background: #fef8ef;
-            border-color: #d9c8a5;
+            transform: translateY(-2px);
         }
 
-        .hidden {
-            display: none;
+        .matched-answer {
+            background: #e8f5e9 !important;
+            border-color: #2b8c4a !important;
         }
 
-        /* SVG line layer */
         .line-layer {
             position: absolute;
             top: 0;
@@ -213,16 +168,13 @@
             height: 100%;
         }
 
-        /* footer */
         .action-footer {
-            padding: 1rem 2rem 2rem 2rem;
+            padding: 1rem 2rem 2rem;
             background: white;
             border-top: 1px solid #edf2f7;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
         }
 
         .next-btn {
@@ -234,23 +186,13 @@
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .next-btn:hover {
             background: #0f4864;
-            transform: translateY(-1px);
         }
 
-        .next-btn:active {
-            transform: translateY(1px);
-        }
-
-        .next-btn.hidden-btn {
+        .next-btn.hidden {
             display: none;
         }
 
@@ -262,17 +204,13 @@
             border-radius: 3rem;
         }
 
-        /* result panel (detailed feedback) */
         .result-panel {
-            margin: 0 2rem 1.8rem 2rem;
+            margin: 0 2rem 1.8rem;
             padding: 1rem 1.5rem;
             background: #f8fbfe;
             border-radius: 1.5rem;
             border-left: 5px solid #2c7da0;
             font-size: 0.9rem;
-            line-height: 1.5;
-            color: #1e3a4d;
-            transition: all 0.2s;
         }
 
         .score-highlight {
@@ -280,45 +218,15 @@
             border-radius: 2rem;
             padding: 0.3rem 1rem;
             display: inline-block;
-            font-weight: 600;
             margin-top: 0.7rem;
         }
 
-        .celebration-badge {
-            background: #ffecb3;
-            color: #b45f06;
-            margin-left: 0.5rem;
-            padding: 0.2rem 0.7rem;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
-        .footnote-simple {
-            font-size: 0.7rem;
-            text-align: center;
-            padding: 0 1rem 1.2rem 1rem;
-            color: #8195aa;
-        }
-
-        @media (max-width: 650px) {
+        @media (max-width: 750px) {
             .match-area {
                 flex-direction: column;
-                gap: 1rem;
-            }
-            .quiz-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .title-area h2 {
-                font-size: 1.3rem;
-            }
-            .final-score-value {
-                font-size: 1.4rem;
             }
         }
 
-        /* canvas for confetti */
         #confetti-canvas {
             position: fixed;
             top: 0;
@@ -338,541 +246,333 @@
     <div class="quiz-header">
         <div class="title-area">
             <h2>Topic 1: Introduction to Marketing Research</h2>
-            <div class="step-badge" id="stepIndicator">📘 Step 1 · Question 9</div>
         </div>
-        <!-- Final score badge (hidden initially, appears after completion) -->
         <div class="final-score-badge" id="finalScoreBadge" style="display: none;">
-            <div class="final-score-label">🏆 FINAL SCORE</div>
+            <div class="final-score-label">FINAL SCORE</div>
             <div class="final-score-value" id="finalScoreValue">0 <span>/ 2</span></div>
         </div>
     </div>
 
+    <div class="progress-text">
+        <span class="progress-item" data-qidx="0">1</span>
+        <span class="progress-item" data-qidx="1">2</span>
+    </div>
+
     <div class="match-area" id="matchContainer">
-        <!-- LEFT: questions -->
         <div class="col left">
-            <div class="col-title">📋 SCENARIO</div>
-            <div class="card q-item q0 active" data-id="Q9">
-                <strong>9.</strong> Marketing research should be done by external researchers
-            </div>
-            <div class="card q-item q1 hidden" data-id="Q10">
-                <strong>10.</strong> NOT required quality attribute of a marketing researcher
-            </div>
+            <div class="col-title">QUESTION</div>
+            <div id="leftQuestionContainer"></div>
         </div>
-
-        <!-- RIGHT: answers -->
         <div class="col right">
-            <div class="col-title">✓ SELECT YOUR ANSWER</div>
-            <!-- Answers for Q9 -->
-            <div class="card ans-block q9-group" data-id="no">❌ No — internal teams are often essential</div>
-            <div class="card ans-block q9-group" data-id="yes">✅ Yes — always external for objectivity</div>
-
-            <!-- Answers for Q10 (hidden at first) -->
-            <div class="card ans-block q10-group hidden" data-id="B">📊 Postgraduate & statistician (not mandatory)</div>
-            <div class="card ans-block q10-group hidden" data-id="A">🎓 Professional and knowledgeable</div>
-            <div class="card ans-block q10-group hidden" data-id="C">⚡ Ethical and energetic</div>
-            <div class="card ans-block q10-group hidden" data-id="D">🏆 Experience and critical mindset</div>
+            <div class="col-title">SELECT ANSWER</div>
+            <div id="rightAnswersContainer"></div>
         </div>
-
-        <div class="line-layer" id="lineLayer">
-            <svg id="connectionSvg" width="100%" height="100%"></svg>
+        <div class="line-layer">
+            <svg id="connectionSvg"></svg>
         </div>
     </div>
 
     <div class="action-footer">
-        <div class="message-area" id="hintMsg">✨ Click a blue question, then tap an answer</div>
-        <button class="next-btn" id="nextBtn">Next step →</button>
+        <div class="message-area" id="hintMsg">Click any answer to match</div>
+        <button class="next-btn" id="nextBtn">Next →</button>
     </div>
 
     <div id="resultArea" style="display: none;"></div>
-    <div class="footnote-simple">✔ Match each question with the correct answer. Final score appears at the top when quiz is complete.</div>
 </div>
 
 <script>
     (function() {
-        // ---------- DOM elements ----------
+        const questions = [
+            {
+                text: "Marketing research should be done by external researchers",
+                answers: [
+                    { text: "❌ No — internal teams are often essential", correct: true, id: "no_q9" },
+                    { text: "✅ Yes — always external for objectivity", correct: false, id: "yes_q9" }
+                ],
+                correctId: "no_q9"
+            },
+            {
+                text: "NOT required quality attribute of a marketing researcher",
+                answers: [
+                    { text: "📊 Postgraduate & statistician (not mandatory)", correct: true, id: "B" },
+                    { text: "🎓 Professional and knowledgeable", correct: false, id: "A" },
+                    { text: "⚡ Ethical and energetic", correct: false, id: "C" },
+                    { text: "🏆 Experience and critical mindset", correct: false, id: "D" }
+                ],
+                correctId: "B"
+            }
+        ];
+
+        const total = questions.length;
+        let currentIdx = 0;
+        let matches = [];
+        let quizCompleted = false;
+        let confettiTriggered = false;
+
         const svg = document.getElementById("connectionSvg");
         const container = document.querySelector(".match-area");
-        const leftCards = document.querySelectorAll(".left .q-item");
-        const rightCards = document.querySelectorAll(".right .ans-block");
-        const nextButton = document.getElementById("nextBtn");
-        const stepIndicator = document.getElementById("stepIndicator");
-        const resultArea = document.getElementById("resultArea");
+        const nextBtn = document.getElementById("nextBtn");
         const hintMsg = document.getElementById("hintMsg");
-        const finalScoreBadge = document.getElementById("finalScoreBadge");
-        const finalScoreValueSpan = document.getElementById("finalScoreValue");
-        
-        // groups
-        const q9Answers = document.querySelectorAll(".q9-group");
-        const q10Answers = document.querySelectorAll(".q10-group");
-        const q0Card = document.querySelector(".q0");
-        const q1Card = document.querySelector(".q1");
+        const finalBadge = document.getElementById("finalScoreBadge");
+        const finalValue = document.getElementById("finalScoreValue");
+        const resultArea = document.getElementById("resultArea");
+        const progressItems = document.querySelectorAll(".progress-item");
 
-        // state
-        let currentStep = 0;            // 0 = Q9, 1 = Q10, 2 = finished
-        let selectedLeftCard = null;
-        let matches = [];               // { leftId, rightId }
-        let confettiTriggeredForPerfect = false;
+        function getAnswer(qIdx) {
+            const m = matches.find(m => m.qIdx === qIdx);
+            return m ? m.answerId : null;
+        }
 
-        // correct mapping
-        const correctMap = {
-            Q9: "no",
-            Q10: "B"
-        };
+        function isAnswered(qIdx) {
+            return matches.some(m => m.qIdx === qIdx);
+        }
 
-        // ----- Helper: compute current score based on matches & correctMap
-        function computeCurrentScore() {
+        function computeScore() {
             let score = 0;
-            if (matches.some(m => m.left === "Q9" && m.right === correctMap.Q9)) score++;
-            if (matches.some(m => m.left === "Q10" && m.right === correctMap.Q10)) score++;
+            for (let i = 0; i < total; i++) {
+                const match = matches.find(m => m.qIdx === i);
+                if (match && match.answerId === questions[i].correctId) score++;
+            }
             return score;
         }
 
-        // remove match by leftId
-        function removeMatchByLeft(leftId) {
-            matches = matches.filter(m => m.left !== leftId);
-        }
-
-        function setMatch(leftId, rightId) {
-            removeMatchByLeft(leftId);
-            matches.push({ left: leftId, right: rightId });
-            redrawLines();
-            // subtle hint if both are perfectly matched before final step
-            if (computeCurrentScore() === 2 && currentStep < 2 && !confettiTriggeredForPerfect) {
-                hintMsg.innerHTML = "🎯 Perfect answers so far! Complete the quiz to see your final score & celebration.";
-                setTimeout(() => {
-                    if (currentStep < 2 && hintMsg.innerHTML.includes("Perfect answers")) {
-                        hintMsg.innerHTML = currentStep === 0 ? "💡 Tap 'Marketing research...' then Yes/No" : "💡 Tap Question 10, then choose the attribute";
-                    }
-                }, 2800);
-            }
-        }
-
-        // redraw lines
-        function redrawLines() {
-            svg.innerHTML = "";
-            if (!container) return;
-            const containerRect = container.getBoundingClientRect();
-            if (containerRect.width === 0) return;
-
-            matches.forEach(match => {
-                const leftElem = Array.from(leftCards).find(el => el.dataset.id === match.left);
-                const rightElem = Array.from(rightCards).find(el => el.dataset.id === match.right);
-                if (leftElem && rightElem && isVisible(leftElem) && isVisible(rightElem)) {
-                    const leftRect = leftElem.getBoundingClientRect();
-                    const rightRect = rightElem.getBoundingClientRect();
-                    const contRect = container.getBoundingClientRect();
-                    
-                    const x1 = leftRect.right - contRect.left;
-                    const y1 = leftRect.top + leftRect.height / 2 - contRect.top;
-                    const x2 = rightRect.left - contRect.left;
-                    const y2 = rightRect.top + rightRect.height / 2 - contRect.top;
-                    
-                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                    line.setAttribute("x1", x1);
-                    line.setAttribute("y1", y1);
-                    line.setAttribute("x2", x2);
-                    line.setAttribute("y2", y2);
-                    line.setAttribute("stroke", "#4499bb");
-                    line.setAttribute("stroke-width", "3");
-                    line.setAttribute("stroke-linecap", "round");
-                    line.setAttribute("opacity", "0.85");
-                    svg.appendChild(line);
+        function updateProgress() {
+            progressItems.forEach((item, idx) => {
+                const answered = isAnswered(idx);
+                if (idx === currentIdx && !quizCompleted) {
+                    item.classList.add("active-progress");
+                    item.classList.remove("completed-progress");
+                } else if (answered) {
+                    item.classList.add("completed-progress");
+                    item.classList.remove("active-progress");
+                } else {
+                    item.classList.remove("active-progress", "completed-progress");
+                }
+                
+                const isFuture = idx > currentIdx && !answered;
+                if (isFuture && !quizCompleted) {
+                    item.classList.add("disabled-progress");
+                } else {
+                    item.classList.remove("disabled-progress");
                 }
             });
         }
 
-        function isVisible(el) {
-            return el && !el.classList.contains("hidden");
+        function drawLine() {
+            svg.innerHTML = "";
+            const answerId = getAnswer(currentIdx);
+            if (!answerId) return;
+            
+            const leftCard = document.querySelector(".left .card");
+            const rightCard = document.querySelector(`.right .card[data-aid='${answerId}']`);
+            if (!leftCard || !rightCard) return;
+            
+            const containerRect = container.getBoundingClientRect();
+            const leftRect = leftCard.getBoundingClientRect();
+            const rightRect = rightCard.getBoundingClientRect();
+            
+            const x1 = leftRect.right - containerRect.left;
+            const y1 = leftRect.top + leftRect.height/2 - containerRect.top;
+            const x2 = rightRect.left - containerRect.left;
+            const y2 = rightRect.top + rightRect.height/2 - containerRect.top;
+            
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("stroke", "#4499bb");
+            line.setAttribute("stroke-width", "3");
+            svg.appendChild(line);
         }
 
-        // ---------- CONFETTI EFFECT (for perfect score) ----------
+        function render() {
+            const q = questions[currentIdx];
+            const storedId = getAnswer(currentIdx);
+            
+            document.getElementById("leftQuestionContainer").innerHTML = `
+                <div class="card">
+                    <strong>${currentIdx + 1}.</strong> ${q.text}
+                </div>
+            `;
+            
+            let answersHtml = '';
+            q.answers.forEach(ans => {
+                const isMatched = storedId === ans.id;
+                answersHtml += `
+                    <div class="card ans-card ${isMatched ? 'matched-answer' : ''}" data-aid="${ans.id}">
+                        ${ans.text}
+                    </div>
+                `;
+            });
+            document.getElementById("rightAnswersContainer").innerHTML = answersHtml;
+            
+            document.querySelectorAll(".ans-card").forEach(card => {
+                card.onclick = () => {
+                    if (quizCompleted) return;
+                    const aid = card.dataset.aid;
+                    matches = matches.filter(m => m.qIdx !== currentIdx);
+                    matches.push({ qIdx: currentIdx, answerId: aid });
+                    
+                    document.querySelectorAll(".ans-card").forEach(c => c.classList.remove("matched-answer"));
+                    card.classList.add("matched-answer");
+                    
+                    drawLine();
+                    updateProgress();
+                    hintMsg.innerHTML = "✓ Matched! Click Next →";
+                };
+            });
+            
+            setTimeout(() => drawLine(), 30);
+        }
+
+        function nextQuestion() {
+            if (quizCompleted) return;
+            
+            if (!isAnswered(currentIdx)) {
+                hintMsg.innerHTML = "⚠️ Please select an answer first";
+                return;
+            }
+            
+            if (currentIdx + 1 < total) {
+                currentIdx++;
+                render();
+                updateProgress();
+                hintMsg.innerHTML = "Click any answer to match";
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function navigateTo(idx) {
+            if (quizCompleted) return;
+            if (idx > currentIdx && !isAnswered(currentIdx)) {
+                hintMsg.innerHTML = "🔒 Answer current question first";
+                return;
+            }
+            if (idx === currentIdx) return;
+            currentIdx = idx;
+            render();
+            updateProgress();
+            hintMsg.innerHTML = "Click any answer to match";
+        }
+
+        // Confetti
         const canvas = document.getElementById("confetti-canvas");
         let ctx = canvas.getContext("2d");
-        let animationId = null;
+        let animId = null;
         let particles = [];
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        window.addEventListener("resize", () => {
-            resizeCanvas();
-        });
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
 
-        class ConfettiParticle {
-            constructor(x, y) {
-                this.x = x || Math.random() * canvas.width;
-                this.y = y || -10;
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = -10;
                 this.size = Math.random() * 8 + 4;
                 this.speedY = Math.random() * 5 + 3;
                 this.speedX = (Math.random() - 0.5) * 4;
                 this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
-                this.rotation = Math.random() * 360;
-                this.rotationSpeed = (Math.random() - 0.5) * 8;
-                this.opacity = 1;
+                this.rot = Math.random() * 360;
+                this.rotSpeed = (Math.random() - 0.5) * 8;
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                this.rotation += this.rotationSpeed;
-                if (this.y > canvas.height + 100 || this.x < -100 || this.x > canvas.width + 100) {
-                    return false;
-                }
-                return true;
+                this.rot += this.rotSpeed;
+                return !(this.y > canvas.height + 100 || this.x < -100 || this.x > canvas.width + 100);
             }
             draw() {
                 ctx.save();
                 ctx.translate(this.x, this.y);
-                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.rotate(this.rot * Math.PI / 180);
                 ctx.fillStyle = this.color;
                 ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
                 ctx.restore();
             }
         }
 
-        function launchConfetti(duration = 2800) {
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-                particles = [];
-            }
-            for (let i = 0; i < 200; i++) {
-                particles.push(new ConfettiParticle());
-            }
-            let startTime = performance.now();
-            function animateConfetti(now) {
-                if (!ctx) return;
+        function burstConfetti() {
+            if (animId) cancelAnimationFrame(animId);
+            particles = [];
+            for (let i = 0; i < 150; i++) particles.push(new Particle());
+            let start = performance.now();
+            function animate(now) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let allDead = true;
+                let alive = false;
                 for (let i = 0; i < particles.length; i++) {
-                    const alive = particles[i].update();
-                    if (alive) allDead = false;
-                    particles[i].draw();
-                }
-                if (allDead || (now - startTime > duration)) {
-                    cancelAnimationFrame(animationId);
-                    animationId = null;
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    particles = [];
-                    return;
-                }
-                animationId = requestAnimationFrame(animateConfetti);
-            }
-            animationId = requestAnimationFrame(animateConfetti);
-            setTimeout(() => {
-                if (animationId) {
-                    cancelAnimationFrame(animationId);
-                    animationId = null;
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    particles = [];
-                }
-            }, duration + 200);
-        }
-
-        function burstCelebration() {
-            launchConfetti(3200);
-            setTimeout(() => {
-                if (canvas) {
-                    for(let i=0;i<50;i++) {
-                        setTimeout(() => {
-                            if(!animationId) launchConfetti(1500);
-                        }, i*40);
+                    if (particles[i].update()) {
+                        alive = true;
+                        particles[i].draw();
                     }
                 }
-            }, 200);
-        }
-        
-        // ----- Show final score at the top after completion (not live) -----
-        function showFinalScoreInHeader() {
-            const score = computeCurrentScore();
-            const total = Object.keys(correctMap).length;
-            finalScoreValueSpan.innerHTML = `${score} <span>/ ${total}</span>`;
-            finalScoreBadge.style.display = "block";
-            
-            // add perfect styling if applicable
-            if (score === total) {
-                finalScoreBadge.classList.add("perfect-score-top");
-            } else {
-                finalScoreBadge.classList.remove("perfect-score-top");
+                if (!alive || now - start > 2500) {
+                    cancelAnimationFrame(animId);
+                    animId = null;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    return;
+                }
+                animId = requestAnimationFrame(animate);
             }
-        }
-        
-        // Hide next button after final score (remove it entirely)
-        function removeNextButton() {
-            if (nextButton) {
-                nextButton.classList.add("hidden-btn");
-                nextButton.style.display = "none";
-            }
+            animId = requestAnimationFrame(animate);
         }
 
-        // update UI based on step
-        function updateUIByStep() {
-            if (currentStep === 0) {
-                q0Card.classList.remove("hidden");
-                q0Card.classList.add("active");
-                q1Card.classList.add("hidden");
-                q1Card.classList.remove("active");
-                q9Answers.forEach(ans => ans.classList.remove("hidden"));
-                q10Answers.forEach(ans => ans.classList.add("hidden"));
-                stepIndicator.innerText = "📘 Step 1 · Question 9";
-                hintMsg.innerHTML = "💡 Tap 'Marketing research should be done by external researchers' then choose Yes or No";
-            } 
-            else if (currentStep === 1) {
-                q0Card.classList.add("hidden");
-                q0Card.classList.remove("active");
-                q1Card.classList.remove("hidden");
-                q1Card.classList.add("active");
-                q9Answers.forEach(ans => ans.classList.add("hidden"));
-                q10Answers.forEach(ans => ans.classList.remove("hidden"));
-                stepIndicator.innerText = "📘 Step 2 · Question 10";
-                hintMsg.innerHTML = "💡 Tap the second question, then select the attribute that is NOT required";
-            } 
-            else if (currentStep === 2) {
-                stepIndicator.innerText = "✅ Assessment completed";
-                hintMsg.innerHTML = "🎉 Quiz finished! Your final score is shown at the top.";
-                
-                // ✅ DELETE NEXT BUTTON (remove from DOM)
-                removeNextButton();
-                
-                // show final score badge at top
-                showFinalScoreInHeader();
-                evaluateFinalScoreAndCelebrate();
-                return;
-            }
-            if (selectedLeftCard) {
-                selectedLeftCard.classList.remove("selected");
-                selectedLeftCard = null;
-            }
-            redrawLines();
-        }
-
-        // final evaluation + confetti for perfect score (detailed message below)
-        function evaluateFinalScoreAndCelebrate() {
-            let score = 0;
-            let feedbackQ9 = "", feedbackQ10 = "";
+        function finishQuiz() {
+            quizCompleted = true;
+            const score = computeScore();
+            const percent = Math.round(score/total*100);
+            const perfect = score === total;
             
-            const matchQ9 = matches.find(m => m.left === "Q9");
-            const isQ9Correct = matchQ9 && matchQ9.right === correctMap.Q9;
-            if (isQ9Correct) {
-                score++;
-                feedbackQ9 = "✓ <strong>Question 9</strong>: Correct — Marketing research can be internal OR external; there's no strict rule that only external researchers should do it.";
-            } else {
-                feedbackQ9 = "✗ <strong>Question 9</strong>: The correct answer is 'No'. Research can be done internally (by company teams) or externally based on needs.";
+            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
+            finalBadge.style.display = "block";
+            if (perfect) {
+                finalBadge.classList.add("perfect-score-top");
+                if (!confettiTriggered) {
+                    confettiTriggered = true;
+                    burstConfetti();
+                }
             }
             
-            const matchQ10 = matches.find(m => m.left === "Q10");
-            const isQ10Correct = matchQ10 && matchQ10.right === correctMap.Q10;
-            if (isQ10Correct) {
-                score++;
-                feedbackQ10 = "✓ <strong>Question 10</strong>: Correct! Being a postgraduate & statistician is not an obligatory quality — ethics, experience, and professionalism matter more.";
-            } else {
-                feedbackQ10 = "✗ <strong>Question 10</strong>: The NOT required attribute is 'Postgraduate & statistician' (option B). A marketing researcher needs knowledge, ethics, energy & critical thinking, but not necessarily a postgraduate degree or statistician title.";
-            }
+            nextBtn.classList.add("hidden");
             
-            const total = Object.keys(correctMap).length;
-            const percent = Math.round((score/total)*100);
-            const isPerfect = (score === total);
-            
-            // CONFETTI for perfect 2/2
-            if (isPerfect && !confettiTriggeredForPerfect) {
-                confettiTriggeredForPerfect = true;
-                burstCelebration();
+            let fb = `<div style="font-weight:600; margin-bottom:12px;">Quiz Results</div>`;
+            for (let i = 0; i < total; i++) {
+                const q = questions[i];
+                const match = matches.find(m => m.qIdx === i);
+                const correct = match && match.answerId === q.correctId;
+                const correctText = q.answers.find(a => a.id === q.correctId)?.text;
+                if (correct) {
+                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
+                } else {
+                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect. Correct: ${correctText}</div>`;
+                }
             }
+            fb += `<div class="score-highlight">🏅 Score: ${score}/${total} · ${percent}%</div>`;
+            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
             
             resultArea.style.display = "block";
             resultArea.className = "result-panel";
+            resultArea.innerHTML = fb;
+            hintMsg.innerHTML = "Quiz completed!";
             
-            let perfectMessage = "";
-            if (isPerfect) {
-                perfectMessage = `<div style="margin-top: 12px; background:#ffe5b4; padding:8px 16px; border-radius: 40px; display:inline-block; font-weight:600;">🌟 Congratulations! You nailed both questions! 🎊</div>`;
-            }
-            
-            resultArea.innerHTML = `
-                <div style="font-weight: 600; font-size:1rem; margin-bottom: 12px;">📊 Detailed Feedback</div>
-                <div style="margin-bottom: 8px;">${feedbackQ9}</div>
-                <div style="margin-bottom: 12px;">${feedbackQ10}</div>
-                <div class="score-highlight" style="background: ${isPerfect ? '#ffe0a3' : '#e0f0f5'};">
-                    🏅 Score: ${score} / ${total} · ${percent}%
-                </div>
-                ${perfectMessage}
-            `;
-            
-            // update top badge again (ensure perfect styling)
-            if (isPerfect) {
-                finalScoreBadge.classList.add("perfect-score-top");
-            } else {
-                finalScoreBadge.classList.remove("perfect-score-top");
-            }
+            updateProgress();
         }
-        
-        // ---------- Event listeners ----------
-        leftCards.forEach(card => {
-            card.addEventListener("click", (e) => {
-                e.stopPropagation();
-                if (currentStep === 2) return;
-                if (!card.classList.contains("active") || card.classList.contains("hidden")) return;
-                
-                if (selectedLeftCard) {
-                    selectedLeftCard.classList.remove("selected");
-                }
-                selectedLeftCard = card;
-                card.classList.add("selected");
-                hintMsg.innerHTML = "✨ Now tap an answer on the right to connect.";
-            });
+
+        progressItems.forEach((item, idx) => {
+            item.onclick = () => navigateTo(idx);
         });
         
-        rightCards.forEach(answer => {
-            answer.addEventListener("click", (e) => {
-                e.stopPropagation();
-                if (currentStep === 2) return;
-                if (!selectedLeftCard) {
-                    hintMsg.innerHTML = "👈 First tap on a blue question card, then choose your answer.";
-                    setTimeout(() => {
-                        if (currentStep !== 2 && hintMsg.innerHTML.includes("First tap")) {
-                            if(currentStep===0) hintMsg.innerHTML = "💡 Tap 'Marketing research should be done by external researchers' then choose Yes or No";
-                            else if(currentStep===1) hintMsg.innerHTML = "💡 Tap the second question, then select the attribute that is NOT required";
-                        }
-                    }, 1800);
-                    return;
-                }
-                
-                const leftId = selectedLeftCard.dataset.id;
-                if (!selectedLeftCard.classList.contains("active") || selectedLeftCard.classList.contains("hidden")) {
-                    selectedLeftCard.classList.remove("selected");
-                    selectedLeftCard = null;
-                    hintMsg.innerHTML = "⚠️ Please select a visible question again.";
-                    return;
-                }
-                
-                const rightId = answer.dataset.id;
-                if (currentStep === 0 && leftId === "Q9") {
-                    if (answer.classList.contains("q9-group")) {
-                        setMatch(leftId, rightId);
-                        selectedLeftCard.classList.remove("selected");
-                        selectedLeftCard = null;
-                        hintMsg.innerHTML = "✓ Matched! Click 'Next step' to continue.";
-                    } else {
-                        hintMsg.innerHTML = "⛔ Please select an answer from the visible options (Yes/No).";
-                        selectedLeftCard.classList.remove("selected");
-                        selectedLeftCard = null;
-                    }
-                } 
-                else if (currentStep === 1 && leftId === "Q10") {
-                    if (answer.classList.contains("q10-group")) {
-                        setMatch(leftId, rightId);
-                        selectedLeftCard.classList.remove("selected");
-                        selectedLeftCard = null;
-                        hintMsg.innerHTML = "✓ Matched! Press 'Next step' to see your score.";
-                    } else {
-                        hintMsg.innerHTML = "⛔ Pick an answer from the four quality attributes.";
-                        selectedLeftCard.classList.remove("selected");
-                        selectedLeftCard = null;
-                    }
-                }
-                else {
-                    hintMsg.innerHTML = "🔄 Please match the visible question with its corresponding answer block.";
-                    selectedLeftCard.classList.remove("selected");
-                    selectedLeftCard = null;
-                }
-            });
-        });
+        nextBtn.onclick = nextQuestion;
         
-        function handleNext() {
-            if (currentStep === 0) {
-                const hasMatchQ9 = matches.some(m => m.left === "Q9");
-                if (!hasMatchQ9) {
-                    hintMsg.innerHTML = "⚠️ Please match Question 9 first (tap the question, then select Yes/No).";
-                    return;
-                }
-                currentStep = 1;
-                updateUIByStep();
-                if (selectedLeftCard) {
-                    selectedLeftCard.classList.remove("selected");
-                    selectedLeftCard = null;
-                }
-                setTimeout(() => redrawLines(), 30);
-            } 
-            else if (currentStep === 1) {
-                const hasMatchQ10 = matches.some(m => m.left === "Q10");
-                if (!hasMatchQ10) {
-                    hintMsg.innerHTML = "⚠️ Please match Question 10 before finishing.";
-                    return;
-                }
-                currentStep = 2;
-                updateUIByStep();  // this hides next button, shows final score badge and detailed result
-                redrawLines();
-            }
-        }
+        window.addEventListener("resize", () => setTimeout(() => drawLine(), 100));
         
-        // resize & observer
-        let resizeTimer;
-        window.addEventListener("resize", () => {
-            if (resizeTimer) clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (container) redrawLines();
-                resizeCanvas();
-            }, 100);
-        });
-        
-        const resizeObserver = new ResizeObserver(() => {
-            if (container && currentStep !== undefined) redrawLines();
-        });
-        resizeObserver.observe(container);
-        leftCards.forEach(c => resizeObserver.observe(c));
-        rightCards.forEach(c => resizeObserver.observe(c));
-        
-        function init() {
-            currentStep = 0;
-            matches = [];
-            selectedLeftCard = null;
-            confettiTriggeredForPerfect = false;
-            q0Card.classList.remove("hidden");
-            q0Card.classList.add("active");
-            q1Card.classList.add("hidden");
-            q1Card.classList.remove("active");
-            q9Answers.forEach(a => a.classList.remove("hidden"));
-            q10Answers.forEach(a => a.classList.add("hidden"));
-            stepIndicator.innerText = "📘 Step 1 · Question 9";
-            hintMsg.innerHTML = "✨ Click a blue question, then tap an answer";
-            // Make sure next button is visible and enabled
-            nextButton.classList.remove("hidden-btn");
-            nextButton.style.display = "flex";
-            nextButton.disabled = false;
-            nextButton.style.opacity = "1";
-            nextButton.style.cursor = "pointer";
-            resultArea.style.display = "none";
-            resultArea.innerHTML = "";
-            svg.innerHTML = "";
-            leftCards.forEach(c => c.classList.remove("selected"));
-            if (selectedLeftCard) selectedLeftCard.classList.remove("selected");
-            selectedLeftCard = null;
-            // hide final score badge until completion
-            finalScoreBadge.style.display = "none";
-            finalScoreBadge.classList.remove("perfect-score-top");
-            redrawLines();
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-                animationId = null;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles = [];
-            }
-            resizeCanvas();
-        }
-        
-        nextButton.addEventListener("click", handleNext);
-        document.addEventListener("click", function(e) {
-            if (currentStep === 2) return;
-            const isLeftCard = e.target.closest(".left .q-item");
-            const isRightCard = e.target.closest(".right .ans-block");
-            if (!isLeftCard && !isRightCard && selectedLeftCard) {
-                selectedLeftCard.classList.remove("selected");
-                selectedLeftCard = null;
-                if (currentStep === 0) hintMsg.innerHTML = "💡 Tap a question first, then the answer.";
-                else if (currentStep === 1) hintMsg.innerHTML = "💡 Tap Question 10, then choose the right attribute.";
-            }
-        });
-        
-        init();
-        setTimeout(() => redrawLines(), 80);
+        render();
+        updateProgress();
     })();
 </script>
 </body>
