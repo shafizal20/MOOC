@@ -186,10 +186,12 @@
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
+            transition: 0.2s;
         }
 
         .next-btn:hover {
             background: #0f4864;
+            transform: translateY(-1px);
         }
 
         .next-btn.hidden {
@@ -358,6 +360,14 @@
             });
         }
 
+        function updateButtonText() {
+            if (currentIdx === total - 1) {
+                nextBtn.textContent = "Submit";
+            } else {
+                nextBtn.textContent = "Next →";
+            }
+        }
+
         function drawLine() {
             svg.innerHTML = "";
             const answerId = getAnswer(currentIdx);
@@ -419,14 +429,60 @@
                     
                     drawLine();
                     updateProgress();
-                    hintMsg.innerHTML = "✓ Matched! Click Next →";
+                    if (currentIdx === total - 1) {
+                        hintMsg.innerHTML = "✓ Ready to submit! Click Finish to see your score.";
+                    } else {
+                        hintMsg.innerHTML = "✓ Matched! Click Next →";
+                    }
                 };
             });
             
+            updateButtonText();
             setTimeout(() => drawLine(), 30);
         }
 
-        function nextQuestion() {
+        function finishQuiz() {
+            quizCompleted = true;
+            const score = computeScore();
+            const percent = Math.round(score/total*100);
+            const perfect = score === total;
+            
+            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
+            finalBadge.style.display = "block";
+            if (perfect) {
+                finalBadge.classList.add("perfect-score-top");
+                if (!confettiTriggered) {
+                    confettiTriggered = true;
+                    burstConfetti();
+                }
+            }
+            
+            nextBtn.classList.add("hidden");
+            
+            let fb = `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 1: Introduction to Marketing Research</div>`;
+            for (let i = 0; i < total; i++) {
+                const q = questions[i];
+                const match = matches.find(m => m.qIdx === i);
+                const correct = match && match.answerId === q.correctId;
+                const correctText = q.answers.find(a => a.id === q.correctId)?.text;
+                if (correct) {
+                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
+                } else {
+                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect. Correct: ${correctText}</div>`;
+                }
+            }
+            fb += `<div class="score-highlight">🏅 Score: ${score}/${total} · ${percent}%</div>`;
+            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
+            
+            resultArea.style.display = "block";
+            resultArea.className = "result-panel";
+            resultArea.innerHTML = fb;
+            hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
+            
+            updateProgress();
+        }
+
+        function nextOrFinish() {
             if (quizCompleted) return;
             
             if (!isAnswered(currentIdx)) {
@@ -454,7 +510,11 @@
             currentIdx = idx;
             render();
             updateProgress();
-            hintMsg.innerHTML = "Click any answer to match";
+            if (currentIdx === total - 1) {
+                hintMsg.innerHTML = "Last question. Click any answer to match, then Finish.";
+            } else {
+                hintMsg.innerHTML = "Click any answer to match";
+            }
         }
 
         // Confetti
@@ -522,52 +582,11 @@
             animId = requestAnimationFrame(animate);
         }
 
-        function finishQuiz() {
-            quizCompleted = true;
-            const score = computeScore();
-            const percent = Math.round(score/total*100);
-            const perfect = score === total;
-            
-            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
-            finalBadge.style.display = "block";
-            if (perfect) {
-                finalBadge.classList.add("perfect-score-top");
-                if (!confettiTriggered) {
-                    confettiTriggered = true;
-                    burstConfetti();
-                }
-            }
-            
-            nextBtn.classList.add("hidden");
-            
-            let fb = `<div style="font-weight:600; margin-bottom:12px;">Quiz Results</div>`;
-            for (let i = 0; i < total; i++) {
-                const q = questions[i];
-                const match = matches.find(m => m.qIdx === i);
-                const correct = match && match.answerId === q.correctId;
-                const correctText = q.answers.find(a => a.id === q.correctId)?.text;
-                if (correct) {
-                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
-                } else {
-                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect. Correct: ${correctText}</div>`;
-                }
-            }
-            fb += `<div class="score-highlight">🏅 Score: ${score}/${total} · ${percent}%</div>`;
-            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
-            
-            resultArea.style.display = "block";
-            resultArea.className = "result-panel";
-            resultArea.innerHTML = fb;
-            hintMsg.innerHTML = "Quiz completed!";
-            
-            updateProgress();
-        }
-
         progressItems.forEach((item, idx) => {
             item.onclick = () => navigateTo(idx);
         });
         
-        nextBtn.onclick = nextQuestion;
+        nextBtn.onclick = nextOrFinish;
         
         window.addEventListener("resize", () => setTimeout(() => drawLine(), 100));
         
