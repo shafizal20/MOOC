@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 4: Research Design | Quick Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: #eef2f8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .quiz-box {
+            max-width: 1100px;
+            width: 100%;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            padding: 1.2rem 2rem;
+            background: white;
+            border-bottom: 1px solid #eef2f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .title-area h2 {
+            font-size: 1.5rem;
+            color: #1a3b4f;
+        }
+
+        .final-score-badge {
+            background: linear-gradient(135deg, #f0f6fa, #e4edf5);
+            border-radius: 3rem;
+            padding: 0.3rem 1.2rem;
+            text-align: center;
+        }
+
+        .final-score-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #2c7da0;
+        }
+
+        .final-score-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1f5e7e;
+            line-height: 1.2;
+        }
+
+        .perfect-score-top {
+            background: linear-gradient(135deg, #ffecb3, #ffe0a3);
+        }
+
+        .progress-text {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.8rem 2rem;
+            background: white;
+            border-bottom: 1px solid #eef2f6;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .progress-item {
+            cursor: pointer;
+            color: #8ba0b5;
+            padding: 0.2rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .progress-item.active-progress {
+            color: #1f5e7e;
+            font-weight: 700;
+            border-bottom-color: #2c7da0;
+        }
+
+        .progress-item.completed-progress {
+            color: #2b8c4a;
+        }
+
+        .progress-item.disabled-progress {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .match-area {
+            position: relative;
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            min-height: 350px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        .col-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #5e7a93;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+        }
+
+        .card {
+            background: white;
+            border: 1.5px solid #e2edf2;
+            border-radius: 1.2rem;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: #1e2f3e;
+        }
+
+        .left .card {
+            border-left: 5px solid #2c7da0;
+            background: #f1f9ff;
+        }
+
+        .right .card {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .right .card:hover {
+            background: #fef8ef;
+            transform: translateY(-2px);
+        }
+
+        .matched-answer {
+            background: #e8f5e9 !important;
+            border-color: #2b8c4a !important;
+        }
+
+        .line-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .action-footer {
+            padding: 1rem 2rem 2rem;
+            background: white;
+            border-top: 1px solid #edf2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .next-btn {
+            background: #1f5e7e;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 3rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .next-btn:hover {
+            background: #0f4864;
+            transform: translateY(-1px);
+        }
+
+        .next-btn.hidden {
+            display: none;
+        }
+
+        .message-area {
+            font-size: 0.85rem;
+            color: #557c8f;
+            background: #f0f6fa;
+            padding: 0.4rem 1rem;
+            border-radius: 3rem;
+        }
+
+        .result-panel {
+            margin: 0 2rem 1.8rem;
+            padding: 1rem 1.5rem;
+            background: #f8fbfe;
+            border-radius: 1.5rem;
+            border-left: 5px solid #2c7da0;
+            font-size: 0.9rem;
+        }
+
+        .score-highlight {
+            background: #e0f0f5;
+            border-radius: 2rem;
+            padding: 0.3rem 1rem;
+            display: inline-block;
+            margin-top: 0.7rem;
+        }
+
+        @media (max-width: 750px) {
+            .match-area {
+                flex-direction: column;
+            }
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="quiz-box">
+    <div class="quiz-header">
+        <div class="title-area">
+            <h2>Topic 4: Research Design</h2>
+        </div>
+        <div class="final-score-badge" id="finalScoreBadge" style="display: none;">
+            <div class="final-score-label">FINAL SCORE</div>
+            <div class="final-score-value" id="finalScoreValue">0 <span>/ 3</span></div>
+        </div>
+    </div>
+
+    <div class="progress-text">
+        <span class="progress-item" data-qidx="0">1</span>
+        <span class="progress-item" data-qidx="1">2</span>
+        <span class="progress-item" data-qidx="2">3</span>
+    </div>
+
+    <div class="match-area" id="matchContainer">
+        <div class="col left">
+            <div class="col-title">QUESTION</div>
+            <div id="leftQuestionContainer"></div>
+        </div>
+        <div class="col right">
+            <div class="col-title">SELECT ANSWER</div>
+            <div id="rightAnswersContainer"></div>
+        </div>
+        <div class="line-layer">
+            <svg id="connectionSvg"></svg>
+        </div>
+    </div>
+
+    <div class="action-footer">
+        <div class="message-area" id="hintMsg">Click any answer to match</div>
+        <button class="next-btn" id="nextBtn">Next →</button>
+    </div>
+
+    <div id="resultArea" style="display: none;"></div>
+</div>
+
+<script>
+    (function() {
+        const questions = [
+            {
+                text: "Which of the above are the commonly used survey methods?",
+                answers: [
+                    { text: "A) i, ii, iii, vi", correct: false, id: "q1_a" },
+                    { text: "B) ii, iii, iv, vi", correct: false, id: "q1_b" },
+                    { text: "C) i, ii, iii, iv", correct: true, id: "q1_c" },
+                    { text: "D) iii, iv, v, vi", correct: false, id: "q1_d" }
+                ],
+                correctId: "q1_c"
+            },
+            {
+                text: "Which of the above are about Depth Interview?",
+                answers: [
+                    { text: "A) i, ii, iii, vi", correct: false, id: "q2_a" },
+                    { text: "B) vii, viii, ix, x", correct: true, id: "q2_b" },
+                    { text: "C) vi, vii, viii, iv", correct: false, id: "q2_c" },
+                    { text: "D) iii, iv, v, vii", correct: false, id: "q2_d" }
+                ],
+                correctId: "q2_b"
+            },
+            {
+                text: "In marketing research, the unit of analysis can be individual, dyad or group/organization.",
+                answers: [
+                    { text: "✅ Yes — Unit of analysis includes individuals, dyads, and groups", correct: true, id: "q3_yes" },
+                    { text: "❌ No — Only individuals can be units of analysis", correct: false, id: "q3_no" }
+                ],
+                correctId: "q3_yes"
+            }
+        ];
+
+        const total = questions.length;
+        let currentIdx = 0;
+        let matches = [];
+        let quizCompleted = false;
+        let confettiTriggered = false;
+
+        const svg = document.getElementById("connectionSvg");
+        const container = document.querySelector(".match-area");
+        const nextBtn = document.getElementById("nextBtn");
+        const hintMsg = document.getElementById("hintMsg");
+        const finalBadge = document.getElementById("finalScoreBadge");
+        const finalValue = document.getElementById("finalScoreValue");
+        const resultArea = document.getElementById("resultArea");
+        const progressItems = document.querySelectorAll(".progress-item");
+
+        function getAnswer(qIdx) {
+            const m = matches.find(m => m.qIdx === qIdx);
+            return m ? m.answerId : null;
+        }
+
+        function isAnswered(qIdx) {
+            return matches.some(m => m.qIdx === qIdx);
+        }
+
+        function computeScore() {
+            let score = 0;
+            for (let i = 0; i < total; i++) {
+                const match = matches.find(m => m.qIdx === i);
+                if (match && match.answerId === questions[i].correctId) score++;
+            }
+            return score;
+        }
+
+        function updateProgress() {
+            progressItems.forEach((item, idx) => {
+                const answered = isAnswered(idx);
+                if (idx === currentIdx && !quizCompleted) {
+                    item.classList.add("active-progress");
+                    item.classList.remove("completed-progress");
+                } else if (answered) {
+                    item.classList.add("completed-progress");
+                    item.classList.remove("active-progress");
+                } else {
+                    item.classList.remove("active-progress", "completed-progress");
+                }
+                
+                const isFuture = idx > currentIdx && !answered;
+                if (isFuture && !quizCompleted) {
+                    item.classList.add("disabled-progress");
+                } else {
+                    item.classList.remove("disabled-progress");
+                }
+            });
+        }
+
+        function updateButtonText() {
+            if (currentIdx === total - 1) {
+                nextBtn.textContent = "Submit";
+            } else {
+                nextBtn.textContent = "Next →";
+            }
+        }
+
+        function drawLine() {
+            svg.innerHTML = "";
+            const answerId = getAnswer(currentIdx);
+            if (!answerId) return;
+            
+            const leftCard = document.querySelector(".left .card");
+            const rightCard = document.querySelector(`.right .card[data-aid='${answerId}']`);
+            if (!leftCard || !rightCard) return;
+            
+            const containerRect = container.getBoundingClientRect();
+            const leftRect = leftCard.getBoundingClientRect();
+            const rightRect = rightCard.getBoundingClientRect();
+            
+            const x1 = leftRect.right - containerRect.left;
+            const y1 = leftRect.top + leftRect.height/2 - containerRect.top;
+            const x2 = rightRect.left - containerRect.left;
+            const y2 = rightRect.top + rightRect.height/2 - containerRect.top;
+            
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("stroke", "#4499bb");
+            line.setAttribute("stroke-width", "3");
+            svg.appendChild(line);
+        }
+
+        function render() {
+            const q = questions[currentIdx];
+            const storedId = getAnswer(currentIdx);
+            
+            document.getElementById("leftQuestionContainer").innerHTML = `
+                <div class="card">
+                    <strong>${currentIdx + 1}.</strong> ${q.text}
+                </div>
+            `;
+            
+            let answersHtml = '';
+            q.answers.forEach(ans => {
+                const isMatched = storedId === ans.id;
+                answersHtml += `
+                    <div class="card ans-card ${isMatched ? 'matched-answer' : ''}" data-aid="${ans.id}">
+                        ${ans.text}
+                    </div>
+                `;
+            });
+            document.getElementById("rightAnswersContainer").innerHTML = answersHtml;
+            
+            document.querySelectorAll(".ans-card").forEach(card => {
+                card.onclick = () => {
+                    if (quizCompleted) return;
+                    const aid = card.dataset.aid;
+                    matches = matches.filter(m => m.qIdx !== currentIdx);
+                    matches.push({ qIdx: currentIdx, answerId: aid });
+                    
+                    document.querySelectorAll(".ans-card").forEach(c => c.classList.remove("matched-answer"));
+                    card.classList.add("matched-answer");
+                    
+                    drawLine();
+                    updateProgress();
+                    
+                    if (currentIdx === total - 1) {
+                        hintMsg.innerHTML = "✓ Ready to submit! Click Submit to see your score.";
+                    } else {
+                        hintMsg.innerHTML = "✓ Matched! Click Next →";
+                    }
+                };
+            });
+            
+            updateButtonText();
+            setTimeout(() => drawLine(), 30);
+        }
+
+        function nextOrSubmit() {
+            if (quizCompleted) return;
+            
+            if (!isAnswered(currentIdx)) {
+                hintMsg.innerHTML = "⚠️ Please select an answer first";
+                return;
+            }
+            
+            if (currentIdx + 1 < total) {
+                currentIdx++;
+                render();
+                updateProgress();
+                hintMsg.innerHTML = "Click any answer to match";
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function navigateTo(idx) {
+            if (quizCompleted) return;
+            if (idx > currentIdx && !isAnswered(currentIdx)) {
+                hintMsg.innerHTML = "🔒 Answer current question first";
+                return;
+            }
+            if (idx === currentIdx) return;
+            currentIdx = idx;
+            render();
+            updateProgress();
+            if (currentIdx === total - 1) {
+                hintMsg.innerHTML = "Last question. Click any answer to match, then Submit.";
+            } else {
+                hintMsg.innerHTML = "Click any answer to match";
+            }
+        }
+
+        // Confetti
+        const canvas = document.getElementById("confetti-canvas");
+        let ctx = canvas.getContext("2d");
+        let animId = null;
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = -10;
+                this.size = Math.random() * 8 + 4;
+                this.speedY = Math.random() * 5 + 3;
+                this.speedX = (Math.random() - 0.5) * 4;
+                this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+                this.rot = Math.random() * 360;
+                this.rotSpeed = (Math.random() - 0.5) * 8;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.rot += this.rotSpeed;
+                return !(this.y > canvas.height + 100 || this.x < -100 || this.x > canvas.width + 100);
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rot * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        function burstConfetti() {
+            if (animId) cancelAnimationFrame(animId);
+            particles = [];
+            for (let i = 0; i < 150; i++) particles.push(new Particle());
+            let start = performance.now();
+            function animate(now) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                for (let i = 0; i < particles.length; i++) {
+                    if (particles[i].update()) {
+                        alive = true;
+                        particles[i].draw();
+                    }
+                }
+                if (!alive || now - start > 2500) {
+                    cancelAnimationFrame(animId);
+                    animId = null;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    return;
+                }
+                animId = requestAnimationFrame(animate);
+            }
+            animId = requestAnimationFrame(animate);
+        }
+
+        function finishQuiz() {
+            quizCompleted = true;
+            const score = computeScore();
+            const percent = Math.round(score/total*100);
+            const perfect = score === total;
+            
+            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
+            finalBadge.style.display = "block";
+            if (perfect) {
+                finalBadge.classList.add("perfect-score-top");
+                if (!confettiTriggered) {
+                    confettiTriggered = true;
+                    burstConfetti();
+                }
+            }
+            
+            nextBtn.classList.add("hidden");
+            
+            let fb = `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 4: Research Design</div>`;
+            for (let i = 0; i < total; i++) {
+                const q = questions[i];
+                const match = matches.find(m => m.qIdx === i);
+                const correct = match && match.answerId === q.correctId;
+                const correctText = q.answers.find(a => a.id === q.correctId)?.text;
+                if (correct) {
+                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
+                } else {
+                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect. Correct: ${correctText}</div>`;
+                }
+            }
+            fb += `<div class="score-highlight">🏅 Score: ${score}/${total} · ${percent}%</div>`;
+            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
+            
+            resultArea.style.display = "block";
+            resultArea.className = "result-panel";
+            resultArea.innerHTML = fb;
+            hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
+            
+            updateProgress();
+        }
+
+        progressItems.forEach((item, idx) => {
+            item.onclick = () => navigateTo(idx);
+        });
+        
+        nextBtn.onclick = nextOrSubmit;
+        
+        window.addEventListener("resize", () => setTimeout(() => drawLine(), 100));
+        
+        render();
+        updateProgress();
+    })();
+</script>
+</body>
+</html>
