@@ -30,7 +30,6 @@
       overflow: hidden;
     }
 
-    /* ── Side Panel ── */
     .side-panel {
       width: 290px;
       background: linear-gradient(180deg, #1a3c2c 0%, #0f2a1e 100%);
@@ -72,7 +71,6 @@
     }
     .topic-chip:hover { background: #ffffff; color: #1a3c2c; transform: translateX(4px); }
 
-    /* ── Chat Main ── */
     .chat-main {
       flex: 1; display: flex; flex-direction: column;
       background: #fefefe; overflow: hidden;
@@ -132,7 +130,6 @@
     .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
     @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
 
-    /* ── Input Row ── */
     .input-row {
       padding: 16px 24px 24px; border-top: 1px solid #eef2f8;
       background: white; display: flex; gap: 12px; align-items: center; flex-shrink: 0;
@@ -150,19 +147,17 @@
     .input-row button:hover:not(:disabled) { background: #0e3f28; }
     .input-row button:disabled { background: #94a3b8; cursor: not-allowed; }
 
-    /* ══════════════════════════════════════════
-       NUKE the Botpress floating widget — every
-       selector they have ever used, belt+braces
-    ══════════════════════════════════════════ */
+    /* ── Hide ALL Botpress native UI ── */
     #bp-web-widget,
     #bp-web-widget-container,
     #botpress-webchat,
     .bpw-floating-button,
     .bpw-layout,
     .bpw-powered-by,
+    [class^="bpw-"],
+    [class*=" bpw-"],
     iframe[src*="botpress"],
     iframe[src*="bpcontent"],
-    div[class^="bpw-"],
     div[id^="bp-"] {
       display: none !important;
       visibility: hidden !important;
@@ -170,6 +165,8 @@
       pointer-events: none !important;
       width: 0 !important;
       height: 0 !important;
+      position: absolute !important;
+      left: -9999px !important;
     }
 
     @media (max-width: 700px) {
@@ -181,8 +178,6 @@
 <body>
 
 <div class="chat-app">
-
-  <!-- Sidebar -->
   <div class="side-panel">
     <div class="brand">
       <h2>📊 Marketing Research<br>& Analytics AI</h2>
@@ -210,7 +205,6 @@
     </div>
   </div>
 
-  <!-- Chat -->
   <div class="chat-main">
     <div class="chat-header">
       <div class="chat-header-left">
@@ -219,7 +213,7 @@
       </div>
       <div id="statusPill" class="status-pill connecting">
         <span class="status-dot"></span>
-        <span id="statusLabel">Warming up AI…</span>
+        <span id="statusLabel">Connecting…</span>
       </div>
     </div>
 
@@ -230,91 +224,103 @@
     </div>
 
     <div class="input-row">
-      <input type="text" id="userQuery" placeholder="Warming up AI — ready in a moment…" autocomplete="off" disabled>
+      <input type="text" id="userQuery" placeholder="Connecting…" autocomplete="off" disabled>
       <button id="sendBtn" disabled>Send →</button>
     </div>
   </div>
 </div>
 
-<!-- Botpress SDK — MUST load before your bot config script -->
+<!-- Step 1: Botpress SDK -->
 <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
 
 <script>
 (function () {
   'use strict';
 
-  const CLIENT_ID = 'a2162a4c-c626-4885-9ea2-1605ae7be86c';
+  var CLIENT_ID  = 'a2162a4c-c626-4885-9ea2-1605ae7be86c';
 
-  const msgArea     = document.getElementById('chatMessages');
-  const inputEl     = document.getElementById('userQuery');
-  const sendBtn     = document.getElementById('sendBtn');
-  const statusPill  = document.getElementById('statusPill');
-  const statusLabel = document.getElementById('statusLabel');
+  var msgArea     = document.getElementById('chatMessages');
+  var inputEl     = document.getElementById('userQuery');
+  var sendBtn     = document.getElementById('sendBtn');
+  var statusPill  = document.getElementById('statusPill');
+  var statusLabel = document.getElementById('statusLabel');
 
-  let ready   = false;
-  let waiting = false;
+  var isReady  = false;
+  var waiting  = false;
+  var skipNext = false; // used to swallow warm-up ping reply
 
-  /* ── UI helpers ── */
+  /* ── Helpers ── */
   function scrollBottom() { msgArea.scrollTop = msgArea.scrollHeight; }
 
-  function addMsg(content, role) {
-    const d = document.createElement('div');
+  function addMsg(html, role) {
+    var d = document.createElement('div');
     d.className = 'message-bubble ' + (role === 'user' ? 'user-msg' : 'bot-msg');
-    if (role === 'bot') d.innerHTML = content;
-    else d.textContent = content;
+    if (role === 'bot') d.innerHTML = html;
+    else d.textContent = html;
     msgArea.appendChild(d);
     scrollBottom();
   }
 
   function showTyping() {
     if (document.getElementById('typingDots')) return;
-    const d = document.createElement('div');
+    var d = document.createElement('div');
     d.className = 'typing-indicator'; d.id = 'typingDots';
     d.innerHTML = '<span></span><span></span><span></span>';
     msgArea.appendChild(d); scrollBottom();
   }
 
   function hideTyping() {
-    const d = document.getElementById('typingDots');
+    var d = document.getElementById('typingDots');
     if (d) d.remove();
   }
 
-  function setStatus(state, text) {
-    statusPill.className = 'status-pill ' + state;
-    statusLabel.textContent = text;
+  function setStatus(cls, txt) {
+    statusPill.className = 'status-pill ' + cls;
+    statusLabel.textContent = txt;
   }
 
   function enableUI() {
-    ready = true; waiting = false;
+    isReady = true; waiting = false;
     inputEl.disabled = false; sendBtn.disabled = false;
-    inputEl.placeholder = 'e.g., What is problem identification research?';
+    inputEl.placeholder = 'e.g., What is marketing research?';
   }
 
   function disableUI() {
     inputEl.disabled = true; sendBtn.disabled = true;
   }
 
-  /* ── Nuke Botpress widget whenever it appears in DOM ── */
+  /* ── Nuke Botpress widget via MutationObserver ── */
   new MutationObserver(function () {
-    document.querySelectorAll(
+    var els = document.querySelectorAll(
       '#bp-web-widget, #bp-web-widget-container, ' +
-      '#botpress-webchat, .bpw-floating-button, .bpw-layout, ' +
+      '.bpw-floating-button, .bpw-layout, ' +
       'iframe[src*="botpress"], iframe[src*="bpcontent"]'
-    ).forEach(function (el) {
-      el.style.cssText = 'display:none!important;width:0!important;height:0!important';
+    );
+    els.forEach(function (el) {
+      el.style.cssText = 'display:none!important;width:0!important;' +
+        'height:0!important;position:absolute!important;left:-9999px!important';
     });
   }).observe(document.documentElement, { childList: true, subtree: true });
 
-  /* ── Wait for SDK then init ── */
-  function waitSDK() {
-    if (typeof window.botpress === 'undefined') { setTimeout(waitSDK, 150); return; }
+  /* ── Wait for window.botpress to be injected ── */
+  function waitForSDK() {
+    if (typeof window.botpress === 'undefined') {
+      setTimeout(waitForSDK, 150);
+      return;
+    }
+    initBot();
+  }
 
-    /* Listen for bot replies */
+  function initBot() {
+    /* 1. Register message listener BEFORE init */
     window.botpress.on('message', function (msg) {
-      // Skip echoed user messages
+      // Only handle bot→user messages
       if (msg.direction === 'outgoing') return;
 
-      const text = (msg.payload && msg.payload.text) || msg.text;
+      // Swallow the silent warm-up ping reply
+      if (skipNext) { skipNext = false; return; }
+
+      var text = (msg.payload && msg.payload.text) || msg.text || '';
       if (!text) return;
 
       hideTyping();
@@ -322,99 +328,41 @@
       addMsg(text, 'bot');
     });
 
-    /* Ready event — Botpress connection established */
+    /* 2. webchat:ready — connection is live */
     window.botpress.on('webchat:ready', function () {
       setStatus('ready', '● AI Ready');
       enableUI();
 
-      /* ── WARM-UP PING ──────────────────────────────────────
-         Send a silent, invisible "ping" message right after
-         ready. This wakes the bot's AI worker so the FIRST
-         real user message gets a fast reply instead of waiting
-         for a cold start.
-         The bot will reply to the ping — we silently discard
-         that reply using the `warmingUp` flag.
-      ─────────────────────────────────────────────────────── */
-      warmingUp = true;
-      window.botpress.sendMessage({ type: 'text', text: 'ping' }).catch(function(){});
+      // Silent warm-up ping so the AI worker is hot for the user's first message
+      skipNext = true;
+      window.botpress.sendMessage('ping');
     });
 
     window.botpress.on('error', function (err) {
-      console.warn('[Botpress]', err);
-      setStatus('error', 'Connection error — refresh to retry');
-    });
-
-    window.botpress.init({
-      clientId: CLIENT_ID,
-      configuration: {
-        botName: 'Marketing Research AI',
-        color: '#1a5d3c',
-      }
-    });
-
-    /* Fallback: enable UI after 8s even if event never fires */
-    setTimeout(function () {
-      if (!ready) { setStatus('ready', '● AI Ready'); enableUI(); }
-    }, 8000);
-  }
-
-  /* Flag: swallow the ping reply */
-  let warmingUp = false;
-
-  /* Override the message listener to skip ping reply */
-  window.addEventListener('load', function () {
-    // Re-register with warm-up awareness after page fully loaded
-  });
-
-  // Patch: intercept message event before registering so warmingUp works
-  var _origOn;
-  function waitSDKAndPatch() {
-    if (typeof window.botpress === 'undefined') { setTimeout(waitSDKAndPatch, 150); return; }
-
-    window.botpress.on('message', function (msg) {
-      if (msg.direction === 'outgoing') return;
-
-      /* Discard the silent ping reply */
-      if (warmingUp) {
-        warmingUp = false;
-        return;
-      }
-
-      const text = (msg.payload && msg.payload.text) || msg.text;
-      if (!text) return;
-
-      hideTyping();
-      enableUI();
-      addMsg(text, 'bot');
-    });
-
-    window.botpress.on('webchat:ready', function () {
-      setStatus('ready', '● AI Ready');
-      enableUI();
-      // Warm-up ping
-      warmingUp = true;
-      window.botpress.sendMessage({ type: 'text', text: 'ping' }).catch(function(){});
-    });
-
-    window.botpress.on('error', function () {
-      setStatus('error', 'Connection error — refresh to retry');
+      console.warn('[Botpress error]', err);
+      setStatus('error', 'Error — refresh to retry');
       hideTyping(); enableUI();
     });
 
-    window.botpress.init({
-      clientId: CLIENT_ID,
-      configuration: { botName: 'Marketing Research AI', color: '#1a5d3c' }
+    /* 3. Init — open the webchat (it stays hidden via CSS) */
+    window.botpress.init({ clientId: CLIENT_ID });
+
+    // Docs say sendMessage only works once the user has opened the webchat.
+    // We open it programmatically so messages can flow, then CSS hides it.
+    window.botpress.on('webchat:initialized', function () {
+      window.botpress.open();
     });
 
+    /* Safety fallback */
     setTimeout(function () {
-      if (!ready) { setStatus('ready', '● AI Ready'); enableUI(); }
+      if (!isReady) { setStatus('ready', '● AI Ready'); enableUI(); }
     }, 8000);
   }
 
   /* ── Send ── */
-  async function handleSend(override) {
-    const text = override || inputEl.value.trim();
-    if (!text || !ready || waiting) return;
+  function handleSend(override) {
+    var text = override || inputEl.value.trim();
+    if (!text || !isReady || waiting) return;
 
     inputEl.value = '';
     waiting = true;
@@ -422,30 +370,26 @@
     addMsg(text, 'user');
     showTyping();
 
-    try {
-      await window.botpress.sendMessage({ type: 'text', text: text });
-    } catch (err) {
-      console.error('[sendMessage]', err);
-      hideTyping(); enableUI();
-      addMsg('⚠️ Failed to send. Please try again.', 'bot');
-    }
+    // sendMessage takes a plain STRING per official Botpress v3 docs
+    window.botpress.sendMessage(text);
   }
 
   sendBtn.addEventListener('click', function () { handleSend(); });
-  inputEl.addEventListener('keypress', function (e) { if (e.key === 'Enter') handleSend(); });
-  document.querySelectorAll('.topic-chip').forEach(function (c) {
-    c.addEventListener('click', function () {
-      var q = c.getAttribute('data-question');
-      if (q) handleSend(q);
+  inputEl.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') handleSend();
+  });
+  document.querySelectorAll('.topic-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      handleSend(chip.getAttribute('data-question'));
     });
   });
 
   scrollBottom();
-  waitSDKAndPatch();
+  waitForSDK();
 })();
 </script>
 
-<!-- Your bot's generated config — loads AFTER inject.js -->
+<!-- Step 2: Your bot config (defer so SDK loads first) -->
 <script src="https://files.bpcontent.cloud/2026/05/20/00/20260520003255-FYFA8KXL.js" defer></script>
 
 </body>
