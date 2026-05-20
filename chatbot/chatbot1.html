@@ -80,8 +80,8 @@
 
     .chat-header {
       padding: 18px 28px; border-bottom: 1px solid #e9edf2;
-      background: white; flex-shrink: 0; display: flex;
-      justify-content: space-between; align-items: center;
+      background: white; flex-shrink: 0;
+      display: flex; justify-content: space-between; align-items: center;
     }
     .chat-header-left h3 { font-size: 1.25rem; font-weight: 600; color: #1f2e3a; }
     .chat-header-left span { font-size: 0.75rem; color: #5c6f87; }
@@ -89,21 +89,14 @@
     .status-pill {
       display: inline-flex; align-items: center; gap: 6px;
       font-size: 0.72rem; font-weight: 600; padding: 5px 12px;
-      border-radius: 20px; transition: all 0.3s;
+      border-radius: 20px; white-space: nowrap; transition: all 0.4s;
     }
     .status-pill.connecting { background: #fef9c3; color: #854d0e; }
-    .status-pill.ready     { background: #dcfce7; color: #14532d; }
-    .status-pill.error     { background: #fee2e2; color: #991b1b; }
-    .status-dot {
-      width: 7px; height: 7px; border-radius: 50%; background: currentColor;
-    }
-    .status-pill.ready .status-dot {
-      animation: pulse-dot 1.8s infinite;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
+    .status-pill.ready      { background: #dcfce7; color: #14532d; }
+    .status-pill.error      { background: #fee2e2; color: #991b1b; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .status-pill.ready .status-dot { animation: pulsedot 2s infinite; }
+    @keyframes pulsedot { 0%,100%{opacity:1} 50%{opacity:.2} }
 
     .messages-area {
       flex: 1; overflow-y: auto; padding: 24px 28px;
@@ -126,7 +119,6 @@
       align-self: flex-end; border-bottom-right-radius: 5px;
     }
 
-    /* Typing indicator */
     .typing-indicator {
       display: flex; align-items: center; gap: 5px; padding: 14px 18px;
       background: #f0f4f9; border: 1px solid #e2e8f0; border-radius: 24px;
@@ -138,10 +130,7 @@
     }
     .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
     .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes bounce {
-      0%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-6px); }
-    }
+    @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
 
     /* ── Input Row ── */
     .input-row {
@@ -152,9 +141,7 @@
       flex: 1; padding: 14px 18px; border-radius: 60px;
       border: 1px solid #cbd5e1; font-family: inherit; font-size: 0.9rem; outline: none;
     }
-    .input-row input:focus {
-      border-color: #1a5d3c; box-shadow: 0 0 0 3px rgba(26,93,60,0.2);
-    }
+    .input-row input:focus { border-color: #1a5d3c; box-shadow: 0 0 0 3px rgba(26,93,60,0.2); }
     .input-row input:disabled { background: #f8fafc; cursor: not-allowed; }
     .input-row button {
       background: #1a5d3c; border: none; padding: 12px 26px;
@@ -163,15 +150,26 @@
     .input-row button:hover:not(:disabled) { background: #0e3f28; }
     .input-row button:disabled { background: #94a3b8; cursor: not-allowed; }
 
-    /* ── Hide Botpress default widget UI completely ── */
+    /* ══════════════════════════════════════════
+       NUKE the Botpress floating widget — every
+       selector they have ever used, belt+braces
+    ══════════════════════════════════════════ */
     #bp-web-widget,
     #bp-web-widget-container,
+    #botpress-webchat,
     .bpw-floating-button,
     .bpw-layout,
-    [class*="bpw-"],
-    [id*="bp-web"] {
+    .bpw-powered-by,
+    iframe[src*="botpress"],
+    iframe[src*="bpcontent"],
+    div[class^="bpw-"],
+    div[id^="bp-"] {
       display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
       pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
     }
 
     @media (max-width: 700px) {
@@ -184,7 +182,7 @@
 
 <div class="chat-app">
 
-  <!-- ── Sidebar ── -->
+  <!-- Sidebar -->
   <div class="side-panel">
     <div class="brand">
       <h2>📊 Marketing Research<br>& Analytics AI</h2>
@@ -212,7 +210,7 @@
     </div>
   </div>
 
-  <!-- ── Chat Main ── -->
+  <!-- Chat -->
   <div class="chat-main">
     <div class="chat-header">
       <div class="chat-header-left">
@@ -221,7 +219,7 @@
       </div>
       <div id="statusPill" class="status-pill connecting">
         <span class="status-dot"></span>
-        <span id="statusLabel">Connecting…</span>
+        <span id="statusLabel">Warming up AI…</span>
       </div>
     </div>
 
@@ -232,186 +230,222 @@
     </div>
 
     <div class="input-row">
-      <input type="text" id="userQuery" placeholder="Connecting to AI…" autocomplete="off" disabled>
+      <input type="text" id="userQuery" placeholder="Warming up AI — ready in a moment…" autocomplete="off" disabled>
       <button id="sendBtn" disabled>Send →</button>
     </div>
   </div>
 </div>
 
-<!-- ① Load Botpress inject SDK -->
+<!-- Botpress SDK — MUST load before your bot config script -->
 <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
 
 <script>
 (function () {
   'use strict';
 
-  /* ─── DOM refs ─── */
-  const messagesEl  = document.getElementById('chatMessages');
+  const CLIENT_ID = 'a2162a4c-c626-4885-9ea2-1605ae7be86c';
+
+  const msgArea     = document.getElementById('chatMessages');
   const inputEl     = document.getElementById('userQuery');
   const sendBtn     = document.getElementById('sendBtn');
   const statusPill  = document.getElementById('statusPill');
   const statusLabel = document.getElementById('statusLabel');
 
-  let isReady    = false;
-  let isWaiting  = false; // waiting for bot reply
+  let ready   = false;
+  let waiting = false;
 
-  /* ─── Helpers ─── */
-  function scrollBottom() {
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  }
+  /* ── UI helpers ── */
+  function scrollBottom() { msgArea.scrollTop = msgArea.scrollHeight; }
 
-  function addMessage(content, role) {
-    const div = document.createElement('div');
-    div.className = 'message-bubble ' + (role === 'user' ? 'user-msg' : 'bot-msg');
-    if (role === 'bot') div.innerHTML = content;
-    else div.textContent = content;
-    messagesEl.appendChild(div);
+  function addMsg(content, role) {
+    const d = document.createElement('div');
+    d.className = 'message-bubble ' + (role === 'user' ? 'user-msg' : 'bot-msg');
+    if (role === 'bot') d.innerHTML = content;
+    else d.textContent = content;
+    msgArea.appendChild(d);
     scrollBottom();
   }
 
   function showTyping() {
     if (document.getElementById('typingDots')) return;
-    const el = document.createElement('div');
-    el.className = 'typing-indicator';
-    el.id = 'typingDots';
-    el.innerHTML = '<span></span><span></span><span></span>';
-    messagesEl.appendChild(el);
-    scrollBottom();
+    const d = document.createElement('div');
+    d.className = 'typing-indicator'; d.id = 'typingDots';
+    d.innerHTML = '<span></span><span></span><span></span>';
+    msgArea.appendChild(d); scrollBottom();
   }
 
   function hideTyping() {
-    const el = document.getElementById('typingDots');
-    if (el) el.remove();
+    const d = document.getElementById('typingDots');
+    if (d) d.remove();
   }
 
-  function setUI(ready) {
-    isReady = ready;
-    inputEl.disabled = !ready || isWaiting;
-    sendBtn.disabled = !ready || isWaiting;
-    inputEl.placeholder = ready
-      ? 'e.g., What is problem identification research?'
-      : 'Connecting to AI…';
-  }
-
-  function setStatus(state, label) {
+  function setStatus(state, text) {
     statusPill.className = 'status-pill ' + state;
-    statusLabel.textContent = label;
+    statusLabel.textContent = text;
   }
 
-  /* ─── Init Botpress ─── */
-  function waitForBotpress() {
-    if (typeof window.botpress === 'undefined') {
-      setTimeout(waitForBotpress, 200);
-      return;
-    }
-    startBotpress();
+  function enableUI() {
+    ready = true; waiting = false;
+    inputEl.disabled = false; sendBtn.disabled = false;
+    inputEl.placeholder = 'e.g., What is problem identification research?';
   }
 
-  function startBotpress() {
-    /* Listen for incoming bot messages BEFORE init so we don't miss them */
+  function disableUI() {
+    inputEl.disabled = true; sendBtn.disabled = true;
+  }
+
+  /* ── Nuke Botpress widget whenever it appears in DOM ── */
+  new MutationObserver(function () {
+    document.querySelectorAll(
+      '#bp-web-widget, #bp-web-widget-container, ' +
+      '#botpress-webchat, .bpw-floating-button, .bpw-layout, ' +
+      'iframe[src*="botpress"], iframe[src*="bpcontent"]'
+    ).forEach(function (el) {
+      el.style.cssText = 'display:none!important;width:0!important;height:0!important';
+    });
+  }).observe(document.documentElement, { childList: true, subtree: true });
+
+  /* ── Wait for SDK then init ── */
+  function waitSDK() {
+    if (typeof window.botpress === 'undefined') { setTimeout(waitSDK, 150); return; }
+
+    /* Listen for bot replies */
     window.botpress.on('message', function (msg) {
-      /*
-        Botpress v3 'message' event payload structure:
-        msg.payload.text  — for text messages
-        msg.payload.type  — 'text' | 'image' | 'carousel' etc.
-        msg.direction     — 'incoming' (from bot) | 'outgoing' (from user)
-      */
-      if (msg.direction === 'outgoing') return; // ignore echo of user messages
+      // Skip echoed user messages
+      if (msg.direction === 'outgoing') return;
 
-      const text = msg?.payload?.text || msg?.text;
+      const text = (msg.payload && msg.payload.text) || msg.text;
       if (!text) return;
 
       hideTyping();
-      isWaiting = false;
-      setUI(true);
-      addMessage(text, 'bot');
+      enableUI();
+      addMsg(text, 'bot');
+    });
+
+    /* Ready event — Botpress connection established */
+    window.botpress.on('webchat:ready', function () {
+      setStatus('ready', '● AI Ready');
+      enableUI();
+
+      /* ── WARM-UP PING ──────────────────────────────────────
+         Send a silent, invisible "ping" message right after
+         ready. This wakes the bot's AI worker so the FIRST
+         real user message gets a fast reply instead of waiting
+         for a cold start.
+         The bot will reply to the ping — we silently discard
+         that reply using the `warmingUp` flag.
+      ─────────────────────────────────────────────────────── */
+      warmingUp = true;
+      window.botpress.sendMessage({ type: 'text', text: 'ping' }).catch(function(){});
+    });
+
+    window.botpress.on('error', function (err) {
+      console.warn('[Botpress]', err);
+      setStatus('error', 'Connection error — refresh to retry');
+    });
+
+    window.botpress.init({
+      clientId: CLIENT_ID,
+      configuration: {
+        botName: 'Marketing Research AI',
+        color: '#1a5d3c',
+      }
+    });
+
+    /* Fallback: enable UI after 8s even if event never fires */
+    setTimeout(function () {
+      if (!ready) { setStatus('ready', '● AI Ready'); enableUI(); }
+    }, 8000);
+  }
+
+  /* Flag: swallow the ping reply */
+  let warmingUp = false;
+
+  /* Override the message listener to skip ping reply */
+  window.addEventListener('load', function () {
+    // Re-register with warm-up awareness after page fully loaded
+  });
+
+  // Patch: intercept message event before registering so warmingUp works
+  var _origOn;
+  function waitSDKAndPatch() {
+    if (typeof window.botpress === 'undefined') { setTimeout(waitSDKAndPatch, 150); return; }
+
+    window.botpress.on('message', function (msg) {
+      if (msg.direction === 'outgoing') return;
+
+      /* Discard the silent ping reply */
+      if (warmingUp) {
+        warmingUp = false;
+        return;
+      }
+
+      const text = (msg.payload && msg.payload.text) || msg.text;
+      if (!text) return;
+
+      hideTyping();
+      enableUI();
+      addMsg(text, 'bot');
     });
 
     window.botpress.on('webchat:ready', function () {
       setStatus('ready', '● AI Ready');
-      setUI(true);
+      enableUI();
+      // Warm-up ping
+      warmingUp = true;
+      window.botpress.sendMessage({ type: 'text', text: 'ping' }).catch(function(){});
     });
 
-    window.botpress.on('error', function (err) {
-      console.warn('[Botpress error]', err);
-      setStatus('error', 'Connection error');
-      hideTyping();
-      isWaiting = false;
-      setUI(true);
+    window.botpress.on('error', function () {
+      setStatus('error', 'Connection error — refresh to retry');
+      hideTyping(); enableUI();
     });
 
-    /* Init — configuration mirrors what the .js config file sets,
-       we only override cosmetic things here */
     window.botpress.init({
-      clientId: 'a2162a4c-c626-4885-9ea2-1605ae7be86c',
-      configuration: {
-        botName: 'Marketing Research AI',
-        composerPlaceholder: 'Ask me anything about Topic 1…',
-        /* Keep the widget rendered but invisible via CSS */
-        color: '#1a5d3c',
-      },
+      clientId: CLIENT_ID,
+      configuration: { botName: 'Marketing Research AI', color: '#1a5d3c' }
     });
 
-    /* Safety fallback: mark ready after 6s regardless */
     setTimeout(function () {
-      if (!isReady) {
-        setStatus('ready', '● AI Ready');
-        setUI(true);
-      }
-    }, 6000);
+      if (!ready) { setStatus('ready', '● AI Ready'); enableUI(); }
+    }, 8000);
   }
 
-  /* ─── Send flow ─── */
-  async function handleSend(overrideText) {
-    const text = overrideText || inputEl.value.trim();
-    if (!text || !isReady || isWaiting) return;
+  /* ── Send ── */
+  async function handleSend(override) {
+    const text = override || inputEl.value.trim();
+    if (!text || !ready || waiting) return;
 
     inputEl.value = '';
-    addMessage(text, 'user');
-
-    isWaiting = true;
-    inputEl.disabled = true;
-    sendBtn.disabled = true;
+    waiting = true;
+    disableUI();
+    addMsg(text, 'user');
     showTyping();
 
     try {
       await window.botpress.sendMessage({ type: 'text', text: text });
     } catch (err) {
-      console.error('[sendMessage error]', err);
-      hideTyping();
-      isWaiting = false;
-      setUI(true);
-      addMessage('⚠️ Message failed to send. Please try again.', 'bot');
+      console.error('[sendMessage]', err);
+      hideTyping(); enableUI();
+      addMsg('⚠️ Failed to send. Please try again.', 'bot');
     }
   }
 
-  /* ─── Event listeners ─── */
-  sendBtn.addEventListener('click', () => handleSend());
-  inputEl.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
-
-  document.querySelectorAll('.topic-chip').forEach((chip) => {
-    chip.addEventListener('click', () => {
-      const q = chip.getAttribute('data-question');
+  sendBtn.addEventListener('click', function () { handleSend(); });
+  inputEl.addEventListener('keypress', function (e) { if (e.key === 'Enter') handleSend(); });
+  document.querySelectorAll('.topic-chip').forEach(function (c) {
+    c.addEventListener('click', function () {
+      var q = c.getAttribute('data-question');
       if (q) handleSend(q);
     });
   });
 
-  /* ─── Hide Botpress default widget via MutationObserver ─── */
-  const hideBPWidget = new MutationObserver(() => {
-    const sel = '#bp-web-widget, #bp-web-widget-container, .bpw-floating-button';
-    document.querySelectorAll(sel).forEach((el) => {
-      el.style.setProperty('display', 'none', 'important');
-    });
-  });
-  hideBPWidget.observe(document.body, { childList: true, subtree: true });
-
-  /* ─── Start ─── */
   scrollBottom();
-  waitForBotpress();
+  waitSDKAndPatch();
 })();
 </script>
 
-<!-- ② Load your bot's generated config script (deferred — runs after SDK) -->
+<!-- Your bot's generated config — loads AFTER inject.js -->
 <script src="https://files.bpcontent.cloud/2026/05/20/00/20260520003255-FYFA8KXL.js" defer></script>
 
 </body>
