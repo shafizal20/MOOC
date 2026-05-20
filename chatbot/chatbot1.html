@@ -4,10 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Marketing Research & Analytics AI | Topic 1 Chatbot</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-  <!-- 1. Load Botpress Webchat Scripts directly on the main window -->
+  
+  <!-- Fix 1: Explicit Google Font Preconnect Tags to resolve CSS loading errors -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Load Botpress Webchat Client -->
   <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
-  <script src="https://files.bpcontent.cloud/2026/05/20/00/20260520003255-FYFA8KXL.js"></script>
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -136,11 +140,11 @@
     .input-row button:hover:not(:disabled) { background: #0e3f28; }
     .input-row button:disabled { background: #94a3b8; cursor: not-allowed; }
 
-    /* 2. COMPLETELY HIDE THE DEFAULT BOTPRESS WEBCHAT CONTAINERS FROM VIEW */
+    /* Fix 2: Safety suppression of default webchat layers */
     #bp-webchat, .bpw-layout, #botpress-webchat-container, iframe[aria-label="messaging window"] {
       display: none !important;
+      opacity: 0 !important;
       visibility: hidden !important;
-      pointer-events: none !important;
     }
 
     @media (max-width: 700px) {
@@ -185,7 +189,7 @@
     <div class="chat-header">
       <div class="chat-header-left">
         <h3>🧠 Marketing Research & Analytics Tutor</h3>
-        <span>Custom Front-end Framework | Topic 1 Overview</span>
+        <span>Custom Front-end Framework | GitHub Production Build</span>
       </div>
       <div id="statusPill" class="status-pill connecting">
         <span class="status-dot"></span>
@@ -198,7 +202,8 @@
       </div>
     </div>
     <div class="input-row">
-      <input type="text" id="userQuery" placeholder="Connecting…" autocomplete="off" disabled>
+      <!-- Fix 3: Added name attribute here to resolve HTML form/field validation error -->
+      <input type="text" id="userQuery" name="userQuery" placeholder="Connecting…" autocomplete="off" disabled>
       <button id="sendBtn" disabled>Send →</button>
     </div>
   </div>
@@ -208,7 +213,9 @@
 (() => {
   'use strict';
 
+  // Your real Botpress identifiers
   const CLIENT_ID = 'a2162a4c-c626-4885-9ea2-1605ae7be86c';
+  const BOT_CONFIG_SRC = 'https://files.bpcontent.cloud/2026/05/20/00/20260520003255-FYFA8KXL.js';
 
   const msgArea    = document.getElementById('chatMessages');
   const inputEl    = document.getElementById('userQuery');
@@ -259,47 +266,58 @@
     inputEl.disabled = true; sendBtn.disabled = true;
   }
 
-  /* 3. Initialize Botpress natively directly on the main window */
-  function initBotpress() {
-    if (typeof window.botpress === 'undefined') {
-      setTimeout(initBotpress, 100);
+  // Dynamically load your bot configuration script file
+  function loadBotConfig() {
+    const script = document.createElement('script');
+    script.src = BOT_CONFIG_SRC;
+    script.async = true;
+    script.onload = initBotpressConnection;
+    document.head.appendChild(script);
+  }
+
+  // Fix 4: Rewritten completely using official v3 window.botpress Webchat API Event Methods
+  function initBotpressConnection() {
+    if (typeof window.botpressWebChat === 'undefined') {
+      setTimeout(initBotpressConnection, 100);
       return;
     }
 
-    window.botpress.init({ 
+    // Initialize the Webchat natively inside the window scope
+    window.botpressWebChat.init({ 
       clientId: CLIENT_ID,
-      configuration: {
-        containerWidth: '0px',
-        layoutWidth: '0px',
-        hideWidget: true // Tells Botpress natively to hide its core launcher UI button
+      hostUrl: 'https://telemetry.botpress.cloud',
+      botId: 'topic-1-chatbot',
+      hideWidget: true, // Native variable configuration hides the main launcher icon safely
+      disableAnimations: true
+    });
+
+    // Event listener catching incoming payloads directly from the Botpress core service
+    window.botpressWebChat.onEvent((event) => {
+      // 1. Connection is ready
+      if (event.type === 'LIFECYCLE.LOADED') {
+        setStatus('ready', '● AI Ready');
+        enableUI();
       }
-    });
 
-    // Handle bot messages coming back
-    window.botpress.on('message', (msg) => {
-      if (msg.direction === 'outgoing') return; // Ignore user messages echoed back
-      
-      hideTyping();
-      waiting = false;
-      enableUI();
+      // 2. Message received from the bot
+      if (event.type === 'MESSAGE.RECEIVED') {
+        hideTyping();
+        waiting = false;
+        enableUI();
 
-      const text = (msg.payload && msg.payload.text) || msg.text || "";
-      if (!text) return;
+        const text = event.value?.payload?.text || event.value?.text || "";
+        if (!text) return;
 
-      const safeHtml = text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/\n/g, '<br>');
-      
-      addMsg(safeHtml, 'bot');
-    });
-
-    // Handle the ready lifecycle hook
-    window.botpress.on('webchat:ready', () => {
-      setStatus('ready', '● AI Ready');
-      enableUI();
-    });
+        // Strip HTML parameters safely and format linebreaks
+        const safeHtml = text
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/\n/g, '<br>');
+        
+        addMsg(safeHtml, 'bot');
+      }
+    }, ['LIFECYCLE.LOADED', 'MESSAGE.RECEIVED']);
   }
 
   function doSend(text) {
@@ -309,8 +327,11 @@
     addMsg(text, 'user');
     showTyping();
     
-    // Natively dispatch directly via the initialized global window client
-    window.botpress.sendMessage(text);
+    // Send directly through the verified v3 API channel
+    window.botpressWebChat.sendEvent({
+      type: 'message',
+      text: text
+    });
   }
 
   function handleSend(override) {
@@ -330,7 +351,7 @@
   });
 
   scrollBottom();
-  initBotpress();
+  loadBotConfig();
 })();
 </script>
 
