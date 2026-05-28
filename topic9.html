@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Topic 9: Marketing Research Proposal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Marketing Research Quiz · Topic 9: Marketing Research Proposal</title>
   <style>
     * {
       margin: 0;
@@ -18,7 +18,7 @@
     }
 
     .quiz-box {
-      max-width: 900px;
+      max-width: 950px;
       margin: 0 auto;
       background: white;
       border-radius: 32px;
@@ -49,6 +49,7 @@
       border-radius: 20px;
       padding: 18px 22px;
       margin-bottom: 18px;
+      transition: all 0.2s;
     }
 
     .question.correct-bg {
@@ -82,26 +83,54 @@
       font-size: 1rem;
       font-weight: 600;
       color: #0f2b3d;
-      line-height: 1.45;
+      line-height: 1.5;
       flex: 1;
+    }
+
+    .extra-list {
+      margin: 10px 0 12px 24px;
+      font-size: 0.92rem;
+      font-weight: normal;
+      color: #2c4c6e;
+    }
+
+    .extra-list li {
+      margin: 5px 0;
+    }
+
+    .question-image {
+      margin: 12px 0 16px;
+      text-align: center;
+      background: #fafcff;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid #eef2f6;
+    }
+
+    .question-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     .options {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin: 12px 0 6px;
+      margin-top: 14px;
     }
 
     .option {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 8px 14px;
+      padding: 10px 14px;
       background: #fafcff;
       border: 1px solid #e4e9f0;
       border-radius: 14px;
       cursor: pointer;
+      transition: 0.2s ease;
     }
 
     .option:hover {
@@ -119,7 +148,7 @@
       margin-top: 12px;
       padding: 8px 12px;
       border-radius: 12px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 500;
     }
 
@@ -153,6 +182,7 @@
       cursor: pointer;
       margin-top: 12px;
       margin-bottom: 20px;
+      transition: background 0.2s;
     }
 
     .btn-submit:hover {
@@ -201,228 +231,277 @@
 
     footer {
       text-align: center;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: #7c8ea0;
       margin-top: 24px;
-    }
-
-    #confetti-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1000;
     }
   </style>
 </head>
 <body>
-<canvas id="confetti-canvas"></canvas>
+
 <div class="quiz-box">
-  <h1>📊 Topic 9: Marketing Research Proposal</h1>
-  <div class="sub">5 multiple choice questions · submit once</div>
+  <h1>📋 Topic 9: Marketing Research Proposal</h1>
+  <div class="sub">Questions 83–87 · proposal components · delimitations vs limitations · research plan</div>
   <div id="questionsContainer"></div>
   <button id="submitBtn" class="btn-submit">✓ Submit & Grade</button>
-  <div id="scorePanel" style="display: none;"></div>
-  <footer>Research proposal components, purpose, and structure</footer>
+  <div id="scorePanel" style="display:none;"></div>
+  <footer>Research proposal as contract · plan · guide · budget · schedule · scope · constraints</footer>
 </div>
 
 <script>
-  const quizData = [
-    { text: "The followings are the reasons for marketing researchers to write a research proposal EXCEPT:", options: ["A) The proposal is a research plan", "B) The proposal serves as a research guide", "C) The proposal is a contract", "D) The proposal guarantees a financial sponsorship"], answer: 3 },
-    { text: "A good marketing research proposal will spell out the planned ___ and ____ as well as the ____ and ___ for the proposed research project to be undertaken.", options: ["A) strategies, activities, schedule, budget", "B) strategies, tactics, games, budget", "C) tactics, measurement, cost, effect", "D) personnel, remuneration, budget, plan"], answer: 0 },
-    { text: "Chapters and research findings are found in the marketing research proposal.", options: ["A) True", "B) False", "C) Sometimes", "D) All the time"], answer: 1 },
-    { text: "Which of the followings is NOT a component of a marketing research proposal?", options: ["A) Statement of the problem", "B) Research questions and/or objectives", "C) Literature review", "D) Data set for hypothesis testing"], answer: 3 },
-    { text: "The delimitations set the limits, scope or boundaries of the study. But, the limitations are about the constraints of the study.", options: ["True", "False"], answer: 0 }
-  ];
-
-  let selections = new Array(quizData.length).fill(-1);
-  let submitted = false;
-  let confettiTriggered = false;
-
-  const container = document.getElementById("questionsContainer");
-  const submitBtn = document.getElementById("submitBtn");
-  const scorePanel = document.getElementById("scorePanel");
-  const canvas = document.getElementById("confetti-canvas");
-  let ctx = canvas.getContext("2d");
-  let animationId = null;
-  let particles = [];
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+// --------------------------------------------------------------
+// QUIZ DATA for TOPIC 9: Marketing Research Proposal
+// Questions 83 through 87 fully extracted from provided H5P content
+// --------------------------------------------------------------
+const quizData = [
+  {
+    id: 83,
+    text: "The followings are the reasons for marketing researchers to write a research proposal EXCEPT:",
+    options: [
+      "A) The proposal is a research plan",
+      "B) The proposal serves as a research guide",
+      "C) The proposal is a contract",
+      "D) The proposal guarantees a financial sponsorship"
+    ],
+    answer: 3,  // D - proposal does NOT guarantee financial sponsorship
+    listBefore: false
+  },
+  {
+    id: 84,
+    text: "A good marketing research proposal will spell out the planned ___ and ____ as well as the ___ and ___ for the proposed research project to be undertaken.",
+    options: [
+      "A) strategies, activities, schedule, budget",
+      "B) strategies, tactics, games, budget",
+      "C) tactics, measurement, cost, effect",
+      "D) personnel, remuneration, budget, plan"
+    ],
+    answer: 0,  // A - strategies, activities, schedule, budget
+    listBefore: false
+  },
+  {
+    id: 85,
+    text: "Chapters and research findings are found in the marketing research proposal.",
+    options: ["A) True", "B) False", "C) Sometimes", "D) All the time"],
+    answer: 1,  // False - chapters and findings are in final report, not proposal
+    listBefore: false
+  },
+  {
+    id: 86,
+    text: "Which of the followings is NOT a component of a marketing research proposal?",
+    options: [
+      "A) Statement of the problem",
+      "B) Research questions and/or objectives",
+      "C) Literature review",
+      "D) Data set for hypothesis testing"
+    ],
+    answer: 3,  // D - dataset is not part of proposal (proposal plans, doesn't contain actual data)
+    listBefore: false
+  },
+  {
+    id: 87,
+    text: "The delimitations set the limits, scope or boundaries of the study. But, the limitations are about the constraints of the study.",
+    options: ["true", "false"],
+    answer: 0,  // true - this is correct distinction
+    listBefore: false
   }
-  window.addEventListener("resize", resizeCanvas);
+];
 
-  class ConfettiParticle {
-    constructor(x, y, size, color, vx, vy, rotation, rotSpeed) {
-      this.x = x; this.y = y; this.size = size; this.color = color;
-      this.velX = vx; this.velY = vy; this.rotation = rotation; this.rotationSpeed = rotSpeed;
-      this.gravity = 0.2; this.friction = 0.98; this.alpha = 1;
-    }
-    update() {
-      this.velY += this.gravity;
-      this.velX *= this.friction;
-      this.velY *= this.friction;
-      this.x += this.velX;
-      this.y += this.velY;
-      this.rotation += this.rotationSpeed;
-      this.alpha -= 0.008;
-      return this.alpha > 0.02 && this.y < canvas.height + 100;
-    }
-    draw(ctx) {
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.rotation);
-      ctx.globalAlpha = this.alpha;
-      ctx.fillStyle = this.color;
-      ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
-      ctx.restore();
-    }
+let selections = new Array(quizData.length).fill(-1);
+let submitted = false;
+let confettiTriggered = false;
+
+const container = document.getElementById("questionsContainer");
+const submitBtn = document.getElementById("submitBtn");
+const scorePanel = document.getElementById("scorePanel");
+
+// lightweight confetti celebration
+function startConfetti() {
+  if (confettiTriggered) return;
+  confettiTriggered = true;
+
+  const colors = ["#f44336", "#e91e63", "#9c27b0", "#3f51b5", "#2196f3", "#00bcd4", "#4caf50", "#ffeb3b", "#ff9800", "#ff5722"];
+  const confettiCount = 150;
+  const containerEl = document.body;
+
+  for (let i = 0; i < confettiCount; i++) {
+    const conf = document.createElement("div");
+    const size = Math.floor(Math.random() * 12 + 6);
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    conf.style.position = "fixed";
+    conf.style.width = size + "px";
+    conf.style.height = size + "px";
+    conf.style.backgroundColor = color;
+    conf.style.top = "-20px";
+    conf.style.left = Math.random() * window.innerWidth + "px";
+    conf.style.opacity = "0.9";
+    conf.style.borderRadius = Math.random() > 0.7 ? "50%" : "2px";
+    conf.style.pointerEvents = "none";
+    conf.style.zIndex = "9999";
+    conf.style.boxShadow = "0 2px 5px rgba(0,0,0,0.2)";
+    containerEl.appendChild(conf);
+
+    const duration = 1500 + Math.random() * 1500;
+    const destination = window.innerHeight + 50;
+    const rotate = Math.random() * 360;
+    conf.style.transition = `transform ${duration}ms cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity ${duration * 0.8}ms ease-out`;
+    requestAnimationFrame(() => {
+      conf.style.transform = `translateY(${destination}px) rotate(${rotate}deg)`;
+      conf.style.opacity = "0";
+    });
+
+    setTimeout(() => {
+      if (conf && conf.remove) conf.remove();
+    }, duration + 200);
   }
 
-  function startConfetti() {
-    if (confettiTriggered) return;
-    confettiTriggered = true;
-    resizeCanvas();
-    particles = [];
-    const colors = ["#f44336", "#e91e63", "#9c27b0", "#3f51b5", "#2196f3", "#00bcd4", "#4caf50", "#ffeb3b", "#ff9800", "#ff5722"];
-    
-    for (let i = 0; i < 220; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 4 + Math.random() * 9;
-      const vx = Math.cos(angle) * speed * (Math.random() * 1.5);
-      const vy = Math.sin(angle) * speed * 0.8 - 5;
-      const size = 6 + Math.random() * 12;
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      const x = canvas.width / 2 + (Math.random() - 0.5) * 120;
-      const y = canvas.height / 2 - 80 + Math.random() * 80;
-      particles.push(new ConfettiParticle(x, y, size, color, vx, vy, Math.random() * Math.PI * 2, (Math.random() - 0.5) * 0.2));
-    }
-    
-    for (let i = 0; i < 80; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 3 + Math.random() * 7;
-      const vx = Math.cos(angle) * speed * (Math.random() * 1.2);
-      const vy = Math.sin(angle) * speed * 0.6 - 4;
-      const size = 5 + Math.random() * 9;
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      const x = canvas.width * (Math.random() * 0.8 + 0.1);
-      const y = canvas.height * 0.7 + Math.random() * 100;
-      particles.push(new ConfettiParticle(x, y, size, color, vx, vy, Math.random() * Math.PI, (Math.random() - 0.5) * 0.15));
-    }
-    
-    if (animationId) cancelAnimationFrame(animationId);
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let alive = false;
-      for (let p of particles) if (p.update()) { alive = true; p.draw(ctx); }
-      if (alive) animationId = requestAnimationFrame(animate);
-      else { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); confettiTriggered = false; }
-    }
-    animate();
-  }
+  setTimeout(() => {
+    confettiTriggered = false;
+  }, 2800);
+}
 
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
-  }
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
+}
 
-  function renderQuestions() {
-    let html = "";
-    for (let i = 0; i < quizData.length; i++) {
-      const q = quizData[i];
-      const selectedVal = selections[i];
-      const realNumber = 83 + i;
-      let questionClass = "question";
-      if (submitted) questionClass += (selectedVal !== -1 && selectedVal === q.answer) ? " correct-bg" : " wrong-bg";
-      
-      html += `<div class="${questionClass}"><div class="q-header"><span class="q-num">${realNumber}</span><div class="q-text">${escapeHtml(q.text)}</div></div><div class="options">`;
-      
-      q.options.forEach((opt, idx) => {
-        html += `<label class="option" style="cursor: ${submitted ? 'default' : 'pointer'}">
-          <input type="radio" name="q${i}" value="${idx}" ${selectedVal === idx ? 'checked' : ''} ${submitted ? 'disabled' : ''}>
-          <span class="option-text">${escapeHtml(opt)}</span>
-        </label>`;
+function formatTextWithLineBreaks(text) {
+  if (!text) return '';
+  return text.split('\n').map(line => line.trim()).filter(line => line).join('<br>');
+}
+
+function renderQuestions() {
+  let html = "";
+  for (let i = 0; i < quizData.length; i++) {
+    const q = quizData[i];
+    const selectedVal = selections[i];
+    let questionClass = "question";
+
+    if (submitted) {
+      const isCorrect = (selectedVal !== -1 && selectedVal === q.answer);
+      questionClass += isCorrect ? " correct-bg" : " wrong-bg";
+    }
+
+    html += `<div class="${questionClass}"><div class="q-header"><span class="q-num">${q.id}</span><div class="q-text">`;
+    html += `<div>${formatTextWithLineBreaks(escapeHtml(q.text))}</div>`;
+
+    // render list items if present
+    if (q.listBefore && q.listItems && q.listItems.length) {
+      html += `<div class="extra-list"><ul>`;
+      q.listItems.forEach(li => {
+        html += `<li>${escapeHtml(li)}</li>`;
       });
-      html += `</div>`;
-      
-      if (submitted) {
-        if (selectedVal === -1) html += `<div class="feedback feedback-missing">⚠️ Not answered · Correct: ${escapeHtml(q.options[q.answer])}</div>`;
-        else if (selectedVal !== q.answer) html += `<div class="feedback feedback-wrong">❌ Incorrect · Your answer: ${escapeHtml(q.options[selectedVal])}<br>✅ Correct: ${escapeHtml(q.options[q.answer])}</div>`;
-        else html += `<div class="feedback feedback-correct">✓ Correct</div>`;
-      }
-      html += `</div>`;
+      html += `</ul></div>`;
     }
-    container.innerHTML = html;
-    
-    if (!submitted) {
-      for (let i = 0; i < quizData.length; i++) {
-        document.querySelectorAll(`input[name="q${i}"]`).forEach(radio => {
-          radio.addEventListener("change", (e) => { if (!submitted) { selections[i] = parseInt(e.target.value); renderQuestions(); } });
+
+    // render image if present
+    if (q.hasImage && q.imageUrl) {
+      html += `<div class="question-image"><img src="${escapeHtml(q.imageUrl)}" alt="${escapeHtml(q.imageAlt || 'Question image')}" loading="lazy"></div>`;
+    }
+
+    html += `</div></div><div class="options">`;
+
+    q.options.forEach((opt, idx) => {
+      html += `<label class="option">
+        <input type="radio" name="q${i}" value="${idx}" ${selectedVal === idx ? 'checked' : ''} ${submitted ? 'disabled' : ''}>
+        <span>${escapeHtml(opt)}</span>
+      </label>`;
+    });
+
+    html += `</div>`;
+
+    if (submitted) {
+      if (selectedVal === -1) {
+        html += `<div class="feedback feedback-missing">⚠️ Not answered · Correct: ${escapeHtml(q.options[q.answer])}</div>`;
+      } else if (selectedVal !== q.answer) {
+        html += `<div class="feedback feedback-wrong">❌ Incorrect · Your answer: ${escapeHtml(q.options[selectedVal])}<br>✅ Correct: ${escapeHtml(q.options[q.answer])}</div>`;
+      } else {
+        html += `<div class="feedback feedback-correct">✓ Correct</div>`;
+      }
+    }
+    html += `</div>`;
+  }
+
+  container.innerHTML = html;
+
+  if (!submitted) {
+    for (let i = 0; i < quizData.length; i++) {
+      const radios = document.querySelectorAll(`input[name="q${i}"]`);
+      radios.forEach(radio => {
+        radio.addEventListener("change", (e) => {
+          if (!submitted) {
+            selections[i] = parseInt(e.target.value);
+            renderQuestions();
+          }
         });
-      }
+      });
     }
   }
+}
 
-  function getScore() {
-    let correct = 0;
-    for (let i = 0; i < quizData.length; i++) if (selections[i] !== -1 && selections[i] === quizData[i].answer) correct++;
-    return correct;
+function getScore() {
+  let correct = 0;
+  for (let i = 0; i < quizData.length; i++) {
+    if (selections[i] !== -1 && selections[i] === quizData[i].answer) correct++;
+  }
+  return correct;
+}
+
+function getResultIcon(correct, total, isPerfect) {
+  const percent = (correct / total) * 100;
+  if (isPerfect) return { icon: "👑", label: "PERFECT MASTERY" };
+  if (percent >= 80) return { icon: "🏆", label: "EXCELLENT" };
+  if (percent >= 60) return { icon: "🎓", label: "GOOD" };
+  if (percent >= 50) return { icon: "📘", label: "PASS" };
+  return { icon: "📚", label: "NEEDS REVIEW" };
+}
+
+function handleSubmit() {
+  if (submitted) return;
+
+  const answeredCount = selections.filter(s => s !== -1).length;
+  if (answeredCount < quizData.length && !confirm(`You answered ${answeredCount} out of ${quizData.length}. Submit anyway?`)) {
+    return;
   }
 
-  function getResultIcon(correct, total, isPerfect) {
-    const percent = (correct / total) * 100;
-    if (isPerfect) return { icon: "👑", label: "PERFECT MASTERY" };
-    if (percent >= 80) return { icon: "🏆", label: "EXCELLENT" };
-    if (percent >= 60) return { icon: "🎓", label: "GOOD" };
-    if (percent >= 50) return { icon: "📘", label: "PASS" };
-    return { icon: "📚", label: "NEEDS REVIEW" };
-  }
+  submitted = true;
+  const correct = getScore();
+  const total = quizData.length;
+  const isPerfect = correct === total;
 
-  function handleSubmit() {
-    if (submitted) return;
-    const answeredCount = selections.filter(s => s !== -1).length;
-    if (answeredCount < quizData.length && !confirm(`You have answered ${answeredCount} out of ${quizData.length}. Submit anyway?`)) return;
-    
-    submitted = true;
-    const correct = getScore();
-    const total = quizData.length;
-    const isPerfect = correct === total;
-    renderQuestions();
-    
-    const percent = (correct / total) * 100;
-    let message = isPerfect ? "Outstanding! Perfect score achieved! 🌟" :
-                  percent >= 80 ? "Excellent! Mastery achieved. 🎉" :
-                  percent >= 60 ? "Great job! Review the ones in red." :
-                  percent >= 50 ? "Pass. Keep practicing to improve." :
-                  "Needs improvement. Review the explanations above.";
-    
-    const { icon, label } = getResultIcon(correct, total, isPerfect);
-    
-    scorePanel.style.display = "block";
-    scorePanel.innerHTML = `<div class="score-area">
-      <div class="score-number"><span class="result-icon">${icon}</span><span>${correct} / ${total}</span></div>
-      <div style="margin-top: 6px; font-size: 0.9rem; font-weight: 600; color: #1e4a8a;">${label}</div>
-      <div style="margin-top: 8px; font-size: 0.85rem; color: #2c5a6e;">${message}</div>
-      ${isPerfect ? '<div class="perfect-badge">✨ PERFECT SCORE! ✨<br>🎉 Confetti celebration! 🎉</div>' : ''}
-    </div>`;
-    
-    if (isPerfect) startConfetti();
-    
-    submitBtn.disabled = true;
-    submitBtn.style.opacity = "0.6";
-    
-    let completed = JSON.parse(localStorage.getItem("completedTopics")) || [];
-    if (!completed.includes("topic9")) { completed.push("topic9"); localStorage.setItem("completedTopics", JSON.stringify(completed)); }
-    
-    setTimeout(() => scorePanel.scrollIntoView({ behavior: "smooth", block: "nearest" }), 80);
-  }
-  
-  submitBtn.addEventListener("click", handleSubmit);
   renderQuestions();
-  resizeCanvas();
+
+  const percent = (correct / total) * 100;
+  let message = isPerfect
+    ? "Outstanding! Perfect score achieved! 🌟"
+    : percent >= 80
+      ? "Excellent! Mastery achieved. 🎉"
+      : percent >= 60
+        ? "Great job! Review the incorrect answers."
+        : percent >= 50
+          ? "Pass. Keep practicing to improve."
+          : "Needs improvement. Review the questions above.";
+
+  const { icon, label } = getResultIcon(correct, total, isPerfect);
+
+  scorePanel.style.display = "block";
+  scorePanel.innerHTML = `
+    <div class="score-area">
+      <div class="score-number">
+        <span class="result-icon">${icon}</span>
+        <span>${correct} / ${total}</span>
+      </div>
+      <div style="margin-top:6px; font-size:0.9rem; font-weight:600; color:#1e4a8a;">${label}</div>
+      <div style="margin-top:8px; font-size:0.85rem; color:#2c5a6e;">${message}</div>
+      ${isPerfect ? '<div class="perfect-badge">✨ PERFECT SCORE! ✨<br>🎉 Confetti celebration! 🎉</div>' : ''}
+    </div>
+  `;
+
+  if (isPerfect) startConfetti();
+  submitBtn.disabled = true;
+}
+
+submitBtn.addEventListener("click", handleSubmit);
+renderQuestions();
 </script>
 </body>
 </html>
