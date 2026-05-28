@@ -1,548 +1,390 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Topic 12: Marketing Metrics & Data Analysis | Chatbot</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MR Tutor: Marketing Metrics & Data Analysis (Topic 12)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+        body {
+            background: linear-gradient(145deg, #e2e8f0 0%, #d4dee8 100%);
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        .chat-card {
+            max-width: 520px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+        }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(145deg, #eef2f5 0%, #dce5ec 100%);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 16px;
-}
+        .header {
+            padding: 1.2rem 1.5rem 0.8rem;
+            background: white;
+            border-bottom: 1px solid #eef2f8;
+        }
 
-.chat-app {
-    width: 100%;
-    max-width: 1300px;
-    height: 90vh;
-    background: #ffffff;
-    border-radius: 32px;
-    box-shadow: 0 25px 45px -12px rgba(0,0,0,0.25);
-    display: flex;
-    overflow: hidden;
-}
+        .header h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #0A2B38;
+            display: inline;
+            letter-spacing: -0.2px;
+        }
 
-.side-panel {
-    width: 290px;
-    background: linear-gradient(180deg, #1a3c2c 0%, #0f2a1e 100%);
-    padding: 28px 20px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-}
+        .badge {
+            background: #e1ecf4;
+            color: #1c6f9c;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 12px;
+            border-radius: 40px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
 
-.side-panel::-webkit-scrollbar {
-    width: 5px;
-}
-.side-panel::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-}
-.side-panel::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.4);
-    border-radius: 10px;
-}
+        .sub {
+            font-size: 0.75rem;
+            color: #5a6e8a;
+            margin-top: 8px;
+            border-left: 3px solid #2c7da0;
+            padding-left: 10px;
+        }
 
-.brand {
-    margin-bottom: 28px;
-    flex-shrink: 0;
-}
+        .messages {
+            height: 500px;
+            overflow-y: auto;
+            padding: 1.2rem 1rem;
+            background: #FCFDFF;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
 
-.brand h2 {
-    font-size: 1.7rem;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    background: linear-gradient(135deg, #FFFFFF, #c7f0b2);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-}
+        .msg {
+            display: flex;
+            flex-direction: column;
+            max-width: 86%;
+        }
 
-.brand p {
-    font-size: 12px;
-    opacity: 0.85;
-    margin-top: 6px;
-}
+        .user-msg {
+            align-self: flex-end;
+        }
 
-.topic-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
+        .bot-msg {
+            align-self: flex-start;
+        }
 
-.topic-section h4 {
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 0 0 12px 0;
-    opacity: 0.7;
-    flex-shrink: 0;
-}
+        .bubble {
+            padding: 0.7rem 1rem;
+            border-radius: 1.4rem;
+            font-size: 0.88rem;
+            line-height: 1.45;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
 
-.topic-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    overflow-y: auto;
-    flex: 1;
-    padding-right: 5px;
-}
+        .user-bubble {
+            background: #0F2C3D;
+            color: white;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
 
-.topic-list::-webkit-scrollbar {
-    width: 4px;
-}
-.topic-list::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-}
-.topic-list::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.4);
-    border-radius: 10px;
-}
+        .bot-bubble {
+            background: #EFF3F8;
+            color: #1f2f3e;
+            border-bottom-left-radius: 6px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.03);
+        }
 
-.topic-chip {
-    background: rgba(255,255,255,0.12);
-    padding: 10px 14px;
-    border-radius: 18px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-}
+        .time {
+            font-size: 0.6rem;
+            color: #8f9eb2;
+            margin-top: 5px;
+            margin-left: 12px;
+        }
 
-.topic-chip:hover {
-    background: #ffffff;
-    color: #1a3c2c;
-    transform: translateX(4px);
-}
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 0.6rem 1rem;
+            background: #EFF3F8;
+            width: fit-content;
+            border-radius: 2rem;
+            border-bottom-left-radius: 6px;
+            align-items: center;
+        }
+        .typing-indicator span {
+            width: 7px;
+            height: 7px;
+            background: #8a9bb0;
+            border-radius: 50%;
+            display: inline-block;
+            animation: wave 1.3s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes wave {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-4px); opacity: 1; }
+        }
 
-.chat-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: #fefefe;
-    overflow: hidden;
-}
+        .input-area {
+            display: flex;
+            gap: 10px;
+            padding: 0.9rem 1.2rem;
+            background: white;
+            border-top: 1px solid #eef2f7;
+        }
+        .input-area input {
+            flex: 1;
+            border: 1px solid #e2e8f0;
+            padding: 12px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            outline: none;
+            transition: 0.2s;
+            background: #fefefe;
+        }
+        .input-area input:focus {
+            border-color: #2c7da0;
+            box-shadow: 0 0 0 2px rgba(44,125,160,0.2);
+        }
+        .input-area button {
+            background: #0F2C3D;
+            border: none;
+            color: white;
+            padding: 0 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .input-area button:hover {
+            background: #1f526b;
+            transform: scale(0.97);
+        }
+        .footer {
+            font-size: 0.6rem;
+            text-align: center;
+            padding: 8px 12px;
+            color: #7c8ea0;
+            background: #fafcff;
+            border-top: 1px solid #edf2f8;
+        }
 
-.chat-header {
-    padding: 18px 28px;
-    border-bottom: 1px solid #e9edf2;
-    background: white;
-    flex-shrink: 0;
-}
+        .messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        .messages::-webkit-scrollbar-track {
+            background: #eef2f7;
+            border-radius: 10px;
+        }
+        .messages::-webkit-scrollbar-thumb {
+            background: #cbd9e6;
+            border-radius: 10px;
+        }
 
-.chat-header h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1f2e3a;
-}
-
-.chat-header span {
-    font-size: 0.75rem;
-    color: #5c6f87;
-}
-
-.messages-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 24px 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    background: #fafcff;
-}
-
-.messages-area::-webkit-scrollbar {
-    width: 6px;
-}
-.messages-area::-webkit-scrollbar-track {
-    background: #eef2f8;
-    border-radius: 8px;
-}
-.messages-area::-webkit-scrollbar-thumb {
-    background: #b9c8b2;
-    border-radius: 8px;
-}
-
-.message-bubble {
-    max-width: 80%;
-    padding: 12px 18px;
-    border-radius: 24px;
-    line-height: 1.5;
-    font-size: 0.95rem;
-    word-break: break-word;
-}
-
-.bot-msg {
-    background: #f0f4f9;
-    border: 1px solid #e2e8f0;
-    align-self: flex-start;
-    border-bottom-left-radius: 5px;
-    color: #1e2a3a;
-}
-
-.user-msg {
-    background: #1a5d3c;
-    color: white;
-    align-self: flex-end;
-    border-bottom-right-radius: 5px;
-}
-
-.input-row {
-    padding: 16px 24px 24px 24px;
-    border-top: 1px solid #eef2f8;
-    background: white;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    flex-shrink: 0;
-}
-
-.input-row input {
-    flex: 1;
-    padding: 14px 18px;
-    border-radius: 60px;
-    border: 1px solid #cbd5e1;
-    font-family: inherit;
-    font-size: 0.9rem;
-    outline: none;
-}
-
-.input-row input:focus {
-    border-color: #1a5d3c;
-    box-shadow: 0 0 0 3px rgba(26,93,60,0.2);
-}
-
-.input-row button {
-    background: #1a5d3c;
-    border: none;
-    padding: 12px 26px;
-    border-radius: 60px;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.input-row button:hover {
-    background: #0e3f28;
-}
-
-@media (max-width: 700px) {
-    .side-panel { display: none; }
-    .message-bubble { max-width: 90%; }
-}
-</style>
+        @media (max-width: 480px) {
+            .chat-card { max-width: 100%; border-radius: 1.5rem; }
+            .messages { height: 460px; }
+            .bubble { font-size: 0.85rem; }
+        }
+    </style>
 </head>
 <body>
+<div class="chat-card">
+    <div class="header">
+        <h1>Marketing Research AI</h1><span class="badge">Topic 12: Marketing Metrics</span>
+        <div class="sub">📊 Descriptive Stats • Hypothesis Testing • Correlation • Regression</div>
+    </div>
 
-<div class="chat-app">
-    <div class="side-panel">
-        <div class="brand">
-            <h2>📊 Marketing Research<br>& Analytics AI</h2>
-            <p>Topic 12: Marketing Metrics & Data Analysis</p>
-        </div>
-        <div class="topic-section">
-            <h4>📚 TOPIC 12: KEY CONCEPTS</h4>
-            <div class="topic-list">
-                <div class="topic-chip" data-question="What is descriptive statistics? Mean, median, mode">📊 Descriptive Statistics (Mean, Median, Mode)</div>
-                <div class="topic-chip" data-question="What are measures of dispersion? Range, IQR, Standard Deviation">📏 Measures of Dispersion (Range, IQR, Std Dev, CV)</div>
-                <div class="topic-chip" data-question="What is the Chi-Square test of association?">📐 Chi-Square (χ²) Test of Association</div>
-                <div class="topic-chip" data-question="What is correlation analysis? Pearson vs Spearman">📈 Correlation (Pearson & Spearman)</div>
-                <div class="topic-chip" data-question="What is simple linear regression?">📉 Simple Linear Regression (Y = a + bX)</div>
-                <div class="topic-chip" data-question="What is multiple regression analysis?">📊 Multiple Regression Analysis</div>
-                <div class="topic-chip" data-question="What is coefficient of determination R-squared?">🎯 Coefficient of Determination (R²)</div>
-                <div class="topic-chip" data-question="How to test significance of regression slope?">🔬 T-test for Regression Slope</div>
-                <div class="topic-chip" data-question="What is qualitative content analysis?">📝 Qualitative Content Analysis</div>
-                <div class="topic-chip" data-question="Steps in hypothesis testing for association">📋 Hypothesis Testing Steps (5 Steps)</div>
-                <div class="topic-chip" data-question="What is the difference between correlation and regression?">⚖️ Correlation vs Regression</div>
-                <div class="topic-chip" data-question="What is coefficient of variation?">📊 Coefficient of Variation (CV)</div>
-            </div>
+    <div class="messages" id="messages">
+        <div class="msg bot-msg">
+            <div class="bubble bot-bubble">Hi! I'm your marketing research assistant.</div>
+            <div class="time">now</div>
         </div>
     </div>
 
-    <div class="chat-main">
-        <div class="chat-header">
-            <h3>📈 Topic 12: Marketing Metrics & Data Analysis</h3>
-            <span>Based on your lecture notes | Descriptive Stats | Chi-Square | Correlation | Regression | Content Analysis</span>
-        </div>
-        <div class="messages-area" id="chatMessages">
-            <div class="message-bubble bot-msg">
-                👋 <strong>Welcome to Topic 12!</strong> I'm your Marketing Research AI for <strong>Marketing Metrics and Data Analysis</strong>.<br><br>
-                📖 Based on your lecture notes, I can teach you about:<br>
-                • <strong>Descriptive Statistics</strong> - Mean, median, mode, range, IQR, standard deviation, CV<br>
-                • <strong>Chi-Square Test</strong> - Testing association between categorical variables<br>
-                • <strong>Correlation Analysis</strong> - Pearson (parametric) and Spearman (non-parametric)<br>
-                • <strong>Regression Analysis</strong> - Simple linear (Y=a+bX) and multiple regression<br>
-                • <strong>Hypothesis Testing</strong> - 5-step process for association and slope significance<br>
-                • <strong>Qualitative Content Analysis</strong> - Coding, categorizing, themes<br><br>
-                Ask me anything from Topic 12, or click any topic on the left!
-            </div>
-        </div>
-        <div class="input-row">
-            <input type="text" id="userQuery" placeholder="e.g., What is the difference between mean and median? or How to interpret R-squared?..." autocomplete="off">
-            <button id="sendBtn">Send →</button>
-        </div>
+    <div class="input-area">
+        <input type="text" id="input" placeholder="e.g., What is descriptive statistics?" autocomplete="off">
+        <button id="send">Send</button>
     </div>
+    <div class="footer">📘 answers based on "Topic 12 - Marketing Metrics and Its Application" (data analysis, correlation, regression)</div>
 </div>
 
 <script>
-    const messagesContainer = document.getElementById('chatMessages');
-    const userInput = document.getElementById('userQuery');
-    const sendButton = document.getElementById('sendBtn');
-
-    function scrollToBottom() {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    // Helper function to convert markdown-style **bold** to HTML <strong> tags
+    function formatBold(text) {
+        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     }
 
-    function appendMessage(text, sender) {
-        const msgDiv = document.createElement('div');
-        msgDiv.classList.add('message-bubble');
-        msgDiv.classList.add(sender === 'user' ? 'user-msg' : 'bot-msg');
-        msgDiv.innerHTML = text;
-        messagesContainer.appendChild(msgDiv);
-        scrollToBottom();
+    // Comprehensive knowledge base derived from Topic 12 PDF
+    function getMetricsAnswer(userQuery) {
+        let q = userQuery.toLowerCase().trim();
+        
+        // --- Descriptive statistics definition ---
+        if ((q.includes("descriptive statistics") || q.includes("descriptive analysis")) && !q.includes("inferential")) {
+            return formatBold("**Descriptive Statistics**\n\nConcerned with summarizing data to describe the characteristics of the data.\n\n**Two commonly used measures:**\n\n1️⃣ **Measures of Central Tendency** – Mean, Median, Mode\n2️⃣ **Measures of Dispersion** – Range, Inter-quartile range, Standard Deviation, Coefficient of Variation\n\nThese help understand the typical value and spread of data.");
+        }
+        
+        // --- Mean ---
+        if ((q.includes("mean") || q.includes("average")) && !q.includes("median") && !q.includes("mode")) {
+            return formatBold("**Mean (Arithmetic Average)**\n\nFormula: X̄ = (X₁ + X₂ + ... + Xn) / n\n\n**Example:** Time spent (hours): 0.7, 2.7, 0.2, 1.2, 0.5, 2.1, 0.9, 1.4, 1.3, 1.6\nMean = 1.26 hours\n\n**For grouped data:** X̄ = Σ(fi * Xi) / n, where fi = frequency, Xi = midpoint\n\nMean is commonly used for interval and ratio scale data.");
+        }
+        
+        // --- Median ---
+        if (q.includes("median") && !q.includes("mean")) {
+            return formatBold("**Median**\n\nThe central location value of a data set. The value at position (n+1)/2 when data is ordered.\n\n**Advantage:** Not influenced by extreme values (outliers).\n\n**Example:** Data: 0.7, 0.9, 1.2, 1.3, 1.4, 1.6, 1.8, 1.9, 1.9, 2.1, 2.3\nn=11, position = (11+1)/2 = 6th value → Median = 1.6 hours\n\nUseful for ordinal data or skewed distributions.");
+        }
+        
+        // --- Mode ---
+        if (q.includes("mode") && !q.includes("mean") && !q.includes("median")) {
+            return formatBold("**Mode**\n\nThe value that occurs most frequently in a data set.\n\n**Example:** Data: 0.7, 0.8, 1.2, 1.3, 1.4, 1.6, 1.8, 1.9, 1.9, 2.1, 2.3\nMode = 1.9 (appears twice)\n\nA data set may have:\n• **No mode** – all values occur once\n• **Unimodal** – one mode\n• **Bimodal** – two modes\n• **Multimodal** – more than two modes");
+        }
+        
+        // --- Measures of Dispersion ---
+        if ((q.includes("dispersion") || q.includes("variability") || q.includes("spread")) && !q.includes("range")) {
+            return formatBold("**Measures of Dispersion (Spread)**\n\nDescribe how data is spread around the average value.\n\n**Common measures:**\n\n1️⃣ **Range** – Largest - Smallest value\n2️⃣ **Inter-quartile Range (IQR)** – Q3 - Q1 (middle 50%)\n3️⃣ **Standard Deviation** – Average distance from mean (most widely used)\n4️⃣ **Coefficient of Variation (CV)** – (SD/Mean)×100% (relative measure)");
+        }
+        
+        // --- Range ---
+        if ((q.includes("range") && q.includes("statistics")) || (q.includes("range") && q.includes("dispersion"))) {
+            return formatBold("**Range**\n\nThe difference between the largest and smallest observations.\n\n**Formula:** Range = Largest Value - Smallest Value\n\n**Example:** Time spent: 2.3 - 0.7 = 1.6 hours\n\n**Limitation:** Only uses two extreme values, sensitive to outliers, does not tell about distribution of middle values.");
+        }
+        
+        // --- Standard Deviation ---
+        if ((q.includes("standard deviation") || q.includes("sd")) && !q.includes("coefficient")) {
+            return formatBold("**Standard Deviation**\n\nThe most widely used measure of dispersion. It measures the average distance of each observation from the mean.\n\n**Formula (sample):** s = √[ Σ(Xi - X̄)² / (n-1) ]\n\n**Properties:**\n• Smaller SD = data clustered closely around mean\n• Larger SD = data more spread out\n\n**Example:** Computation shows SD = 0.677 hours\n\nUsed with mean to describe normal distributions.");
+        }
+        
+        // --- Coefficient of Variation ---
+        if ((q.includes("coefficient of variation") || q.includes("cv"))) {
+            return formatBold("**Coefficient of Variation (CV)**\n\nA relative measure of dispersion: CV = (SD / X̄) × 100%\n\n**Purpose:** Allows comparison of variability between different data sets regardless of units or means.\n\n**Interpretation:**\n• Higher CV = data more scattered relative to mean\n• Lower CV = greater consistency\n\n**Use:** Also used to detect potential outliers in data.");
+        }
+        
+        // --- Chi-Square Test for Association ---
+        if ((q.includes("chi-square") || q.includes("chi square") || q.includes("association test")) && !q.includes("goodness")) {
+            return formatBold("**Chi-Square Test for Association**\n\nTests association between categorical variables. No normality assumption needed.\n\n**Formula:** χ² = Σ (Oi - Ei)² / Ei\nwhere Oi = observed frequency, Ei = expected frequency\n\n**Expected frequency:** (Row Total × Column Total) / Table Total\n\n**Degrees of freedom:** (r-1)(c-1)\n\n**Example:** Testing association between employee smiling and patient satisfaction. χ² = 11.66, p=0.001 → Reject H₀ → Association exists.");
+        }
+        
+        // --- Pearson Correlation ---
+        if ((q.includes("pearson correlation") || (q.includes("correlation") && q.includes("pearson")))) {
+            return formatBold("**Pearson Correlation Coefficient (r)**\n\nMeasures strength of linear relationship between two quantitative (interval/ratio) variables.\n\n**Formula:** r = Σ(xi - x̄)(yi - ȳ) / √[Σ(xi - x̄)² Σ(yi - ȳ)²]\n\n**Interpretation (r values):**\n• 0.81–1.00: Strong\n• 0.61–0.80: Moderate\n• 0.41–0.60: Weak\n• 0.21–0.40: Very Weak\n• 0.00–0.20: None\n\n**Coefficient of determination (R²)** = r² – proportion of variation explained.\nExample: r=0.802 → R²=0.644 (64.4% of variation in sales explained by service quality).");
+        }
+        
+        // --- Spearman Correlation ---
+        if ((q.includes("spearman") || (q.includes("rank order") && q.includes("correlation")))) {
+            return formatBold("**Spearman Rank Order Correlation**\n\nNon-parametric equivalent of Pearson correlation.\n\n**Use when:**\n• Data is ordinal level\n• Normality assumption is violated\n• Sample size is small\n\nBased on ranked values rather than actual values. Measures monotonic (not necessarily linear) relationships.");
+        }
+        
+        // --- Simple Linear Regression ---
+        if ((q.includes("simple linear regression") || (q.includes("regression") && !q.includes("multiple")))) {
+            return formatBold("**Simple Linear Regression**\n\nModels cause-effect relationship between one independent (X) and one dependent variable (Y).\n\n**Equation:** Y = a + bX\nwhere a = intercept, b = slope\n\n**Example from material:**\nSales = 0.63(Service Quality) - 46.86\nInterpretation: Each 1-unit increase in service quality increases sales by RM0.63.\n\n**Hypothesis testing steps:**\n1. Global test: Is linear model appropriate? (ANOVA, test R²≠0)\n2. Slope test: Is b significantly different from zero? (t-test)");
+        }
+        
+        // --- Multiple Regression ---
+        if ((q.includes("multiple regression") || (q.includes("multiple linear regression")))) {
+            return formatBold("**Multiple Regression**\n\nExtension of simple regression with multiple independent variables.\n\n**Equation:** Y = a + b₁X₁ + b₂X₂ + ... + bkXk + error\n\n**Example:** Sales = 3.54 + 0.1214(Adv) + 0.2626(Promoters) + 0.0597(Free Samples) + error\n\n**Process:**\n1. Global F-test: Is the model significant? (R²≠0)\n2. Individual t-tests: Which predictors are significant?\n\nAdjusted R² indicates proportion of variance explained by the model (e.g., 0.254 = 25.4%).");
+        }
+        
+        // --- Regression Hypothesis Testing Steps ---
+        if ((q.includes("regression hypothesis") || (q.includes("global hypothesis") && q.includes("regression")))) {
+            return formatBold("**Regression Hypothesis Testing Steps**\n\n**Global Test (ANOVA):**\nH₀: R² = 0 (No linear relationship)\nH₁: R² ≠ 0 (Linear relationship exists)\nDecision: Reject H₀ if p-value < α\n\n**Slope Test (t-test):**\nH₀: β = 0 (Slope equals zero)\nH₁: β ≠ 0 (Slope not zero)\n\n**Example results:**\nF=13.46, p=0.01 → Reject H₀ → Linear relationship exists\nt=3.82, p=0.005 → Reject H₀ → Slope significantly different from zero");
+        }
+        
+        // --- Qualitative / Content Analysis ---
+        if ((q.includes("qualitative analysis") || q.includes("content analysis") || (q.includes("open ended") && q.includes("analysis")))) {
+            return formatBold("**Qualitative / Content Analysis**\n\nAnalyzing qualitative data from open-ended questions, depth interviews, or focus groups.\n\n**Process:**\n1️⃣ Read the content of writings\n2️⃣ Summarize to form key words/phrases\n3️⃣ Sort and categorize words/phrases into groups/dimensions\n4️⃣ Assign codes to each keyword/phrase and categories\n5️⃣ Perform frequency distribution and percentages\n\n**Goal:** Transform unstructured text into analyzable data for descriptive statistics and Chi-square tests.");
+        }
+        
+        // --- One Sample Test (Describing population) ---
+        if ((q.includes("one sample test") || (q.includes("describing population")))) {
+            return formatBold("**Describing a Population (One Sample Test)**\n\nTests whether sample statistic differs from known population parameter.\n\n**Test selection depends on:**\n• Level of measurement (nominal, ordinal, interval)\n• Population parameters (proportion, median, mean)\n• Sample size and normality\n\n**Examples:**\n• Nominal: Z-test for proportion or Chi-square goodness of fit\n• Ordinal: Sign test for median\n• Interval: t-test for mean (large sample, normal) or Sign test (small sample)");
+        }
+        
+        // --- Comparing More Than Two Populations ---
+        if ((q.includes("more than two populations") || q.includes("anova") || q.includes("kruskal wallis") || q.includes("friedman"))) {
+            return formatBold("**Comparing More Than Two Populations**\n\n**Parametric tests (normal distribution, interval data):**\n• One-way ANOVA (unrelated samples)\n• Repeated measures ANOVA (related samples)\n\n**Non-parametric tests (no normality assumption):**\n• Kruskal-Wallis Rank Sum Test (unrelated, ordinal)\n• Friedman's Test (related, ordinal)\n• Chi-square test of independence (nominal categories)");
+        }
+        
+        // --- Coefficient of Determination R² ---
+        if ((q.includes("coefficient of determination") || q.includes("r squared") || q.includes("r²"))) {
+            return formatBold("**Coefficient of Determination (R²)**\n\nR² = r² (square of correlation coefficient)\n\n**Interpretation:** Proportion of variation in the dependent variable explained by the independent variable(s).\n\n**Example:** r = 0.802 → R² = 0.644\nMeaning: 64.4% of the variation in sales is accounted for by variation in service quality.\n\n**In multiple regression:** Adjusted R² accounts for number of predictors.");
+        }
+        
+        // --- Default fallback ---
+        return formatBold("**Topic 12: Marketing Metrics and Data Analysis**\n\nTry asking about:\n• Descriptive statistics (mean, median, mode)\n• Measures of dispersion (range, standard deviation, coefficient of variation)\n• Chi-square test for association\n• Pearson correlation coefficient & interpretation\n• Spearman rank order correlation\n• Simple linear regression (equation, interpretation)\n• Multiple regression\n• Regression hypothesis testing (global F-test, t-test)\n• Coefficient of determination (R²)\n• Qualitative / content analysis\n• One sample test (describing population)\n• Comparing more than two populations (ANOVA, Kruskal-Wallis, Friedman)\n\nJust type your question!");
     }
 
-    function getBotAnswer(questionText) {
-        const q = questionText.toLowerCase();
-        
-        // Descriptive Statistics - Mean, Median, Mode
-        if ((q.includes('descriptive statistics') || (q.includes('mean') && q.includes('median') && q.includes('mode'))) || (q.includes('central tendency'))) {
-            return `<b>📊 Descriptive Statistics: Measures of Central Tendency</b><br><br>
-            <b>Mean (Average):</b> Sum of all observed values divided by total number. Formula: x̄ = Σx/n. Most commonly used for interval/ratio scales.<br><br>
-            <b>Median:</b> The central location value. Not influenced by extreme values. Position = (n+1)/2. Advantage: robust to outliers.<br><br>
-            <b>Mode:</b> The value that occurs most frequently. Useful for nominal data.<br><br>
-            <b>Example:</b> Hours spent: 0.7, 0.8, 1.2, 1.3, 1.4, 1.6, 1.8, 1.9, 1.9, 2.1, 2.3 → Mode = 1.9 (appears twice)<br><br>
-            <i>Which measure to use depends on the type of measurement and its distribution.</i>`;
-        }
-        
-        // Measures of Dispersion
-        if ((q.includes('dispersion') || q.includes('range') || q.includes('standard deviation') || q.includes('iqr') || q.includes('coefficient of variation'))) {
-            return `<b>📏 Measures of Dispersion (Spread/Variability)</b><br><br>
-            <b>Range:</b> Largest value - Smallest value. Example: 2.3 - 0.7 = 1.6 hours<br><br>
-            <b>Inter-Quartile Range (IQR):</b> Q3 (75th percentile) - Q1 (25th percentile). Measures middle 50% spread. Example: 1.9 - 1.2 = 0.7 hours<br><br>
-            <b>Standard Deviation (s):</b> Most widely used measure. Summary of differences of each observation from the mean. Formula: s = √[Σ(xi - x̄)²/(n-1)]<br><br>
-            <b>Coefficient of Variation (CV):</b> (Standard deviation / Mean) × 100%. Measures scatter relative to mean. Higher CV = more dispersed data. Also indicates consistency and potential outliers.`;
-        }
-        
-        // Chi-Square Test
-        if (q.includes('chi-square') || q.includes('chi square') || q.includes('χ2') || (q.includes('association') && q.includes('categorical'))) {
-            return `<b>📐 Chi-Square (χ²) Test of Association</b><br><br>
-            Used to test association between <b>categorical variables</b>. No normality assumption; each cell must have at least 5 observations.<br><br>
-            <b>Formula:</b> χ² = Σ[(Oi - Ei)² / Ei] where Oi = observed frequency, Ei = expected frequency<br><br>
-            <b>Expected frequency:</b> Ei = (Row Total × Column Total) / Table Total<br><br>
-            <b>Degrees of freedom:</b> df = (r - 1)(c - 1) where r = rows, c = columns<br><br>
-            <b>Example hypothesis:</b><br>
-            H₀: Employee smiling and patient satisfaction are NOT associated<br>
-            H₁: Employee smiling and patient satisfaction are associated<br><br>
-            If p-value < 0.05 → reject H₀ → variables are associated.`;
-        }
-        
-        // Correlation (Pearson vs Spearman)
-        if ((q.includes('correlation') && (q.includes('pearson') || q.includes('spearman'))) || (q.includes('pearson correlation') || q.includes('spearman rank'))) {
-            return `<b>📈 Correlation Analysis</b><br><br>
-            <b>Pearson Correlation Coefficient (r):</b> Parametric test. Requires interval scale data and normal distribution. Measures strength of linear relationship. Formula: r = Σ[(xi-x̄)(yi-ȳ)] / √[Σ(xi-x̄)²Σ(yi-ȳ)²]<br><br>
-            <b>Spearman Rank Order Correlation:</b> Non-parametric. Uses rank values. For ordinal data or when normality is violated.<br><br>
-            <b>r interpretation:</b><br>
-            • 0.81 to 1.00: Very strong<br>
-            • 0.61 to 0.80: Strong<br>
-            • 0.41 to 0.60: Moderate<br>
-            • 0.21 to 0.40: Weak<br>
-            • 0.00 to 0.20: Very weak<br><br>
-            <b>Coefficient of Determination (R²):</b> Square of r. Proportion of variation in DV explained by IV.`;
-        }
-        
-        // Simple Linear Regression
-        if ((q.includes('simple linear regression') || q.includes('linear regression')) && !q.includes('multiple')) {
-            return `<b>📉 Simple Linear Regression</b><br><br>
-            Establishes cause-effect relationship between two variables.<br><br>
-            <b>Equation:</b> Y = a + bX<br>
-            Where: Y = Dependent variable, X = Independent variable, a = intercept (constant), b = slope (regression coefficient)<br><br>
-            <b>Example:</b> Sales = 0.63(Service Quality) - 46.86<br>
-            Interpretation: Every 1 unit increase in service quality leads to RM0.63 increase in sales.<br><br>
-            <b>Assumptions:</b> Linearity, independence, homoscedasticity, normality of residuals<br><br>
-            <b>Global hypothesis test:</b><br>
-            H₀: R² = 0 (no linear relationship)<br>
-            H₁: R² ≠ 0 (significant linear relationship)<br>
-            Decision: Reject H₀ if p-value < α (0.05).`;
-        }
-        
-        // Multiple Regression
-        if (q.includes('multiple regression') || (q.includes('multiple linear regression'))) {
-            return `<b>📊 Multiple Regression Analysis</b><br><br>
-            Extension of simple linear regression with <b>two or more independent variables</b>.<br><br>
-            <b>Equation:</b> Y = a + b₁X₁ + b₂X₂ + ... + bₖXₖ + error<br><br>
-            <b>Example:</b> Sales = 3.54 + 0.1214(Adv) + 0.2626(Promoters) + 0.0597(Free Samples)<br><br>
-            <b>Testing process:</b><br>
-            • Global F-test: Tests if R² = 0 (all slopes = 0 collectively)<br>
-            • Individual t-tests: Tests each slope ≠ 0 independently<br><br>
-            <b>Adjusted R²:</b> Penalizes for number of predictors. Represents proportion of variance explained.<br><br>
-            <b>Output interpretation:</b> p-value < 0.05 for F-test → model is significant. Individual p-values determine which predictors contribute significantly.`;
-        }
-        
-        // R-squared
-        if (q.includes('r-squared') || q.includes('coefficient of determination') || q.includes('r2')) {
-            return `<b>🎯 Coefficient of Determination (R²)</b><br><br>
-            R² is the <b>square of the correlation coefficient (r)</b>. It represents the proportion of variation in the dependent variable that is explained by the independent variable(s).<br><br>
-            <b>Interpretation:</b><br>
-            • R² = 0.644 means 64.4% of variation in Y is explained by X<br>
-            • R² = 0.306 means 30.6% of variation is explained<br><br>
-            <b>Range:</b> 0 to 1 (0% to 100%)<br><br>
-            <b>Simple regression example:</b> r = 0.802 → R² = 0.644 → 64.4% of sales variation explained by service quality.<br><br>
-            <b>Multiple regression:</b> Adjusted R² accounts for number of predictors. Used to compare models with different numbers of IVs.`;
-        }
-        
-        // T-test for regression slope
-        if ((q.includes('t-test') && q.includes('regression')) || (q.includes('significance of slope') || q.includes('test slope'))) {
-            return `<b>🔬 T-test for Significance of Regression Slope</b><br><br>
-            <b>Purpose:</b> Test whether the regression slope (b) is significantly different from zero.<br><br>
-            <b>Hypotheses:</b><br>
-            H₀: β = 0 (slope equals zero, no relationship)<br>
-            H₁: β ≠ 0 (slope not zero, significant relationship)<br><br>
-            <b>Test statistic:</b> t = b / SE(b)<br><br>
-            <b>5-step process:</b><br>
-            1. State H₀ and H₁<br>
-            2. Set α = 0.05<br>
-            3. Compute t-statistic from data<br>
-            4. Compare p-value to α<br>
-            5. If p < 0.05, reject H₀ → slope is significant<br><br>
-            <b>Example result:</b> p = 0.000 < 0.05 → Reject H₀ → service quality significantly affects sales.`;
-        }
-        
-        // Qualitative Content Analysis
-        if (q.includes('qualitative content analysis') || (q.includes('content analysis') && !q.includes('chi'))) {
-            return `<b>📝 Qualitative Content Analysis</b><br><br>
-            Systematic method to analyze open-ended responses, depth interviews, or focus group transcripts.<br><br>
-            <b>Steps:</b><br>
-            1. <b>Read</b> the content of the writings<br>
-            2. <b>Summarize</b> writings to form key words/phrases<br>
-            3. <b>Sort and categorize</b> words/phrases into groups or dimensions/components<br>
-            4. <b>Assign codes</b> to each keyword/phrase and each category<br>
-            5. Perform <b>frequency distribution and percentages</b><br><br>
-            <b>Outcome:</b> Grouping items to form dimensions and variables, enabling descriptive statistics (frequencies, percentages) and Chi-square analysis with cross-tabulations.`;
-        }
-        
-        // Hypothesis Testing Steps
-        if ((q.includes('hypothesis testing') && (q.includes('steps') || q.includes('process'))) || q.includes('5 steps')) {
-            return `<b>📋 5 Steps of Hypothesis Testing</b><br><br>
-            <b>Step 1:</b> State the Null Hypothesis (H₀) and Alternative Hypothesis (H₁)<br>
-            &nbsp;&nbsp;&nbsp;H₀: No relationship/No difference (status quo)<br>
-            &nbsp;&nbsp;&nbsp;H₁: There is a relationship/difference<br><br>
-            <b>Step 2:</b> Choose the appropriate test statistic (e.g., Chi-Square, t-test, F-test)<br><br>
-            <b>Step 3:</b> Set the level of significance (α) - typically 0.05 or 0.01<br><br>
-            <b>Step 4:</b> Collect evidence and perform statistical analysis, compute p-value<br><br>
-            <b>Step 5:</b> Make decision and conclude<br>
-            &nbsp;&nbsp;&nbsp;If p-value < α → Reject H₀ → Results are statistically significant<br>
-            &nbsp;&nbsp;&nbsp;If p-value ≥ α → Fail to reject H₀`;
-        }
-        
-        // Correlation vs Regression
-        if (q.includes('correlation vs regression') || (q.includes('difference between') && (q.includes('correlation') || q.includes('regression')))) {
-            return `<b>⚖️ Correlation vs Regression</b><br><br>
-            <b>Correlation:</b><br>
-            • Measures strength and direction of linear relationship<br>
-            • Symmetric (no cause-effect implied)<br>
-            • r ranges from -1 to +1<br>
-            • Does not distinguish independent/dependent variables<br>
-            • Pearson (parametric) or Spearman (non-parametric)<br><br>
-            <b>Regression:</b><br>
-            • Establishes cause-effect relationship<br>
-            • Asymmetric (identifies IV and DV)<br>
-            • Produces equation Y = a + bX for prediction<br>
-            • Tests significance of slope<br>
-            • Provides R² (variance explained)<br><br>
-            <i>Correlation tells you IF variables move together; regression tells you HOW one affects the other.</i>`;
-        }
-        
-        // Coefficient of Variation
-        if (q.includes('coefficient of variation') || q.includes('cv')) {
-            return `<b>📊 Coefficient of Variation (CV)</b><br><br>
-            <b>Formula:</b> CV = (Standard Deviation / Mean) × 100%<br><br>
-            <b>Purpose:</b> Measures scatter in data relative to the mean. Allows comparison of variability between datasets with different units or means.<br><br>
-            <b>Interpretation:</b><br>
-            • Higher CV → data is more scattered from the mean<br>
-            • Lower CV → data is more consistent/closely clustered<br><br>
-            <b>Uses:</b><br>
-            • Measure of consistency/reliability<br>
-            • Indicator to suspect outliers in the dataset<br>
-            • Compare variability across different scales<br><br>
-            <b>Example:</b> A set of data with mean 20 and SD 2 has CV = 10%; another with mean 100 and SD 15 has CV = 15% - the second has more relative variability.`;
-        }
-        
-        // Default
-        return `<b>📘 Topic 12: Marketing Metrics and Data Analysis</b><br><br>
-        Based on your lecture notes, I can help you with:<br><br>
-        📊 <b>Descriptive Statistics</b> - Mean, median, mode (central tendency)<br>
-        📏 <b>Measures of Dispersion</b> - Range, IQR, standard deviation, coefficient of variation<br>
-        📐 <b>Chi-Square (χ²) Test</b> - Association between categorical variables, cross-tabulation, expected frequencies<br>
-        📈 <b>Correlation Analysis</b> - Pearson (parametric) vs Spearman (non-parametric), r interpretation, R²<br>
-        📉 <b>Simple Linear Regression</b> - Y = a + bX, slope interpretation, prediction<br>
-        📊 <b>Multiple Regression</b> - Multiple IVs, F-test, adjusted R²<br>
-        🔬 <b>Slope Significance Testing</b> - 5-step hypothesis testing, t-test for regression slope<br>
-        📝 <b>Qualitative Content Analysis</b> - Reading, summarizing, coding, categorizing, frequencies<br>
-        📋 <b>5-Step Hypothesis Testing</b> - H₀/H₁, test statistic, α level, p-value, decision<br>
-        ⚖️ <b>Correlation vs Regression</b> - Key differences explained<br><br>
-        Try asking: <i>"What is the difference between correlation and regression?"</i> or <i>"How do I interpret R-squared?"</i> or <i>"Explain the Chi-square test of association"</i>`;
+    // UI elements
+    const messagesDiv = document.getElementById('messages');
+    const inputEl = document.getElementById('input');
+    const sendBtn = document.getElementById('send');
+
+    function addMessage(text, isUser) {
+        const messageWrapper = document.createElement('div');
+        messageWrapper.className = `msg ${isUser ? 'user-msg' : 'bot-msg'}`;
+        const formattedText = text.replace(/\n/g, '<br>');
+        messageWrapper.innerHTML = `
+            <div class="bubble ${isUser ? 'user-bubble' : 'bot-bubble'}">${formattedText}</div>
+            <div class="time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        `;
+        messagesDiv.appendChild(messageWrapper);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    function escapeHtmlSimple(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
+    function showTypingAndRespond(questionText) {
+        const typingWrapper = document.createElement('div');
+        typingWrapper.className = 'msg bot-msg';
+        typingWrapper.id = 'typingMsg';
+        typingWrapper.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
+        messagesDiv.appendChild(typingWrapper);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
+        setTimeout(() => {
+            const typingElem = document.getElementById('typingMsg');
+            if (typingElem) typingElem.remove();
+            const answer = getMetricsAnswer(questionText);
+            addMessage(answer, false);
+        }, 420);
+    }
+    
     function handleSend() {
-        let query = userInput.value.trim();
-        if (query === "") return;
-        
-        appendMessage(escapeHtmlSimple(query), 'user');
-        userInput.value = '';
-        
-        const answerHtml = getBotAnswer(query);
-        appendMessage(answerHtml, 'bot');
+        const rawText = inputEl.value.trim();
+        if (rawText === "") return;
+        addMessage(rawText, true);
+        inputEl.value = '';
+        showTypingAndRespond(rawText);
     }
     
-    sendButton.addEventListener('click', handleSend);
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleSend();
+    sendBtn.addEventListener('click', handleSend);
+    inputEl.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSend();
+        }
     });
     
-    const topicChips = document.querySelectorAll('.topic-chip');
-    topicChips.forEach(chip => {
-        chip.addEventListener('click', () => {
-            const preQuestion = chip.getAttribute('data-question');
-            if (preQuestion) {
-                appendMessage(preQuestion, 'user');
-                const botAns = getBotAnswer(preQuestion);
-                appendMessage(botAns, 'bot');
-            }
-        });
-    });
-    
-    window.addEventListener('load', () => {
-        scrollToBottom();
-    });
+    inputEl.focus();
 </script>
 </body>
 </html>
