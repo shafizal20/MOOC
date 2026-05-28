@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Topic 7: Sampling Design & Procedures | Quick Quiz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Topic 7: Sampling | Quick Quiz</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif;
             background: #eef2f8;
             min-height: 100vh;
             display: flex;
@@ -22,7 +22,7 @@
         }
 
         .quiz-box {
-            max-width: 1100px;
+            max-width: 1000px;
             width: 100%;
             background: white;
             border-radius: 2rem;
@@ -107,7 +107,7 @@
             display: flex;
             gap: 2rem;
             padding: 2rem;
-            min-height: 350px;
+            min-height: 380px;
         }
 
         .col {
@@ -152,6 +152,12 @@
         .matched-answer {
             background: #e8f5e9 !important;
             border-color: #2b8c4a !important;
+        }
+
+        .formula-card {
+            font-family: 'Courier New', 'SF Mono', monospace;
+            font-size: 1rem;
+            background: #f8f4e8;
         }
 
         .line-layer {
@@ -223,6 +229,17 @@
             margin-top: 0.7rem;
         }
 
+        .note-badge {
+            background: #eef2fa;
+            border-radius: 20px;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #2c5a7a;
+            display: inline-block;
+            margin-left: 8px;
+        }
+
         @media (max-width: 750px) {
             .match-area {
                 flex-direction: column;
@@ -247,17 +264,20 @@
 <div class="quiz-box">
     <div class="quiz-header">
         <div class="title-area">
-            <h2>Topic 7: Sampling Design & Procedures</h2>
+            <h2>Topic 7: Sampling: Design, Procedures & Determination</h2>
         </div>
         <div class="final-score-badge" id="finalScoreBadge" style="display: none;">
             <div class="final-score-label">FINAL SCORE</div>
-            <div class="final-score-value" id="finalScoreValue">0 <span>/ 2</span></div>
+            <div class="final-score-value" id="finalScoreValue">0 <span>/ 5</span></div>
         </div>
     </div>
 
     <div class="progress-text">
         <span class="progress-item" data-qidx="0">1</span>
         <span class="progress-item" data-qidx="1">2</span>
+        <span class="progress-item" data-qidx="2">3</span>
+        <span class="progress-item" data-qidx="3">4</span>
+        <span class="progress-item" data-qidx="4">5</span>
     </div>
 
     <div class="match-area" id="matchContainer">
@@ -284,32 +304,63 @@
 
 <script>
     (function() {
+        // ============= TOPIC 7: Sampling =============
         const questions = [
             {
-                text: "74. Sample size is usually determined by Rules of Thumb (e.g. model of Krejcie and Morgan, 1970), especially in the ____ research.",
+                text: "What is the key difference between a population and a sampling frame?",
                 answers: [
-                    { text: "A) Descriptive", correct: false, id: "q1_a" },
-                    { text: "B) Conclusive", correct: false, id: "q1_b" },
-                    { text: "C) Exploratory", correct: true, id: "q1_c" },
-                    { text: "D) Survey", correct: false, id: "q1_d" }
+                    { text: "A) A population includes only the selected respondents, while a sampling frame includes all potential elements", correct: false, id: "q1_a" },
+                    { text: "B) A population is the entire group of interest, while a sampling frame is the actual list or representation of that population from which a sample is drawn", correct: true, id: "q1_b" },
+                    { text: "C) A population is always smaller than a sampling frame", correct: false, id: "q1_c" }
                 ],
-                correctId: "q1_c"
+                correctIds: ["q1_b"],
+                isMultiCorrect: false
             },
             {
-                text: "75. The sample size in a marketing research can be determined using the following ways EXCEPT:",
+                text: "In which sampling technique does each contact recommend additional members of the target population, making it useful when no sampling frame exists?",
                 answers: [
-                    { text: "A) Mean", correct: false, id: "q2_a" },
-                    { text: "B) Survey", correct: true, id: "q2_b" },
-                    { text: "C) Effect size", correct: false, id: "q2_c" },
-                    { text: "D) Proportion", correct: false, id: "q2_d" }
+                    { text: "A) Quota sampling", correct: false, id: "q2_a" },
+                    { text: "B) Snowball sampling", correct: true, id: "q2_b" },
+                    { text: "C) Stratified sampling", correct: false, id: "q2_c" }
                 ],
-                correctId: "q2_b"
+                correctIds: ["q2_b"],
+                isMultiCorrect: false
+            },
+            {
+                text: "A researcher divides the population into meaningful strata (e.g., gender or race) and then draws independent random samples from each stratum. This describes which probability sampling technique?",
+                answers: [
+                    { text: "A) Cluster sampling", correct: false, id: "q3_a" },
+                    { text: "B) Systematic sampling", correct: false, id: "q3_b" },
+                    { text: "C) Stratified sampling", correct: true, id: "q3_c" }
+                ],
+                correctIds: ["q3_c"],
+                isMultiCorrect: false
+            },
+            {
+                text: "According to the document, which of the following is a general consideration for choosing a probability sampling technique over a non-probability one?",
+                answers: [
+                    { text: "A) The nature of research is exploratory", correct: false, id: "q4_a" },
+                    { text: "B) Statistical analysis will be inferential", correct: true, id: "q4_b" },
+                    { text: "C) Non-sampling errors are expected to be large", correct: false, id: "q4_c" }
+                ],
+                correctIds: ["q4_b"],
+                isMultiCorrect: false
+            },
+            {
+                text: "Using the confidence interval approach for sample size determination based on a proportion, which formula is correct?",
+                answers: [
+                    { text: "A) n = (σ² z²) / D²", correct: false, id: "q5_a", className: "formula-card" },
+                    { text: "B) n = [π(1-π) z²] / D²", correct: true, id: "q5_b", className: "formula-card" },
+                    { text: "C) n = [(Zα + Zβ) s] / ES", correct: false, id: "q5_c", className: "formula-card" }
+                ],
+                correctIds: ["q5_b"],
+                isMultiCorrect: false
             }
         ];
 
         const total = questions.length;
         let currentIdx = 0;
-        let matches = [];
+        let matches = [];        // each: { qIdx, answerId: single id }
         let quizCompleted = false;
         let confettiTriggered = false;
 
@@ -322,20 +373,34 @@
         const resultArea = document.getElementById("resultArea");
         const progressItems = document.querySelectorAll(".progress-item");
 
-        function getAnswer(qIdx) {
+        function getAnswerId(qIdx) {
             const m = matches.find(m => m.qIdx === qIdx);
             return m ? m.answerId : null;
         }
 
+        function setAnswerId(qIdx, ansId) {
+            const existingIdx = matches.findIndex(m => m.qIdx === qIdx);
+            if (existingIdx !== -1) {
+                matches[existingIdx].answerId = ansId;
+            } else {
+                matches.push({ qIdx, answerId: ansId });
+            }
+        }
+
         function isAnswered(qIdx) {
-            return matches.some(m => m.qIdx === qIdx);
+            return getAnswerId(qIdx) !== null;
+        }
+
+        function isAnswerCorrect(qIdx, ansId) {
+            const q = questions[qIdx];
+            return q.correctIds.includes(ansId);
         }
 
         function computeScore() {
             let score = 0;
             for (let i = 0; i < total; i++) {
-                const match = matches.find(m => m.qIdx === i);
-                if (match && match.answerId === questions[i].correctId) score++;
+                const ansId = getAnswerId(i);
+                if (ansId && isAnswerCorrect(i, ansId)) score++;
             }
             return score;
         }
@@ -372,7 +437,7 @@
 
         function drawLine() {
             svg.innerHTML = "";
-            const answerId = getAnswer(currentIdx);
+            const answerId = getAnswerId(currentIdx);
             if (!answerId) return;
             
             const leftCard = document.querySelector(".left .card");
@@ -400,19 +465,26 @@
 
         function render() {
             const q = questions[currentIdx];
-            const storedId = getAnswer(currentIdx);
+            const storedId = getAnswerId(currentIdx);
+            
+            // Format formula display nicely
+            let questionText = q.text;
+            if (currentIdx === 4) {
+                questionText = q.text;
+            }
             
             document.getElementById("leftQuestionContainer").innerHTML = `
                 <div class="card">
-                    <strong>${currentIdx + 1}.</strong> ${q.text}
+                    <strong>${currentIdx + 1}.</strong> ${questionText}
                 </div>
             `;
             
             let answersHtml = '';
             q.answers.forEach(ans => {
                 const isMatched = storedId === ans.id;
+                const extraClass = ans.className || '';
                 answersHtml += `
-                    <div class="card ans-card ${isMatched ? 'matched-answer' : ''}" data-aid="${ans.id}">
+                    <div class="card ans-card ${isMatched ? 'matched-answer' : ''} ${extraClass}" data-aid="${ans.id}">
                         ${ans.text}
                     </div>
                 `;
@@ -423,17 +495,15 @@
                 card.onclick = () => {
                     if (quizCompleted) return;
                     const aid = card.dataset.aid;
-                    matches = matches.filter(m => m.qIdx !== currentIdx);
-                    matches.push({ qIdx: currentIdx, answerId: aid });
+                    setAnswerId(currentIdx, aid);
                     
                     document.querySelectorAll(".ans-card").forEach(c => c.classList.remove("matched-answer"));
                     card.classList.add("matched-answer");
                     
                     drawLine();
                     updateProgress();
-                    
                     if (currentIdx === total - 1) {
-                        hintMsg.innerHTML = "✓ Ready to submit! Click Submit to see your score.";
+                        hintMsg.innerHTML = "✓ Ready to submit! Click Finish to see your score.";
                     } else {
                         hintMsg.innerHTML = "✓ Matched! Click Next →";
                     }
@@ -444,7 +514,50 @@
             setTimeout(() => drawLine(), 30);
         }
 
-        function nextOrSubmit() {
+        function finishQuiz() {
+            quizCompleted = true;
+            const score = computeScore();
+            const percent = Math.round(score/total*100);
+            const perfect = score === total;
+            
+            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
+            finalBadge.style.display = "block";
+            if (perfect) {
+                finalBadge.classList.add("perfect-score-top");
+                if (!confettiTriggered) {
+                    confettiTriggered = true;
+                    burstConfetti();
+                }
+            }
+            
+            nextBtn.classList.add("hidden");
+            
+            let fb = `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 7: Sampling</div>`;
+            for (let i = 0; i < total; i++) {
+                const q = questions[i];
+                const ansId = getAnswerId(i);
+                const correct = ansId && isAnswerCorrect(i, ansId);
+                const correctAnswerObj = q.answers.find(a => q.correctIds.includes(a.id));
+                const correctText = correctAnswerObj ? correctAnswerObj.text : "Unknown";
+                
+                if (correct) {
+                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
+                } else {
+                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect.<br> <span style="margin-left: 16px; font-size:0.85rem;">✔ Correct answer: ${correctText}</span></div>`;
+                }
+            }
+            fb += `<div class="score-highlight">🏅 Final Score: ${score}/${total} · ${percent}%</div>`;
+            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
+            
+            resultArea.style.display = "block";
+            resultArea.className = "result-panel";
+            resultArea.innerHTML = fb;
+            hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
+            
+            updateProgress();
+        }
+
+        function nextOrFinish() {
             if (quizCompleted) return;
             
             if (!isAnswered(currentIdx)) {
@@ -473,13 +586,13 @@
             render();
             updateProgress();
             if (currentIdx === total - 1) {
-                hintMsg.innerHTML = "Last question. Click any answer to match, then Submit.";
+                hintMsg.innerHTML = "Last question. Select answer, then Finish.";
             } else {
                 hintMsg.innerHTML = "Click any answer to match";
             }
         }
 
-        // Confetti
+        // ========== CONFETTI ==========
         const canvas = document.getElementById("confetti-canvas");
         let ctx = canvas.getContext("2d");
         let animId = null;
@@ -544,52 +657,12 @@
             animId = requestAnimationFrame(animate);
         }
 
-        function finishQuiz() {
-            quizCompleted = true;
-            const score = computeScore();
-            const percent = Math.round(score/total*100);
-            const perfect = score === total;
-            
-            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
-            finalBadge.style.display = "block";
-            if (perfect) {
-                finalBadge.classList.add("perfect-score-top");
-                if (!confettiTriggered) {
-                    confettiTriggered = true;
-                    burstConfetti();
-                }
-            }
-            
-            nextBtn.classList.add("hidden");
-            
-            let fb = `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 7: Sampling Design & Procedures</div>`;
-            for (let i = 0; i < total; i++) {
-                const q = questions[i];
-                const match = matches.find(m => m.qIdx === i);
-                const correct = match && match.answerId === q.correctId;
-                const correctText = q.answers.find(a => a.id === q.correctId)?.text;
-                if (correct) {
-                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
-                } else {
-                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect. Correct: ${correctText}</div>`;
-                }
-            }
-            fb += `<div class="score-highlight">🏅 Score: ${score}/${total} · ${percent}%</div>`;
-            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
-            
-            resultArea.style.display = "block";
-            resultArea.className = "result-panel";
-            resultArea.innerHTML = fb;
-            hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
-            
-            updateProgress();
-        }
-
+        // attach navigation
         progressItems.forEach((item, idx) => {
             item.onclick = () => navigateTo(idx);
         });
         
-        nextBtn.onclick = nextOrSubmit;
+        nextBtn.onclick = nextOrFinish;
         
         window.addEventListener("resize", () => setTimeout(() => drawLine(), 100));
         
