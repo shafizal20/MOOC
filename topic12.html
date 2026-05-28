@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Topic 12: Marketing Metrics and Application</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Marketing Research Quiz · Topic 12: Marketing Metrics and Its Application</title>
   <style>
     * {
       margin: 0;
@@ -18,12 +18,12 @@
     }
 
     .quiz-box {
-      max-width: 900px;
+      max-width: 950px;
       margin: 0 auto;
       background: white;
-      border-radius: 24px;
+      border-radius: 32px;
       padding: 24px 28px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
     }
 
     h1 {
@@ -49,7 +49,7 @@
       border-radius: 20px;
       padding: 18px 22px;
       margin-bottom: 18px;
-      transition: 0.1s;
+      transition: all 0.2s;
     }
 
     .question.correct-bg {
@@ -83,17 +83,13 @@
       font-size: 1rem;
       font-weight: 600;
       color: #0f2b3d;
-      line-height: 1.45;
+      line-height: 1.5;
       flex: 1;
-    }
-
-    .q-text p {
-      margin: 0 0 4px;
     }
 
     .extra-list {
       margin: 10px 0 12px 24px;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: normal;
       color: #2c4c6e;
     }
@@ -106,19 +102,19 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin: 12px 0 6px;
+      margin-top: 14px;
     }
 
     .option {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 8px 14px;
+      padding: 10px 14px;
       background: #fafcff;
       border: 1px solid #e4e9f0;
       border-radius: 14px;
       cursor: pointer;
-      transition: 0.1s;
+      transition: 0.2s ease;
     }
 
     .option:hover {
@@ -130,19 +126,13 @@
       height: 18px;
       accent-color: #2563eb;
       cursor: pointer;
-      margin: 0;
-    }
-
-    .option-text {
-      font-size: 0.94rem;
-      color: #1e2f44;
     }
 
     .feedback {
       margin-top: 12px;
       padding: 8px 12px;
       border-radius: 12px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 500;
     }
 
@@ -176,18 +166,17 @@
       cursor: pointer;
       margin-top: 12px;
       margin-bottom: 20px;
-      transition: 0.15s;
+      transition: background 0.2s;
     }
 
     .btn-submit:hover {
       background: #0f3a6e;
-      transform: translateY(-1px);
     }
 
     .btn-submit:disabled {
       background: #9bb5d0;
       cursor: not-allowed;
-      transform: none;
+      opacity: 0.7;
     }
 
     .score-area {
@@ -200,219 +189,314 @@
     }
 
     .score-number {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 800;
       color: #0a2b44;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .result-icon {
+      font-size: 2rem;
+    }
+
+    .perfect-badge {
+      margin-top: 8px;
+      background: linear-gradient(135deg, #f5b042, #f0a500);
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: white;
     }
 
     footer {
       text-align: center;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: #7c8ea0;
       margin-top: 24px;
     }
   </style>
 </head>
 <body>
+
 <div class="quiz-box">
-  <h1>📊 Topic 12: Marketing Metrics and Application</h1>
-  <div class="sub">5 multiple choice questions · submit once</div>
-
+  <h1>📈 Topic 12: Marketing Metrics and Its Application</h1>
+  <div class="sub">Questions 88–95 · measures of location & dispersion · correlation · regression · ANOVA · R²</div>
   <div id="questionsContainer"></div>
-
-  <button id="submitBtn" class="btn-submit">✓ Submit</button>
-  <div id="scorePanel" style="display: none;"></div>
-  <footer>Descriptive statistics, measures of dispersion, Chi-square, ANOVA</footer>
+  <button id="submitBtn" class="btn-submit">✓ Submit & Grade</button>
+  <div id="scorePanel" style="display:none;"></div>
+  <footer>Mean · median · mode · variance · standard deviation · Chi-square · ANOVA · regression · coefficient of determination</footer>
 </div>
 
 <script>
-  // ==============================================================
-  // TOPIC 12: MARKETING METRICS AND APPLICATION
-  // Questions 88-92 based on H5P specification
-  // Numbers shown only in bubble, not in question text
-  // ==============================================================
-  const quizData = [
-    { // Q88
-      text: "Which one of the followings is NOT a measure of location?",
-      options: ["A) Mean", "B) Variance", "C) Mode", "D) Median"],
-      answer: 1,  // Variance is measure of dispersion, not location
-      image: null
-    },
-    { // Q89
-      text: "Variance, range, standard deviation and coefficient of variation are measuring the ___?",
-      options: ["A) location", "B) representativeness", "C) dispersion", "D) discrimination"],
-      answer: 2,  // Dispersion
-      image: null
-    },
-    { // Q90
-      text: "Median does not use all the information in the data set, thus it is considered as less efficient than the mean.",
-      options: ["True", "False"],
-      answer: 0,  // True
-      image: null
-    },
-    { // Q91 - Chi-square analysis
-      text: "Which of the followings are TRUE about Chi-square analysis?",
-      listItems: [
-        "i) Cross-tabulation",
-        "ii) Categorical variables",
-        "iii) Normal distribution of data",
-        "iv) Sample size is relatively small"
-      ],
-      options: ["A) i, ii, iii", "B) i, ii, iv", "C) ii, iii, iv", "D) i, iii, iv"],
-      answer: 1,  // i, ii, iv are true (normal distribution NOT required for Chi-square)
-      listBefore: true
-    },
-    { // Q92
-      text: "____ is used to test the differences of means among 3 groups of populations.",
-      options: ["A) ANCOVA", "B) AMOS", "C) Cochran Test", "D) One Way ANOVA"],
-      answer: 3,  // One Way ANOVA
-      image: null
+// --------------------------------------------------------------
+// QUIZ DATA for TOPIC 12: Marketing Metrics and Its Application
+// Questions 88 through 95 fully extracted from provided H5P content
+// --------------------------------------------------------------
+const quizData = [
+  {
+    id: 88,
+    text: "Which one of the followings is NOT a measure of location?",
+    options: ["A) Mean", "B) Variance", "C) Mode", "D) Median"],
+    answer: 1,  // B) Variance (measure of dispersion, not location)
+    listBefore: false
+  },
+  {
+    id: 89,
+    text: "Variance, range, standard deviation and coefficient of variation are measuring the ___?",
+    options: ["A) location", "B) representativeness", "C) dispersion", "D) discrimination"],
+    answer: 2,  // C) dispersion
+    listBefore: false
+  },
+  {
+    id: 90,
+    text: "Median does not use all the information in the data set, thus it is considered as less efficient than the mean.",
+    options: ["True", "False"],
+    answer: 0,  // True
+    listBefore: false
+  },
+  {
+    id: 91,
+    text: "Which of the followings are TRUE about Chi-square analysis?\n\ni) Cross-tabulation\nii) Categorical variables\niii) Normal distribution of data\niv) Sample size is relatively small",
+    options: ["A) i, ii, iii", "B) i, ii, iv", "C) ii, iii, iv", "D) i, iii, iv"],
+    answer: 1,  // B) i, ii, iv (Chi-square uses cross-tab, categorical variables, small sample size; doesn't require normal distribution)
+    listBefore: false
+  },
+  {
+    id: 92,
+    text: "____ is used to test the differences of means among 3 groups of populations.",
+    options: ["A) ANCOVA", "B) AMOS", "C) Cochran Test", "D) One Way ANOVA"],
+    answer: 3,  // D) One Way ANOVA
+    listBefore: false
+  },
+  {
+    id: 93,
+    text: "Burns and Bush (2010) suggested that the correlation coefficient of 0.41-0.60 is categorized as:",
+    options: ["A) Very weak", "B) Weak", "C) Moderate", "D) Strong"],
+    answer: 2,  // C) Moderate
+    listBefore: false
+  },
+  {
+    id: 94,
+    text: "Regression analysis is useful to establish ___ relationship between variables and forecast future results/outcomes. Nevertheless, the researcher must identify the ___ and ___ variables correctly.",
+    options: [
+      "A) intermediate, dependent, causal",
+      "B) cause-effect, independent, dependent",
+      "C) direct, indirect and mediating",
+      "D) moderate, single, multiple"
+    ],
+    answer: 1,  // B) cause-effect, independent, dependent
+    listBefore: false
+  },
+  {
+    id: 95,
+    text: "R² of 0.38 indicates that ___ in the dependent variable can be attributed to the changes in the independent variable.",
+    options: [
+      "A) 38% of the variation",
+      "B) 38% of the standard deviation",
+      "C) 0.38% of the variation",
+      "D) 0.38% of the standard deviation"
+    ],
+    answer: 0,  // A) 38% of the variation
+    listBefore: false
+  }
+];
+
+let selections = new Array(quizData.length).fill(-1);
+let submitted = false;
+let confettiTriggered = false;
+
+const container = document.getElementById("questionsContainer");
+const submitBtn = document.getElementById("submitBtn");
+const scorePanel = document.getElementById("scorePanel");
+
+// lightweight confetti celebration
+function startConfetti() {
+  if (confettiTriggered) return;
+  confettiTriggered = true;
+
+  const colors = ["#f44336", "#e91e63", "#9c27b0", "#3f51b5", "#2196f3", "#00bcd4", "#4caf50", "#ffeb3b", "#ff9800", "#ff5722"];
+  const confettiCount = 150;
+  const containerEl = document.body;
+
+  for (let i = 0; i < confettiCount; i++) {
+    const conf = document.createElement("div");
+    const size = Math.floor(Math.random() * 12 + 6);
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    conf.style.position = "fixed";
+    conf.style.width = size + "px";
+    conf.style.height = size + "px";
+    conf.style.backgroundColor = color;
+    conf.style.top = "-20px";
+    conf.style.left = Math.random() * window.innerWidth + "px";
+    conf.style.opacity = "0.9";
+    conf.style.borderRadius = Math.random() > 0.7 ? "50%" : "2px";
+    conf.style.pointerEvents = "none";
+    conf.style.zIndex = "9999";
+    conf.style.boxShadow = "0 2px 5px rgba(0,0,0,0.2)";
+    containerEl.appendChild(conf);
+
+    const duration = 1500 + Math.random() * 1500;
+    const destination = window.innerHeight + 50;
+    const rotate = Math.random() * 360;
+    conf.style.transition = `transform ${duration}ms cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity ${duration * 0.8}ms ease-out`;
+    requestAnimationFrame(() => {
+      conf.style.transform = `translateY(${destination}px) rotate(${rotate}deg)`;
+      conf.style.opacity = "0";
+    });
+
+    setTimeout(() => {
+      if (conf && conf.remove) conf.remove();
+    }, duration + 200);
+  }
+
+  setTimeout(() => {
+    confettiTriggered = false;
+  }, 2800);
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
+}
+
+function formatTextWithLineBreaks(text) {
+  if (!text) return '';
+  return text.split('\n').map(line => line.trim()).filter(line => line).join('<br>');
+}
+
+function renderQuestions() {
+  let html = "";
+  for (let i = 0; i < quizData.length; i++) {
+    const q = quizData[i];
+    const selectedVal = selections[i];
+    let questionClass = "question";
+
+    if (submitted) {
+      const isCorrect = (selectedVal !== -1 && selectedVal === q.answer);
+      questionClass += isCorrect ? " correct-bg" : " wrong-bg";
     }
-  ];
 
-  // user selections: -1 = unanswered
-  let selections = new Array(quizData.length).fill(-1);
-  let submitted = false;
+    html += `<div class="${questionClass}"><div class="q-header"><span class="q-num">${q.id}</span><div class="q-text">`;
+    html += `<div>${formatTextWithLineBreaks(escapeHtml(q.text))}</div>`;
 
-  const container = document.getElementById("questionsContainer");
-  const submitBtn = document.getElementById("submitBtn");
-  const scorePanel = document.getElementById("scorePanel");
-
-  // render all questions
-  function renderQuestions() {
-    let html = "";
-    for (let i = 0; i < quizData.length; i++) {
-      const q = quizData[i];
-      const selectedVal = selections[i];
-      const realNumber = 88 + i;   // Q88 to Q92
-      
-      let questionClass = "question";
-      if (submitted) {
-        const isCorrect = (selectedVal !== -1 && selectedVal === q.answer);
-        if (isCorrect) questionClass += " correct-bg";
-        else questionClass += " wrong-bg";
-      }
-      
-      html += `<div class="${questionClass}">`;
-      html += `<div class="q-header">`;
-      html += `<span class="q-num">${realNumber}</span>`;
-      html += `<div class="q-text">`;
-      
-      // handle question 91 (index 3) with list BEFORE text
-      if (q.listBefore && q.listItems) {
-        html += `<div class="extra-list"><ul>`;
-        q.listItems.forEach(li => { html += `<li>${li}</li>`; });
-        html += `</ul></div>`;
-        html += `<p style="margin-top: 8px;">${q.text}</p>`;
-      } else {
-        html += `<div>${q.text}</div>`;
-      }
-      
-      html += `</div></div>`;
-      
-      // options
-      html += `<div class="options">`;
-      q.options.forEach((opt, optIdx) => {
-        const isChecked = (selectedVal === optIdx);
-        const disabledAttr = submitted ? "disabled" : "";
-        html += `
-          <label class="option" style="cursor: ${submitted ? 'default' : 'pointer'}">
-            <input type="radio" name="q${i}" value="${optIdx}" ${isChecked ? 'checked' : ''} ${disabledAttr}>
-            <span class="option-text">${opt}</span>
-          </label>
-        `;
+    // render list items if present
+    if (q.listBefore && q.listItems && q.listItems.length) {
+      html += `<div class="extra-list"><ul>`;
+      q.listItems.forEach(li => {
+        html += `<li>${escapeHtml(li)}</li>`;
       });
-      html += `</div>`;
-      
-      // after submit: show feedback
-      if (submitted) {
-        if (selectedVal === -1) {
-          html += `<div class="feedback feedback-missing">⚠️ Not answered · Correct: ${q.options[q.answer]}</div>`;
-        } else if (selectedVal !== q.answer) {
-          html += `<div class="feedback feedback-wrong">❌ Incorrect · Your answer: ${q.options[selectedVal]}<br>✅ Correct: ${q.options[q.answer]}</div>`;
-        } else {
-          html += `<div class="feedback feedback-correct">✓ Correct</div>`;
-        }
-      }
-      
-      html += `</div>`;
+      html += `</ul></div>`;
     }
-    container.innerHTML = html;
-    
-    // attach change events only if not submitted
-    if (!submitted) {
-      for (let i = 0; i < quizData.length; i++) {
-        const radios = document.querySelectorAll(`input[name="q${i}"]`);
-        radios.forEach(radio => {
-          radio.addEventListener("change", (e) => {
-            if (submitted) return;
+
+    html += `</div></div><div class="options">`;
+
+    q.options.forEach((opt, idx) => {
+      html += `<label class="option">
+        <input type="radio" name="q${i}" value="${idx}" ${selectedVal === idx ? 'checked' : ''} ${submitted ? 'disabled' : ''}>
+        <span>${escapeHtml(opt)}</span>
+      </label>`;
+    });
+
+    html += `</div>`;
+
+    if (submitted) {
+      if (selectedVal === -1) {
+        html += `<div class="feedback feedback-missing">⚠️ Not answered · Correct: ${escapeHtml(q.options[q.answer])}</div>`;
+      } else if (selectedVal !== q.answer) {
+        html += `<div class="feedback feedback-wrong">❌ Incorrect · Your answer: ${escapeHtml(q.options[selectedVal])}<br>✅ Correct: ${escapeHtml(q.options[q.answer])}</div>`;
+      } else {
+        html += `<div class="feedback feedback-correct">✓ Correct</div>`;
+      }
+    }
+    html += `</div>`;
+  }
+
+  container.innerHTML = html;
+
+  if (!submitted) {
+    for (let i = 0; i < quizData.length; i++) {
+      const radios = document.querySelectorAll(`input[name="q${i}"]`);
+      radios.forEach(radio => {
+        radio.addEventListener("change", (e) => {
+          if (!submitted) {
             selections[i] = parseInt(e.target.value);
             renderQuestions();
-          });
+          }
         });
-      }
+      });
     }
   }
-  
-  // compute score
-  function getScore() {
-    let correct = 0;
-    for (let i = 0; i < quizData.length; i++) {
-      const selected = selections[i];
-      if (selected !== -1 && selected === quizData[i].answer) correct++;
-    }
-    return correct;
+}
+
+function getScore() {
+  let correct = 0;
+  for (let i = 0; i < quizData.length; i++) {
+    if (selections[i] !== -1 && selections[i] === quizData[i].answer) correct++;
   }
-  
-  // submit handler: one-time submission, no reset button
-  function handleSubmit() {
-    if (submitted) {
-      return;
-    }
-    
-    const answeredCount = selections.filter(s => s !== -1).length;
-    if (answeredCount < quizData.length) {
-      if (!confirm(`You have answered ${answeredCount} out of ${quizData.length}. Submit anyway?`)) {
-        return;
-      }
-    }
-    
-    submitted = true;
-    const correct = getScore();
-    const total = quizData.length;
-    
-    // re-render with highlights & feedback
-    renderQuestions();
-    
-    // show score panel
-    scorePanel.style.display = "block";
-    let message = "";
-    if (correct === total) message = "Perfect! Mastery achieved. 🎉";
-    else if (correct >= 4) message = "Great job! Review the ones in red.";
-    else message = "Keep practicing. Review the explanations above.";
-    
-    scorePanel.innerHTML = `
-      <div class="score-area">
-        <div class="score-number">🏆 ${correct} / ${total}</div>
-        <div style="margin-top: 8px; font-size: 0.85rem; color: #2c5a6e;">${message}</div>
-      </div>
-    `;
-    
-    // disable submit button after submission
-    submitBtn.disabled = true;
-    submitBtn.style.opacity = "0.6";
-    submitBtn.style.cursor = "default";
-    
-    // smooth scroll to score
-    setTimeout(() => {
-      scorePanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }, 80);
+  return correct;
+}
+
+function getResultIcon(correct, total, isPerfect) {
+  const percent = (correct / total) * 100;
+  if (isPerfect) return { icon: "👑", label: "PERFECT MASTERY" };
+  if (percent >= 80) return { icon: "🏆", label: "EXCELLENT" };
+  if (percent >= 60) return { icon: "🎓", label: "GOOD" };
+  if (percent >= 50) return { icon: "📘", label: "PASS" };
+  return { icon: "📚", label: "NEEDS REVIEW" };
+}
+
+function handleSubmit() {
+  if (submitted) return;
+
+  const answeredCount = selections.filter(s => s !== -1).length;
+  if (answeredCount < quizData.length && !confirm(`You answered ${answeredCount} out of ${quizData.length}. Submit anyway?`)) {
+    return;
   }
-  
-  submitBtn.addEventListener("click", handleSubmit);
-  
-  // initial render
+
+  submitted = true;
+  const correct = getScore();
+  const total = quizData.length;
+  const isPerfect = correct === total;
+
   renderQuestions();
+
+  const percent = (correct / total) * 100;
+  let message = isPerfect
+    ? "Outstanding! Perfect score achieved! 🌟"
+    : percent >= 80
+      ? "Excellent! Mastery achieved. 🎉"
+      : percent >= 60
+        ? "Great job! Review the incorrect answers."
+        : percent >= 50
+          ? "Pass. Keep practicing to improve."
+          : "Needs improvement. Review the questions above.";
+
+  const { icon, label } = getResultIcon(correct, total, isPerfect);
+
+  scorePanel.style.display = "block";
+  scorePanel.innerHTML = `
+    <div class="score-area">
+      <div class="score-number">
+        <span class="result-icon">${icon}</span>
+        <span>${correct} / ${total}</span>
+      </div>
+      <div style="margin-top:6px; font-size:0.9rem; font-weight:600; color:#1e4a8a;">${label}</div>
+      <div style="margin-top:8px; font-size:0.85rem; color:#2c5a6e;">${message}</div>
+      ${isPerfect ? '<div class="perfect-badge">✨ PERFECT SCORE! ✨<br>🎉 Confetti celebration! 🎉</div>' : ''}
+    </div>
+  `;
+
+  if (isPerfect) startConfetti();
+  submitBtn.disabled = true;
+}
+
+submitBtn.addEventListener("click", handleSubmit);
+renderQuestions();
 </script>
 </body>
 </html>
