@@ -1,652 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Topic 8: Measurement & Questionnaire Design | Chatbot</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MR Tutor: Measurement & Questionnaire (Topic 8)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+        body {
+            background: linear-gradient(145deg, #e2e8f0 0%, #d4dee8 100%);
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        .chat-card {
+            max-width: 520px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+        }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(145deg, #eef2f5 0%, #dce5ec 100%);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 16px;
-}
+        .header {
+            padding: 1.2rem 1.5rem 0.8rem;
+            background: white;
+            border-bottom: 1px solid #eef2f8;
+        }
 
-.chat-app {
-    width: 100%;
-    max-width: 1300px;
-    height: 90vh;
-    background: #ffffff;
-    border-radius: 32px;
-    box-shadow: 0 25px 45px -12px rgba(0,0,0,0.25);
-    display: flex;
-    overflow: hidden;
-}
+        .header h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #0A2B38;
+            display: inline;
+            letter-spacing: -0.2px;
+        }
 
-.side-panel {
-    width: 290px;
-    background: linear-gradient(180deg, #1a3c2c 0%, #0f2a1e 100%);
-    padding: 28px 20px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-}
+        .badge {
+            background: #e1ecf4;
+            color: #1c6f9c;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 12px;
+            border-radius: 40px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
 
-.side-panel::-webkit-scrollbar {
-    width: 5px;
-}
-.side-panel::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-}
-.side-panel::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.4);
-    border-radius: 10px;
-}
+        .sub {
+            font-size: 0.75rem;
+            color: #5a6e8a;
+            margin-top: 8px;
+            border-left: 3px solid #2c7da0;
+            padding-left: 10px;
+        }
 
-.brand {
-    margin-bottom: 28px;
-    flex-shrink: 0;
-}
+        .messages {
+            height: 500px;
+            overflow-y: auto;
+            padding: 1.2rem 1rem;
+            background: #FCFDFF;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
 
-.brand h2 {
-    font-size: 1.7rem;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    background: linear-gradient(135deg, #FFFFFF, #c7f0b2);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-}
+        .msg {
+            display: flex;
+            flex-direction: column;
+            max-width: 86%;
+        }
 
-.brand p {
-    font-size: 12px;
-    opacity: 0.85;
-    margin-top: 6px;
-}
+        .user-msg {
+            align-self: flex-end;
+        }
 
-.topic-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
+        .bot-msg {
+            align-self: flex-start;
+        }
 
-.topic-section h4 {
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 0 0 12px 0;
-    opacity: 0.7;
-    flex-shrink: 0;
-}
+        .bubble {
+            padding: 0.7rem 1rem;
+            border-radius: 1.4rem;
+            font-size: 0.88rem;
+            line-height: 1.45;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
 
-.topic-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    overflow-y: auto;
-    flex: 1;
-    padding-right: 5px;
-}
+        .user-bubble {
+            background: #0F2C3D;
+            color: white;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
 
-.topic-list::-webkit-scrollbar {
-    width: 4px;
-}
-.topic-list::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-}
-.topic-list::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.4);
-    border-radius: 10px;
-}
+        .bot-bubble {
+            background: #EFF3F8;
+            color: #1f2f3e;
+            border-bottom-left-radius: 6px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.03);
+        }
 
-.topic-chip {
-    background: rgba(255,255,255,0.12);
-    padding: 10px 14px;
-    border-radius: 18px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-}
+        .time {
+            font-size: 0.6rem;
+            color: #8f9eb2;
+            margin-top: 5px;
+            margin-left: 12px;
+        }
 
-.topic-chip:hover {
-    background: #ffffff;
-    color: #1a3c2c;
-    transform: translateX(4px);
-}
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 0.6rem 1rem;
+            background: #EFF3F8;
+            width: fit-content;
+            border-radius: 2rem;
+            border-bottom-left-radius: 6px;
+            align-items: center;
+        }
+        .typing-indicator span {
+            width: 7px;
+            height: 7px;
+            background: #8a9bb0;
+            border-radius: 50%;
+            display: inline-block;
+            animation: wave 1.3s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes wave {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-4px); opacity: 1; }
+        }
 
-.chat-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: #fefefe;
-    overflow: hidden;
-}
+        .input-area {
+            display: flex;
+            gap: 10px;
+            padding: 0.9rem 1.2rem;
+            background: white;
+            border-top: 1px solid #eef2f7;
+        }
+        .input-area input {
+            flex: 1;
+            border: 1px solid #e2e8f0;
+            padding: 12px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            outline: none;
+            transition: 0.2s;
+            background: #fefefe;
+        }
+        .input-area input:focus {
+            border-color: #2c7da0;
+            box-shadow: 0 0 0 2px rgba(44,125,160,0.2);
+        }
+        .input-area button {
+            background: #0F2C3D;
+            border: none;
+            color: white;
+            padding: 0 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .input-area button:hover {
+            background: #1f526b;
+            transform: scale(0.97);
+        }
+        .footer {
+            font-size: 0.6rem;
+            text-align: center;
+            padding: 8px 12px;
+            color: #7c8ea0;
+            background: #fafcff;
+            border-top: 1px solid #edf2f8;
+        }
 
-.chat-header {
-    padding: 18px 28px;
-    border-bottom: 1px solid #e9edf2;
-    background: white;
-    flex-shrink: 0;
-}
+        .messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        .messages::-webkit-scrollbar-track {
+            background: #eef2f7;
+            border-radius: 10px;
+        }
+        .messages::-webkit-scrollbar-thumb {
+            background: #cbd9e6;
+            border-radius: 10px;
+        }
 
-.chat-header h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1f2e3a;
-}
-
-.chat-header span {
-    font-size: 0.75rem;
-    color: #5c6f87;
-}
-
-.messages-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 24px 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    background: #fafcff;
-}
-
-.messages-area::-webkit-scrollbar {
-    width: 6px;
-}
-.messages-area::-webkit-scrollbar-track {
-    background: #eef2f8;
-    border-radius: 8px;
-}
-.messages-area::-webkit-scrollbar-thumb {
-    background: #b9c8b2;
-    border-radius: 8px;
-}
-
-.message-bubble {
-    max-width: 80%;
-    padding: 12px 18px;
-    border-radius: 24px;
-    line-height: 1.5;
-    font-size: 0.95rem;
-    word-break: break-word;
-}
-
-.bot-msg {
-    background: #f0f4f9;
-    border: 1px solid #e2e8f0;
-    align-self: flex-start;
-    border-bottom-left-radius: 5px;
-    color: #1e2a3a;
-}
-
-.user-msg {
-    background: #1a5d3c;
-    color: white;
-    align-self: flex-end;
-    border-bottom-right-radius: 5px;
-}
-
-.input-row {
-    padding: 16px 24px 24px 24px;
-    border-top: 1px solid #eef2f8;
-    background: white;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    flex-shrink: 0;
-}
-
-.input-row input {
-    flex: 1;
-    padding: 14px 18px;
-    border-radius: 60px;
-    border: 1px solid #cbd5e1;
-    font-family: inherit;
-    font-size: 0.9rem;
-    outline: none;
-}
-
-.input-row input:focus {
-    border-color: #1a5d3c;
-    box-shadow: 0 0 0 3px rgba(26,93,60,0.2);
-}
-
-.input-row button {
-    background: #1a5d3c;
-    border: none;
-    padding: 12px 26px;
-    border-radius: 60px;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.input-row button:hover {
-    background: #0e3f28;
-}
-
-@media (max-width: 700px) {
-    .side-panel { display: none; }
-    .message-bubble { max-width: 90%; }
-}
-</style>
+        @media (max-width: 480px) {
+            .chat-card { max-width: 100%; border-radius: 1.5rem; }
+            .messages { height: 460px; }
+            .bubble { font-size: 0.85rem; }
+        }
+    </style>
 </head>
 <body>
+<div class="chat-card">
+    <div class="header">
+        <h1>Marketing Research AI</h1><span class="badge">Topic 8: Measurement & Questionnaire</span>
+        <div class="sub">📏 Scales • Operational Definition • Reliability • Validity • Questionnaire Design</div>
+    </div>
 
-<div class="chat-app">
-    <div class="side-panel">
-        <div class="brand">
-            <h2>📊 Marketing Research<br>& Analytics AI</h2>
-            <p>Topic 8: Measurement & Questionnaire Design</p>
-        </div>
-        <div class="topic-section">
-            <h4>📚 TOPIC 8: KEY CONCEPTS</h4>
-            <div class="topic-list">
-                <div class="topic-chip" data-question="What is measurement in marketing research?">📏 Measurement Definition</div>
-                <div class="topic-chip" data-question="What is operational definition? Give examples">🔧 Operational Definition</div>
-                <div class="topic-chip" data-question="What are the four scales of measurement?">📊 Nominal, Ordinal, Interval, Ratio Scales</div>
-                <div class="topic-chip" data-question="What is nominal scale? Examples">🏷️ Nominal Scale</div>
-                <div class="topic-chip" data-question="What is ordinal scale? Examples">📊 Ordinal Scale</div>
-                <div class="topic-chip" data-question="What is interval scale? Examples">📏 Interval Scale</div>
-                <div class="topic-chip" data-question="What is ratio scale? Examples">⚖️ Ratio Scale</div>
-                <div class="topic-chip" data-question="What are comparative scaling techniques?">🔄 Comparative Scaling (Paired Comparison, Rank Order, Constant Sum, Q-Sort)</div>
-                <div class="topic-chip" data-question="What are non-comparative scaling techniques?">📝 Non-Comparative Scaling (Likert, Semantic Differential, Stapel)</div>
-                <div class="topic-chip" data-question="What is Likert scale?">📊 Likert Scale</div>
-                <div class="topic-chip" data-question="What is semantic differential scale?">🔤 Semantic Differential Scale</div>
-                <div class="topic-chip" data-question="What is Stapel scale?">📊 Stapel Scale</div>
-                <div class="topic-chip" data-question="What is reliability in measurement? Cronbach's alpha">✅ Reliability (Cronbach's Alpha)</div>
-                <div class="topic-chip" data-question="What is validity in measurement? Types of validity">🎯 Validity (Content, Criterion, Construct)</div>
-                <div class="topic-chip" data-question="What are the steps in questionnaire design?">📋 9 Steps of Questionnaire Design</div>
-                <div class="topic-chip" data-question="What is a cover letter? Requirements">✉️ Cover Letter for Survey</div>
-                <div class="topic-chip" data-question="What is an observation form?">👁️ Observation Form</div>
-                <div class="topic-chip" data-question="What are the qualities of a good questionnaire?">✨ Qualities of Good Questionnaire</div>
-            </div>
+    <div class="messages" id="messages">
+        <div class="msg bot-msg">
+            <div class="bubble bot-bubble">Hi! I'm your marketing research assistant.</div>
+            <div class="time">now</div>
         </div>
     </div>
 
-    <div class="chat-main">
-        <div class="chat-header">
-            <h3>📏 Topic 8: Measurement & Questionnaire Design</h3>
-            <span>Based on your complete lecture notes | Scales of Measurement | Scaling Techniques | Reliability & Validity</span>
-        </div>
-        <div class="messages-area" id="chatMessages">
-            <div class="message-bubble bot-msg">
-                👋 <strong>Welcome to Topic 8!</strong> I'm your Marketing Research AI for <strong>Measurement and Questionnaire Design</strong>.<br><br>
-                📖 Based on your lecture notes, I can teach you about:<br>
-                • <strong>Measurement</strong> - Definition, isomorphic process, operational definition<br>
-                • <strong>4 Scales of Measurement</strong> - Nominal, Ordinal, Interval, Ratio<br>
-                • <strong>Scaling Techniques</strong> - Comparative (paired comparison, rank order, constant sum, Q-Sort) and Non-Comparative (Likert, semantic differential, Stapel)<br>
-                • <strong>Reliability & Validity</strong> - Cronbach's alpha, content validity, criterion validity, construct validity<br>
-                • <strong>Questionnaire Design</strong> - 9 steps, question wording, order, layout<br>
-                • <strong>Cover Letter & Observation Form</strong><br><br>
-                Ask me anything from Topic 8, or click any topic on the left!
-            </div>
-        </div>
-        <div class="input-row">
-            <input type="text" id="userQuery" placeholder="e.g., What is the difference between nominal and ordinal scales?..." autocomplete="off">
-            <button id="sendBtn">Send →</button>
-        </div>
+    <div class="input-area">
+        <input type="text" id="input" placeholder="e.g., What is operational definition?" autocomplete="off">
+        <button id="send">Send</button>
     </div>
+    <div class="footer">📘 answers based on "Topic 8 - Measurement and Questionnaire Design" (scales, scaling techniques, reliability, validity)</div>
 </div>
 
 <script>
-    const messagesContainer = document.getElementById('chatMessages');
-    const userInput = document.getElementById('userQuery');
-    const sendButton = document.getElementById('sendBtn');
-
-    function scrollToBottom() {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    // Helper function to convert markdown-style **bold** to HTML <strong> tags
+    function formatBold(text) {
+        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     }
 
-    function appendMessage(text, sender) {
-        const msgDiv = document.createElement('div');
-        msgDiv.classList.add('message-bubble');
-        msgDiv.classList.add(sender === 'user' ? 'user-msg' : 'bot-msg');
-        msgDiv.innerHTML = text;
-        messagesContainer.appendChild(msgDiv);
-        scrollToBottom();
+    // Comprehensive knowledge base derived from Topic 8 PDF
+    function getMeasurementAnswer(userQuery) {
+        let q = userQuery.toLowerCase().trim();
+        
+        // --- Measurement definition ---
+        if ((q.includes("measurement") && (q.includes("what is") || q.includes("definition"))) && !q.includes("scale")) {
+            return formatBold("**Measurement**\n\nThe process of assigning numerical values or other symbols to characteristics of objects according to certain predetermined rules.\n\n**Important:** The characteristics of the objects are being measured, not the objects themselves. For example, attitudes of consumers are being measured, not the consumers.\n\nThe measurement process should be isomorphic (one-to-one correspondences between numbers and characteristics being measured).");
+        }
+        
+        // --- Operational Definition ---
+        if ((q.includes("operational definition") || q.includes("operationalization") || q.includes("operationalize"))) {
+            return formatBold("**Operational Definition**\n\nA definition that gives practical meaning to a concept by specifying the necessary activities or operations to measure it. It reduces a construct from its level of abstraction through delineation of its dimensions and elements.\n\n**Example (Job Satisfaction):** Measures employee satisfaction in six aspects: work itself, pay, promotion, supervision, working conditions, and organization as a whole (Koustelios, 1991).\n\n**Note:** Operational definitions are never completely adequate in capturing the rich and complex ideas contained in a concept, but they are essential for measurement.");
+        }
+        
+        // --- Scales of Measurement (4 types) ---
+        if ((q.includes("scales of measurement") || q.includes("nominal ordinal interval ratio") || (q.includes("types of scales") && !q.includes("scaling")))) {
+            return formatBold("**Four Scales of Measurement**\n\n1️⃣ **Nominal Scale** – Lowest level. Numbers serve only as labels/tags for classification. Permissible statistics: percentage, mode, Chi-square.\n\n2️⃣ **Ordinal Scale** – Ranking scale indicating relative extent. Shows order but not distance. Permissible statistics: percentile, median, rank-order correlation.\n\n3️⃣ **Interval Scale** – Equal distances on scale represent equal distances in property being measured. Has order and distance. Permissible statistics: range, mean, standard deviation, t-test, ANOVA, regression.\n\n4️⃣ **Ratio Scale** – Highest level. Has order, distance, AND absolute zero point. Permissible statistics: geometric mean, coefficient of variation.");
+        }
+        
+        // --- Nominal Scale ---
+        if ((q.includes("nominal scale") || q.includes("nominal")) && !q.includes("ordinal")) {
+            return formatBold("**Nominal Scale**\n\nNumbers serve only as labels or tags for identifying and classifying objects. It is the lowest/least powerful scale.\n\n**Examples:**\n• What is your race? 1=Malay, 2=Chinese, 3=Indian, 4=Others\n• Which media influence your choice? 1=TV, 2=Radio, 3=Newspaper, 4=Internet\n\n**Permissible statistics:** Percentage, mode, Chi-square, binomial test.");
+        }
+        
+        // --- Ordinal Scale ---
+        if ((q.includes("ordinal scale") || q.includes("ordinal")) && !q.includes("nominal")) {
+            return formatBold("**Ordinal Scale**\n\nA ranking scale where numbers indicate the relative extent to which some characteristic is possessed. It shows order but not equal distance between points.\n\n**Example (Income brackets):**\n1=Less than RM1000, 2=RM1001-2000, 3=RM2001-3000, 4=RM3001-4000, 5=More than RM4000\n\n**Permissible statistics:** Percentile, median, rank-order correlation, Friedman ANOVA.");
+        }
+        
+        // --- Interval Scale ---
+        if ((q.includes("interval scale") || q.includes("interval")) && !q.includes("ratio") && !q.includes("nominal")) {
+            return formatBold("**Interval Scale**\n\nNumbers rate properties such that equal distances on the scale represent equal distances in the property being measured. Has characteristics of distance AND order.\n\n**Example:** Performance rating scale of 0-10. The difference between 9.3 and 8.5 (0.8) exactly reflects the true difference in performance.\n\n**Assumption in social science:** Attitudinal measures (Likert scales) are treated as interval scales assuming respondents treat differences between adjacent categories as equal.\n\n**Permissible statistics:** Range, mean, standard deviation, correlations, t-test, ANOVA, regression, factor analysis.");
+        }
+        
+        // --- Ratio Scale ---
+        if ((q.includes("ratio scale") || q.includes("ratio")) && !q.includes("interval")) {
+            return formatBold("**Ratio Scale**\n\nThe highest level of measurement. Has all characteristics of nominal, ordinal, AND interval scales, plus an absolute zero point. Ratios between numbers can be meaningfully interpreted.\n\n**Examples:**\n• What is your gross monthly income? RM ______\n• How many years have you worked? ______ years\n• Years to achieve performance (1992, 1998, 2000)\n\n**Permissible statistics:** Geometric mean, harmonic mean, coefficient of variation.");
+        }
+        
+        // --- Comparative Scaling Techniques ---
+        if ((q.includes("comparative scaling") || (q.includes("paired comparison") || q.includes("rank order") || q.includes("constant sum") || q.includes("q-sort")))) {
+            return formatBold("**Comparative Scaling Techniques**\n\nRespondents directly compare stimulus objects with one another.\n\n1️⃣ **Paired Comparison** – Present two objects at a time, select one according to criterion.\n\n2️⃣ **Rank Order** – Present several objects simultaneously, rank order according to criteria (1=most preferred).\n\n3️⃣ **Constant Sum** – Allocate a constant sum of units (e.g., 100 points) among objects based on importance.\n\n4️⃣ **Q-Sort** – Rank-order procedure to sort objects into piles/groups based on similarity. Useful for properties difficult to articulate (e.g., colors, shapes).");
+        }
+        
+        // --- Non-Comparative Scaling Techniques ---
+        if ((q.includes("non-comparative scaling") || q.includes("likert scale") || q.includes("semantic differential") || q.includes("stapel scale") || q.includes("dichotomous"))) {
+            return formatBold("**Non-Comparative Scaling Techniques**\n\nRespondents rate feelings about an issue/object without any frame of reference for comparison.\n\n1️⃣ **Dichotomous Scale** – Simplest scale: Yes/No answers. May include 'Not sure'.\n\n2️⃣ **Likert Scale** – Series of statements with degree of agreement (e.g., 1=Strongly Disagree to 5=Strongly Agree). Assumed to be interval scale.\n\n3️⃣ **Semantic Differential Scale** – Seven-point scale with bipolar adjectives (e.g., Pleasant — Unpleasant).\n\n4️⃣ **Stapel Scale** – Single adjective in middle with even-numbered categories (e.g., -5 to +5, no neutral point).\n\n5️⃣ **Graphic Rating Scale** – Uses graphical representation (e.g., facial expressions) – useful for illiterate respondents.");
+        }
+        
+        // --- Likert Scale ---
+        if ((q.includes("likert") && q.includes("scale"))) {
+            return formatBold("**Likert Scale**\n\nA very commonly used scaling technique in social science research. Consists of a series of statements concerning an issue/object, with evaluations based on degree of agreement.\n\n**Typical 5-point scale:**\n1 = Strongly Disagree (SD)\n2 = Disagree (D)\n3 = Neither Agree nor Disagree (N)\n4 = Agree (A)\n5 = Strongly Agree (SA)\n\n**Example statements for job satisfaction:**\n• I like my current job\n• I am satisfied with my salary\n• The working conditions are good\n\nCommonly assumed to be an interval scale.");
+        }
+        
+        // --- Semantic Differential Scale ---
+        if ((q.includes("semantic differential"))) {
+            return formatBold("**Semantic Differential Scale**\n\nA seven-point scale with endpoints associated with bipolar words or labels that have opposite meanings. Respondents place an 'X' along a continuum of seven spaces.\n\n**Examples:**\nPleasant [ ] [ ] [ ] [ ] [ ] [ ] [ ] Unpleasant\nFriendly [ ] [ ] [ ] [ ] [ ] [ ] [ ] Unfriendly\nEfficient [ ] [ ] [ ] [ ] [ ] [ ] [ ] Inefficient\n\n**Numerical scale variant:** Enhanced semantic differential with numbers (5 or 7 points) assigned to spaces.");
+        }
+        
+        // --- Stapel Scale ---
+        if ((q.includes("stapel scale"))) {
+            return formatBold("**Stapel Scale**\n\nA scale for measuring attitudes that consists of a single adjective in the middle point of a continuum with an even-numbered category (no neutral point). Has 10 categories with positive and negative numbers (e.g., -5 to +5).\n\n**Example:**\n-5 -4 -3 -2 -1 Reputable +1 +2 +3 +4 +5\n-5 -4 -3 -2 -1 Interesting +1 +2 +3 +4 +5\n\nUseful for saving space as scales can be arranged horizontally.");
+        }
+        
+        // --- Goodness of Measurement (Reliability & Validity) ---
+        if ((q.includes("reliability") && q.includes("validity")) || (q.includes("goodness of measurement"))) {
+            return formatBold("**Goodness of Measurement**\n\n**Reliability** – Extent to which measure is without bias and offers consistent measurement across time and items.\n• Cronbach's coefficient alpha (most common for internal consistency)\n• Test-retest reliability (same scale, same respondents, two time points)\n• Equivalent-form reliability (correlation between two alternative instruments)\n• Split-half reliability (checking one half against the other)\n\n**Validity** – Ability of a scale to measure the intended concept.\n• Content validity (professional agreement)\n• Face validity\n• Criterion-related validity (correlates with other measures of same construct)\n• Construct validity (confirms network of related hypotheses)\n• Discriminant validity (low correlation with dissimilar concepts)");
+        }
+        
+        // --- Questionnaire Design Process (9 steps) ---
+        if ((q.includes("questionnaire design process") || q.includes("steps in questionnaire design") || (q.includes("design questionnaire") && q.includes("steps")))) {
+            return formatBold("**Questionnaire Design Process** (9 steps):\n\n1️⃣ Identify the information needed\n2️⃣ Choose the most appropriate interviewing method\n3️⃣ Decide on content of individual questions\n4️⃣ Decide on structure of questions (open-ended vs closed-ended)\n5️⃣ Determine wording of questions\n6️⃣ Arrange questions in proper order\n7️⃣ Identify form and layout\n8️⃣ Reproduce the questionnaire\n9️⃣ Pretest the questionnaire (30-50 respondents)");
+        }
+        
+        // --- Open-ended vs Closed-ended questions ---
+        if ((q.includes("open ended") && q.includes("closed ended")) || (q.includes("unstructured") && q.includes("structured question"))) {
+            return formatBold("**Question Structure**\n\n**Unstructured (Open-ended) Questions** – Respondents answer in their own words; no fixed answers provided.\n• Advantages: Wider range of responses, get general reactions/feelings\n\n**Structured (Closed-ended) Questions** – Pre-specify set of response alternatives and response format.\n• Types: Multiple choice, dichotomous (yes/no), scales\n• Advantages: Easier to code and analyze");
+        }
+        
+        // --- Cover Letter requirements ---
+        if ((q.includes("cover letter") || (q.includes("covering letter")))) {
+            return formatBold("**Designing a Cover Letter**\n\nCritical for mail surveys. Requirements include:\n\n• Address potential respondents appropriately\n• State study objectives\n• Convince respondents of study importance\n• Be precise and objective\n• Appear neat and appealing\n• Use good, easy-to-understand language\n• Assure anonymity/confidentiality\n• Offer incentives (e.g., summary of report)\n• Include researcher's contact details\n• Show appreciation and courtesy");
+        }
+        
+        // --- Observation Form ---
+        if ((q.includes("observation form") || (q.includes("observational form")))) {
+            return formatBold("**Observation Form Design**\n\nUsed for behavioral studies. Easier to construct than questionnaires. Should specify the 6 Ws:\n\n• **Who** – Purchasers, browsers, males, females, parents\n• **What** – Products considered, products purchased\n• **When** – Day, hour, date of observation\n• **Where** – Inside store, checkout counters\n• **Why** – Influence of price, brand, promotion\n• **Way** – Personal observer disguising as clerk/customer\n\nWell-designed form permits recording individual observations, not summarizing (to avoid error).");
+        }
+        
+        // --- Considerations in Scaling (number of categories, balanced/unbalanced, forced/non-forced) ---
+        if ((q.includes("scaling considerations") || q.includes("number of categories") || q.includes("balanced scale") || q.includes("forced scale"))) {
+            return formatBold("**Considerations in Scaling**\n\n1️⃣ **Number of scale categories** – Most use 5 to 9 categories\n2️⃣ **Odd or even** – Odd has neutral midpoint; even avoids neutral answers\n3️⃣ **Balanced vs unbalanced** – Balanced has equal favourable/unfavourable categories\n4️⃣ **Forced vs non-forced** – Forced has no 'no opinion' option; non-forced preferred in academic research\n5️⃣ **Description of scale category** – Choose words carefully; refer to literature\n6️⃣ **Physical form** – Neat, tidy, respondent-friendly\n\n**Reliability note:** Higher number of scale categories = higher reliability. 11-point scales yield more valid results than 3,5,7 point scales.");
+        }
+        
+        // --- Question wording guidelines ---
+        if ((q.includes("question wording") || (q.includes("wording") && q.includes("question")))) {
+            return formatBold("**Question Wording Guidelines**\n\nQuestions should be worded to:\n• Define the issue clearly\n• Use ordinary words\n• Avoid ambiguous words\n• Avoid leading questions\n• Avoid implicit alternatives\n• Avoid implicit assumptions\n• Avoid generalizations and estimates\n• Use positive and negative statements");
+        }
+        
+        // --- Order of questions ---
+        if ((q.includes("order of questions") || q.includes("question order") || q.includes("funnel technique"))) {
+            return formatBold("**Order of Questions**\n\nGood questionnaire flow considers:\n\n• **Introducing the questionnaire** – Opening statement\n• **The first question** – Easy, non-threatening\n• **Demographic questions** – Often at end\n• **Funnel sequence** – Broad to specific\n• **Inverted-funnel sequence** – Specific to broad\n• **Filter questions** – Direct respondents to relevant sections");
+        }
+        
+        // --- Pretesting ---
+        if ((q.includes("pretest") || q.includes("pre-test") || q.includes("pre testing"))) {
+            return formatBold("**Pretesting the Questionnaire**\n\nTesting questions on a small sample to identify and eliminate potential problems.\n\n**Key points:**\n• Should ALWAYS be done\n• Test all aspects: content, wording, sequence, layout, difficulty\n• Respondents should be similar to actual survey participants\n• Begin with personal interviews\n• Use variety of interviewers\n• Sample size: 30-50 respondents for initial testing");
+        }
+        
+        // --- Dichotomous Scale ---
+        if ((q.includes("dichotomous scale") || (q.includes("dichotomous")))) {
+            return formatBold("**Dichotomous Scale**\n\nThe simplest scale used to solicit 'Yes' or 'No' answers only. Some researchers include a 'Not sure' option. It is a nominal scale capturing nominal data.\n\n**Examples:**\n• Are you satisfied with your current job? Yes / No\n• Are you a full-time nurse? Yes / No / Not sure");
+        }
+        
+        // --- Default fallback ---
+        return formatBold("**Topic 8: Measurement and Questionnaire Design**\n\nTry asking about:\n• Measurement definition\n• Operational definition (with examples)\n• Scales of measurement (nominal, ordinal, interval, ratio)\n• Comparative scaling (paired comparison, rank order, constant sum, Q-sort)\n• Non-comparative scaling (Likert, semantic differential, Stapel, dichotomous)\n• Goodness of measurement (reliability: Cronbach's alpha; validity types)\n• Questionnaire design process (9 steps)\n• Open-ended vs closed-ended questions\n• Cover letter requirements\n• Observation form design (6 Ws)\n• Scaling considerations (number of categories, balanced/unbalanced, forced/non-forced)\n• Pretesting\n\nJust type your question!");
     }
 
-    function getBotAnswer(questionText) {
-        const q = questionText.toLowerCase();
-        
-        // Measurement Definition
-        if ((q.includes('measurement') && (q.includes('definition') || q.includes('what is'))) && !q.includes('scale')) {
-            return `<b>📏 What is Measurement?</b><br><br>
-            Measurement is the process of <b>assigning numerical values or other symbols to characteristics of objects</b> according to certain predetermined rules.<br><br>
-            • The <b>characteristics of the objects</b> are being measured, not the objects themselves (Churchill, 1979)<br>
-            • Example: The attitudes of consumers are being measured instead of the consumers<br>
-            • The measurement process is <b>isomorphic</b> - one-to-one correspondences between numbers and characteristics<br>
-            • Good measurement helps quantify properties effectively and efficiently<br>
-            • Goodness of measurement: <b>reliability and validity</b>`;
-        }
-        
-        // Operational Definition
-        if (q.includes('operational definition') || (q.includes('operationalize') && !q.includes('process'))) {
-            return `<b>🔧 Operational Definition</b><br><br>
-            The operational definition gives a practical meaning to a concept by entailing and specifying the necessary activities or operations to measure it.<br><br>
-            • Definition of a construct in measurable terms<br>
-            • Reduces abstraction through delineation of dimensions and elements<br>
-            • Working definition that is clear, precise, and practical for measurement purposes<br>
-            • Specifies ways of measuring the concept<br><br>
-            <b>Examples:</b><br>
-            • Job satisfaction measures employee satisfaction in six aspects: work itself, pay, promotion, supervision, working conditions, organization as a whole (Koustelios, 1991)<br>
-            • Personnel turnover = ratio of new employees to old employees`;
-        }
-        
-        // Four Scales of Measurement
-        if ((q.includes('scales of measurement') || q.includes('four scales') || (q.includes('nominal') && q.includes('ordinal') && q.includes('interval') && q.includes('ratio')))) {
-            return `<b>📊 Four Primary Scales of Measurement</b><br><br>
-            <b>1. Nominal Scale (Lowest level)</b> - Numbers serve only as labels/tags for identifying and classifying objects. Example: Race (Malay, Chinese, Indian)<br><br>
-            <b>2. Ordinal Scale</b> - Ranking scale; numbers indicate relative extent of characteristics. Example: Income brackets (Less than RM1000, RM1001-2000, etc.)<br><br>
-            <b>3. Interval Scale</b> - Equal distances represent equal distances in property measured. Has order and distance. Example: Performance rating 0-10<br><br>
-            <b>4. Ratio Scale (Highest level)</b> - Has all characteristics + absolute zero point. Example: Number of years worked, gross monthly income in RM<br><br>
-            <i>A nominal scale is lowest/least powerful; ratio scale is highest/most powerful.</i>`;
-        }
-        
-        // Nominal Scale
-        if (q.includes('nominal scale') && !q.includes('ordinal')) {
-            return `<b>🏷️ Nominal Scale</b><br><br>
-            A nominal scale is a scale whose numbers serve only as <b>labels or tags for identifying and classifying objects</b>.<br><br>
-            <b>Examples:</b><br>
-            • What is your race? Malay / Chinese / Indian / Others<br>
-            • Which media influence your choice? Television / Radio / Newspaper / Internet<br>
-            • Gender: Male / Female<br><br>
-            <b>Characteristics:</b><br>
-            • Lowest level of measurement<br>
-            • Numbers have no quantitative meaning<br>
-            • Only permissible statistics: mode, frequency, percentage, chi-square<br>
-            • Mutually exclusive and exhaustive categories`;
-        }
-        
-        // Ordinal Scale
-        if (q.includes('ordinal scale') && !q.includes('nominal')) {
-            return `<b>📊 Ordinal Scale</b><br><br>
-            An ordinal scale is a <b>ranking scale</b> in which numbers are assigned to objects to indicate the relative extent to which some characteristics are possessed.<br><br>
-            <b>Example (Income per month):</b><br>
-            • Less than RM1000 (1)<br>
-            • RM1001 – RM2000 (2)<br>
-            • RM2001 – RM3000 (3)<br>
-            • RM3001 – RM4000 (4)<br>
-            • More than RM5000 (5)<br><br>
-            <b>Characteristics:</b><br>
-            • More powerful than nominal scale<br>
-            • Indicates order but not equal distance between ranks<br>
-            • Permissible statistics: median, percentile, rank correlation`;
-        }
-        
-        // Interval Scale
-        if (q.includes('interval scale')) {
-            return `<b>📏 Interval Scale</b><br><br>
-            Numbers in interval scale rate properties such that <b>numerical equal distances represent equal distances in the property being measured</b>.<br><br>
-            <b>Characteristics:</b><br>
-            • Has distance (equal intervals) AND order<br>
-            • Differences between numbers can be meaningfully interpreted<br><br>
-            <b>Example (Performance rating):</b><br>
-            • Difference between 9.3 and 8.5 (0.8) exactly measures true difference in performance<br><br>
-            <b>6-point rating scale example:</b><br>
-            Will definitely not / Extremely unlikely / Unlikely / Likely / Extremely likely / Will definitely<br><br>
-            <i>Note: Attitudinal measures are assumed to be interval scales, though technically ordinal.</i>`;
-        }
-        
-        // Ratio Scale
-        if (q.includes('ratio scale')) {
-            return `<b>⚖️ Ratio Scale</b><br><br>
-            A ratio scale is considered the <b>highest scale</b> of measurement.<br><br>
-            <b>Characteristics:</b><br>
-            • Has ALL characteristics: difference, order, distance<br>
-            • Possesses an <b>absolute zero point</b><br>
-            • Ratios between numbers can be meaningfully interpreted<br><br>
-            <b>Examples (open-ended questions):</b><br>
-            • What is your gross monthly income? RM________<br>
-            • How many years have you worked? ______<br>
-            • Number of children: ______<br><br>
-            <b>Permissible statistics:</b> All statistical measures including geometric mean, coefficient of variation<br>
-            <i>Attitudinal measures typically cannot satisfy ratio scale requirements.</i>`;
-        }
-        
-        // Comparative Scaling
-        if (q.includes('comparative scaling') || (q.includes('paired comparison') || q.includes('rank order') || q.includes('constant sum') || q.includes('q-sort'))) {
-            return `<b>🔄 Comparative Scaling Techniques</b><br><br>
-            Involves <b>direct comparison of stimulus objects</b> with one another.<br><br>
-            <b>Types:</b><br>
-            <b>1. Paired Comparison:</b> Respondent presented with two objects at a time, selects one according to some criterion.<br><br>
-            <b>2. Rank Order:</b> Respondent presented with several objects simultaneously and asked to rank order them.<br><br>
-            <b>3. Constant Sum:</b> Respondent allocates a constant sum of units (e.g., 100 points) among a set of objects based on criteria. Less than 10 items recommended.<br><br>
-            <b>4. Q-Sort:</b> Rank-order procedure to sort objects into piles/groups based on similarity. Useful for properties respondents cannot articulate (e.g., colors, shapes).`;
-        }
-        
-        // Non-Comparative Scaling
-        if (q.includes('non-comparative scaling') || (q.includes('likert') && !q.includes('scale')) || (q.includes('semantic differential') || q.includes('stapel'))) {
-            return `<b>📝 Non-Comparative Scaling Techniques</b><br><br>
-            Seeks respondents' feelings about an issue/object <b>without providing any frame of reference for comparison</b>. Each object is scaled independently.<br><br>
-            <b>Types:</b><br>
-            <b>1. Dichotomous Scale:</b> Simplest scale - 'yes' or 'no' answers. Example: "Are you satisfied? Yes/No"<br><br>
-            <b>2. Likert Scale:</b> Series of statements with degree of agreement. Usually 5-point or 7-point. Commonly assumed to be interval scale.<br><br>
-            <b>3. Semantic Differential Scale:</b> 7-point scale with bipolar adjectives (e.g., Good ___ ___ ___ ___ ___ ___ Bad)<br><br>
-            <b>4. Numerical Scale:</b> Numbers on 5-point or 7-point scale between bipolar adjectives.<br><br>
-            <b>5. Stapel Scale:</b> Single adjective with even-numbered categories (no neutral point). Usually 10-category (-5 to +5).<br><br>
-            <b>6. Graphic Rating Scale:</b> Uses graphical representation like facial expressions. Useful for illiterate or semi-literate respondents.`;
-        }
-        
-        // Likert Scale specifically
-        if (q.includes('likert scale') && !q.includes('non-comparative')) {
-            return `<b>📊 Likert Scale</b><br><br>
-            A Likert scale is a <b>very commonly used scaling technique</b> in social science research.<br><br>
-            <b>Characteristics:</b><br>
-            • Consists of a series of statements concerning an issue/object<br>
-            • Evaluations based on degree of agreement<br>
-            • Commonly assumed to be an interval scale<br>
-            • Most researchers use at least a 5-point Likert scale for reliability, validity, sensitivity, and practicality<br><br>
-            <b>Example (5-point scale):</b><br>
-            Strongly Disagree / Disagree / Neutral / Agree / Strongly Agree<br><br>
-            <b>Example (7-point scale):</b><br>
-            Strongly Disagree / Disagree / Slightly Disagree / Neutral / Slightly Agree / Agree / Strongly Agree<br><br>
-            <b>Challenge:</b> Deriving items/statements from secondary sources or researcher's own design.`;
-        }
-        
-        // Semantic Differential
-        if (q.includes('semantic differential')) {
-            return `<b>🔤 Semantic Differential Scale</b><br><br>
-            A semantic differential scale is a <b>seven-point scale</b> with end-points associated with <b>bipolar words or labels that have opposite meanings</b>.<br><br>
-            <b>Characteristics:</b><br>
-            • Series of bipolar adjectives for evaluating properties of an object<br>
-            • Respondents place 'X' on the most appropriate location along a continuum of seven spaces<br>
-            • Assumed to be an interval scale<br><br>
-            <b>Example:</b><br>
-            Good ___ ___ ___ ___ ___ ___ Bad<br>
-            High quality ___ ___ ___ ___ ___ ___ Low quality<br>
-            Modern ___ ___ ___ ___ ___ ___ Traditional<br>
-            Friendly ___ ___ ___ ___ ___ ___ Unfriendly<br><br>
-            <i>Used to measure attitudes, perceptions, and brand image.</i>`;
-        }
-        
-        // Stapel Scale
-        if (q.includes('stapel')) {
-            return `<b>📊 Stapel Scale</b><br><br>
-            A Stapel scale is a scale for measuring attitudes that consists of a <b>single adjective in the middle point</b> of the continuum with an <b>even-numbered category</b> (no neutral point like 0).<br><br>
-            <b>Characteristics:</b><br>
-            • Normally has a series of 10-category scales<br>
-            • Contains appropriate numerical labels (positives and negatives)<br>
-            • For economic purposes (saving space), scales are arranged horizontally<br><br>
-            <b>Example (scale from -5 to +5):</b><br>
-            Service Quality: +5 +4 +3 +2 +1 -1 -2 -3 -4 -5<br><br>
-            <b>Advantages:</b><br>
-            • No neutral point (forces a direction)<br>
-            • Space-efficient<br>
-            • Easy to understand`;
-        }
-        
-        // Reliability
-        if (q.includes('reliability') || q.includes('cronbach') || q.includes('alpha') || q.includes('internal consistency')) {
-            return `<b>✅ Reliability in Measurement</b><br><br>
-            Reliability indicates the extent to which the measure is <b>without bias</b> and offers a <b>consistent measurement across time and items</b>.<br><br>
-            <b>Common types of reliability tests:</b><br>
-            • <b>Cronbach's Coefficient Alpha:</b> Most commonly used for internal consistency. Values >0.70 are generally acceptable.<br>
-            • <b>Test-Retest Reliability:</b> Administer same scale to same respondents at two separate points in time<br>
-            • <b>Equivalent-Form Reliability:</b> Correlation between two alternative instruments administered to same subjects<br>
-            • <b>Split-Half Reliability:</b> Checking one half of results against the other half<br><br>
-            <b>Interpretation:</b><br>
-            • α ≥ 0.90: Excellent<br>
-            • α ≥ 0.80: Good<br>
-            • α ≥ 0.70: Acceptable<br>
-            • α < 0.70: Poor`;
-        }
-        
-        // Validity
-        if (q.includes('validity') && !q.includes('reliability')) {
-            return `<b>🎯 Validity in Measurement</b><br><br>
-            Validity ensures the ability of a scale to measure the <b>intended concept</b>.<br><br>
-            <b>Types of validity tests:</b><br>
-            <b>1. Content/Face Validity:</b> Professional agreement that the measure covers the concept (Does the measure adequately cover the concept?)<br><br>
-            <b>2. Criterion-Related Validity:</b> Ability of measure to correlate with other measures of the same construct (Does the measure correlate with other measures of the same concept?)<br><br>
-            <b>3. Construct Validity:</b> Ability of measure to confirm a network of related hypotheses generated from theory (Does the measure behave as expected in relation to other constructs?)<br><br>
-            <b>4. Discriminant Validity:</b> Ability to have low correlation with measures of dissimilar concepts (Is the measure distinct from other different concepts?)`;
-        }
-        
-        // Questionnaire Design Steps
-        if ((q.includes('questionnaire design') && (q.includes('steps') || q.includes('process'))) || q.includes('9 steps')) {
-            return `<b>📋 9 Steps of Questionnaire Design</b><br><br>
-            <b>Step 1:</b> Identify the information needed - specify all information needed to accomplish study's objectives<br>
-            <b>Step 2:</b> Choose the most appropriate interviewing method - personal, mail, telephone, electronic<br>
-            <b>Step 3:</b> Decide on the content of individual questions - each question must contribute to information needed<br>
-            <b>Step 4:</b> Decide on the structure of the questions - unstructured (open-ended) or structured (closed-ended)<br>
-            <b>Step 5:</b> Determine the wording of the questions - define issue clearly, use ordinary words, avoid leading questions<br>
-            <b>Step 6:</b> Arrange the questions in proper order - logical flow, funnel sequence, filter questions<br>
-            <b>Step 7:</b> Identify form and layout - visually appealing, professional appearance<br>
-            <b>Step 8:</b> Reproduce the questionnaire - good quality paper, booklet format for long questionnaires<br>
-            <b>Step 9:</b> Pretest the questionnaire - test on 30-50 respondents similar to actual survey`;
-        }
-        
-        // Cover Letter
-        if (q.includes('cover letter')) {
-            return `<b>✉️ Cover Letter for Surveys</b><br><br>
-            A cover letter is critical for getting respondents to participate, especially in mail surveys. It acts on behalf of the researcher who is not present.<br><br>
-            <b>Critical requirements for a good cover letter:</b><br>
-            • Address potential respondents appropriately<br>
-            • Tell respondents the objective(s) of the study<br>
-            • Convince respondents of the importance of the study<br>
-            • Be precise and objective<br>
-            • Appear neat and appealing<br>
-            • Use good and easy-to-understand language<br>
-            • Assure respondents of anonymity (confidentiality)<br>
-            • Offer to send a summary of the report upon request<br>
-            • Include necessary contact details (telephone, postal, email)<br>
-            • Tell respondents the next course of action<br>
-            • Show appreciation and courtesy`;
-        }
-        
-        // Observation Form
-        if (q.includes('observation form') || (q.includes('observational') && q.includes('form'))) {
-            return `<b>👁️ Observation Form</b><br><br>
-            Observation forms are used especially for behavioral studies. They are easier to construct than questionnaires.<br><br>
-            <b>An observational form should specify (5 Ws + 1 Way):</b><br>
-            • <b>Who:</b> Purchasers, browsers, males, females, parents, etc.<br>
-            • <b>What:</b> Products considered, products purchased, etc.<br>
-            • <b>When:</b> Day, hour, date of observation<br>
-            • <b>Where:</b> Inside the store, checkout counters, etc.<br>
-            • <b>Why:</b> Influence of price, brand name, package size, promotion, etc.<br>
-            • <b>Way:</b> Personal observer will disguise as clerk or customer, etc.<br><br>
-            <b>Guidelines:</b> Form should permit field workers to record individual observations, not summarize. Requires adequate pre-testing.`;
-        }
-        
-        // Qualities of Good Questionnaire
-        if (q.includes('qualities of a good questionnaire') || (q.includes('good questionnaire') && !q.includes('design'))) {
-            return `<b>✨ Qualities of a Good Questionnaire</b><br><br>
-            A good questionnaire must engage respondents and stimulate interest in providing complete and accurate answers.<br><br>
-            <b>Suggested qualities:</b><br>
-            • Able to obtain reliable and valid data<br>
-            • Questions are easy to understand and answer<br>
-            • Respondent does not feel threatened to answer<br>
-            • Respondent knows the purpose of the questionnaire<br>
-            • Nicely designed and appears neat<br>
-            • Asks for an answer on only one issue at a time<br>
-            • Can accommodate all possible answers<br>
-            • Options are mutually exclusive<br>
-            • Does not presuppose a certain state of affairs<br>
-            • Does not imply a desired answer<br>
-            • Does not use emotionally charged or loaded questions<br>
-            • Does not use unfamiliar words or many technical terms<br>
-            • Does not use unexplained acronyms or abbreviations<br>
-            • Does not ask to order/rank more than ten items`;
-        }
-        
-        // Default
-        return `<b>📘 Topic 8: Measurement and Questionnaire Design</b><br><br>
-        Based on your lecture notes, I can help you with:<br><br>
-        📏 <b>Measurement</b> - Definition, isomorphic process, operational definition<br>
-        📊 <b>4 Scales of Measurement</b> - Nominal, Ordinal, Interval, Ratio<br>
-        🔄 <b>Comparative Scaling</b> - Paired comparison, rank order, constant sum, Q-Sort<br>
-        📝 <b>Non-Comparative Scaling</b> - Likert, semantic differential, Stapel, graphic rating<br>
-        ✅ <b>Reliability</b> - Cronbach's alpha, test-retest, split-half<br>
-        🎯 <b>Validity</b> - Content, criterion, construct, discriminant<br>
-        📋 <b>Questionnaire Design</b> - 9 steps from identifying information to pre-testing<br>
-        ✉️ <b>Cover Letter</b> - Key requirements for survey participation<br>
-        👁️ <b>Observation Form</b> - Who, what, when, where, why, way<br>
-        ✨ <b>Qualities of Good Questionnaire</b> - Reliability, validity, clarity, neutrality<br><br>
-        Try asking: <i>"What is the difference between nominal and ordinal scales?"</i> or <i>"Explain Likert scale"</i> or <i>"What is Cronbach's alpha?"</i>`;
+    // UI elements
+    const messagesDiv = document.getElementById('messages');
+    const inputEl = document.getElementById('input');
+    const sendBtn = document.getElementById('send');
+
+    function addMessage(text, isUser) {
+        const messageWrapper = document.createElement('div');
+        messageWrapper.className = `msg ${isUser ? 'user-msg' : 'bot-msg'}`;
+        const formattedText = text.replace(/\n/g, '<br>');
+        messageWrapper.innerHTML = `
+            <div class="bubble ${isUser ? 'user-bubble' : 'bot-bubble'}">${formattedText}</div>
+            <div class="time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        `;
+        messagesDiv.appendChild(messageWrapper);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    function escapeHtmlSimple(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
+    function showTypingAndRespond(questionText) {
+        const typingWrapper = document.createElement('div');
+        typingWrapper.className = 'msg bot-msg';
+        typingWrapper.id = 'typingMsg';
+        typingWrapper.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
+        messagesDiv.appendChild(typingWrapper);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
+        setTimeout(() => {
+            const typingElem = document.getElementById('typingMsg');
+            if (typingElem) typingElem.remove();
+            const answer = getMeasurementAnswer(questionText);
+            addMessage(answer, false);
+        }, 420);
+    }
+    
     function handleSend() {
-        let query = userInput.value.trim();
-        if (query === "") return;
-        
-        appendMessage(escapeHtmlSimple(query), 'user');
-        userInput.value = '';
-        
-        const answerHtml = getBotAnswer(query);
-        appendMessage(answerHtml, 'bot');
+        const rawText = inputEl.value.trim();
+        if (rawText === "") return;
+        addMessage(rawText, true);
+        inputEl.value = '';
+        showTypingAndRespond(rawText);
     }
     
-    sendButton.addEventListener('click', handleSend);
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleSend();
+    sendBtn.addEventListener('click', handleSend);
+    inputEl.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSend();
+        }
     });
     
-    const topicChips = document.querySelectorAll('.topic-chip');
-    topicChips.forEach(chip => {
-        chip.addEventListener('click', () => {
-            const preQuestion = chip.getAttribute('data-question');
-            if (preQuestion) {
-                appendMessage(preQuestion, 'user');
-                const botAns = getBotAnswer(preQuestion);
-                appendMessage(botAns, 'bot');
-            }
-        });
-    });
-    
-    window.addEventListener('load', () => {
-        scrollToBottom();
-    });
+    inputEl.focus();
 </script>
 </body>
 </html>
