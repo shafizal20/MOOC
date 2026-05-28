@@ -1,566 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Topic 2: Defining Problem & Research Objectives | Chatbot</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MR Tutor: Problem Definition (Topic 2)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+        body {
+            background: linear-gradient(145deg, #e2e8f0 0%, #d4dee8 100%);
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        .chat-card {
+            max-width: 520px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+        }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(145deg, #eef2f5 0%, #dce5ec 100%);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 16px;
-}
+        .header {
+            padding: 1.2rem 1.5rem 0.8rem;
+            background: white;
+            border-bottom: 1px solid #eef2f8;
+        }
 
-.chat-app {
-    width: 100%;
-    max-width: 1300px;
-    height: 90vh;
-    background: #ffffff;
-    border-radius: 32px;
-    box-shadow: 0 25px 45px -12px rgba(0,0,0,0.25);
-    display: flex;
-    overflow: hidden;
-}
+        .header h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #0A2B38;
+            display: inline;
+            letter-spacing: -0.2px;
+        }
 
-/* SIDEBAR - Original Green Gradient */
-.side-panel {
-    width: 290px;
-    background: linear-gradient(180deg, #1a3c2c 0%, #0f2a1e 100%);
-    padding: 28px 20px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-}
+        .badge {
+            background: #e1ecf4;
+            color: #1c6f9c;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 12px;
+            border-radius: 40px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
 
-.side-panel::-webkit-scrollbar {
-    width: 5px;
-}
-.side-panel::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-}
-.side-panel::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.4);
-    border-radius: 10px;
-}
+        .sub {
+            font-size: 0.75rem;
+            color: #5a6e8a;
+            margin-top: 8px;
+            border-left: 3px solid #2c7da0;
+            padding-left: 10px;
+        }
 
-.brand {
-    margin-bottom: 28px;
-    flex-shrink: 0;
-}
+        .messages {
+            height: 500px;
+            overflow-y: auto;
+            padding: 1.2rem 1rem;
+            background: #FCFDFF;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
 
-.brand h2 {
-    font-size: 1.7rem;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    background: linear-gradient(135deg, #FFFFFF, #c7f0b2);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-}
+        .msg {
+            display: flex;
+            flex-direction: column;
+            max-width: 86%;
+        }
 
-.brand p {
-    font-size: 12px;
-    opacity: 0.85;
-    margin-top: 6px;
-}
+        .user-msg {
+            align-self: flex-end;
+        }
 
-.topic-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
+        .bot-msg {
+            align-self: flex-start;
+        }
 
-.topic-section h4 {
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 0 0 12px 0;
-    opacity: 0.7;
-    flex-shrink: 0;
-}
+        .bubble {
+            padding: 0.7rem 1rem;
+            border-radius: 1.4rem;
+            font-size: 0.88rem;
+            line-height: 1.45;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
 
-.topic-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    overflow-y: auto;
-    flex: 1;
-    padding-right: 5px;
-}
+        .user-bubble {
+            background: #0F2C3D;
+            color: white;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
 
-.topic-list::-webkit-scrollbar {
-    width: 4px;
-}
-.topic-list::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-}
-.topic-list::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.4);
-    border-radius: 10px;
-}
+        .bot-bubble {
+            background: #EFF3F8;
+            color: #1f2f3e;
+            border-bottom-left-radius: 6px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.03);
+        }
 
-.topic-chip {
-    background: rgba(255,255,255,0.12);
-    padding: 10px 14px;
-    border-radius: 18px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-}
+        .time {
+            font-size: 0.6rem;
+            color: #8f9eb2;
+            margin-top: 5px;
+            margin-left: 12px;
+        }
 
-.topic-chip:hover {
-    background: #ffffff;
-    color: #1a3c2c;
-    transform: translateX(4px);
-}
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 0.6rem 1rem;
+            background: #EFF3F8;
+            width: fit-content;
+            border-radius: 2rem;
+            border-bottom-left-radius: 6px;
+            align-items: center;
+        }
+        .typing-indicator span {
+            width: 7px;
+            height: 7px;
+            background: #8a9bb0;
+            border-radius: 50%;
+            display: inline-block;
+            animation: wave 1.3s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes wave {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-4px); opacity: 1; }
+        }
 
-.chat-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: #fefefe;
-    overflow: hidden;
-}
+        .input-area {
+            display: flex;
+            gap: 10px;
+            padding: 0.9rem 1.2rem;
+            background: white;
+            border-top: 1px solid #eef2f7;
+        }
+        .input-area input {
+            flex: 1;
+            border: 1px solid #e2e8f0;
+            padding: 12px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            outline: none;
+            transition: 0.2s;
+            background: #fefefe;
+        }
+        .input-area input:focus {
+            border-color: #2c7da0;
+            box-shadow: 0 0 0 2px rgba(44,125,160,0.2);
+        }
+        .input-area button {
+            background: #0F2C3D;
+            border: none;
+            color: white;
+            padding: 0 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .input-area button:hover {
+            background: #1f526b;
+            transform: scale(0.97);
+        }
+        .footer {
+            font-size: 0.6rem;
+            text-align: center;
+            padding: 8px 12px;
+            color: #7c8ea0;
+            background: #fafcff;
+            border-top: 1px solid #edf2f8;
+        }
 
-.chat-header {
-    padding: 18px 28px;
-    border-bottom: 1px solid #e9edf2;
-    background: white;
-    flex-shrink: 0;
-}
+        .messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        .messages::-webkit-scrollbar-track {
+            background: #eef2f7;
+            border-radius: 10px;
+        }
+        .messages::-webkit-scrollbar-thumb {
+            background: #cbd9e6;
+            border-radius: 10px;
+        }
 
-.chat-header h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1f2e3a;
-}
-
-.chat-header span {
-    font-size: 0.75rem;
-    color: #5c6f87;
-}
-
-.messages-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 24px 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    background: #fafcff;
-}
-
-.messages-area::-webkit-scrollbar {
-    width: 6px;
-}
-.messages-area::-webkit-scrollbar-track {
-    background: #eef2f8;
-    border-radius: 8px;
-}
-.messages-area::-webkit-scrollbar-thumb {
-    background: #b9c8b2;
-    border-radius: 8px;
-}
-
-.message-bubble {
-    max-width: 80%;
-    padding: 12px 18px;
-    border-radius: 24px;
-    line-height: 1.5;
-    font-size: 0.95rem;
-    word-break: break-word;
-}
-
-.bot-msg {
-    background: #f0f4f9;
-    border: 1px solid #e2e8f0;
-    align-self: flex-start;
-    border-bottom-left-radius: 5px;
-    color: #1e2a3a;
-}
-
-.user-msg {
-    background: #1a5d3c;
-    color: white;
-    align-self: flex-end;
-    border-bottom-right-radius: 5px;
-}
-
-.input-row {
-    padding: 16px 24px 24px 24px;
-    border-top: 1px solid #eef2f8;
-    background: white;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    flex-shrink: 0;
-}
-
-.input-row input {
-    flex: 1;
-    padding: 14px 18px;
-    border-radius: 60px;
-    border: 1px solid #cbd5e1;
-    font-family: inherit;
-    font-size: 0.9rem;
-    outline: none;
-}
-
-.input-row input:focus {
-    border-color: #1a5d3c;
-    box-shadow: 0 0 0 3px rgba(26,93,60,0.2);
-}
-
-.input-row button {
-    background: #1a5d3c;
-    border: none;
-    padding: 12px 26px;
-    border-radius: 60px;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.input-row button:hover {
-    background: #0e3f28;
-}
-
-@media (max-width: 700px) {
-    .side-panel { display: none; }
-    .message-bubble { max-width: 90%; }
-}
-</style>
+        @media (max-width: 480px) {
+            .chat-card { max-width: 100%; border-radius: 1.5rem; }
+            .messages { height: 460px; }
+            .bubble { font-size: 0.85rem; }
+        }
+    </style>
 </head>
 <body>
+<div class="chat-card">
+    <div class="header">
+        <h1>Marketing Research AI</h1><span class="badge">Topic 2: Problem Definition</span>
+        <div class="sub">🎯 Identify the real problem — not just the symptom!</div>
+    </div>
 
-<div class="chat-app">
-    <div class="side-panel">
-        <div class="brand">
-            <h2>📊 Marketing Research<br>& Analytics AI</h2>
-            <p>Topic 2: Defining the Problem & Research Objectives</p>
-        </div>
-        <div class="topic-section">
-            <h4>🔍 TOPIC 2: KEY CONCEPTS</h4>
-            <div class="topic-list">
-                <div class="topic-chip" data-question="Why is problem identification important in marketing research?">📖 Problem Identification Importance</div>
-                <div class="topic-chip" data-question="Explain the iceberg principle in marketing research">🧊 Iceberg Principle</div>
-                <div class="topic-chip" data-question="What is the difference between a symptom and a real problem?">⚠️ Symptom vs Real Problem</div>
-                <div class="topic-chip" data-question="What are the tasks involved in problem definition?">📋 Tasks in Problem Definition</div>
-                <div class="topic-chip" data-question="Explain the funnel technique in problem definition">🔽 Funnel Technique</div>
-                <div class="topic-chip" data-question="What are the environmental factors in problem definition?">🌍 Environmental Factors</div>
-                <div class="topic-chip" data-question="Difference between management decision problem and research problem">⚖️ Management vs Research Problem</div>
-                <div class="topic-chip" data-question="What is a research problem?">❓ What is a Research Problem?</div>
-                <div class="topic-chip" data-question="Why is problem definition considered half the solution?">💡 Problem Half Solved</div>
-                <div class="topic-chip" data-question="What is a broad problem area?">🎯 Broad Problem Area</div>
-                <div class="topic-chip" data-question="Role of literature review in problem definition">📚 Literature Review Role</div>
-                <div class="topic-chip" data-question="What is qualitative research or pilot study for problem definition?">🔬 Pilot Study & Qualitative Research</div>
-                <div class="topic-chip" data-question="Past information and forecasts in problem definition">📊 Past Information & Forecasts</div>
-                <div class="topic-chip" data-question="How do resources and constraints affect problem definition?">💰 Resources & Constraints</div>
-                <div class="topic-chip" data-question="Competitor, economic, legal, socio-cultural environment factors">🏢 External Environment Factors</div>
-            </div>
+    <div class="messages" id="messages">
+        <div class="msg bot-msg">
+            <div class="bubble bot-bubble">Hi! I'm your marketing research assistant.</div>
+            <div class="time">now</div>
         </div>
     </div>
 
-    <div class="chat-main">
-        <div class="chat-header">
-            <h3>🎯 Topic 2: Defining the Problem & Research Objectives</h3>
-            <span>Based on your complete lecture notes | Iceberg Principle | Funnel Technique | Environmental Factors</span>
-        </div>
-        <div class="messages-area" id="chatMessages">
-            <div class="message-bubble bot-msg">
-                👋 <strong>Welcome to Topic 2!</strong> I'm your Marketing Research AI for <strong>Defining the Problem and Research Objectives</strong>.<br><br>
-                📖 Based on your lecture notes, I can teach you about:<br>
-                • <strong>Problem identification</strong> and why it's the most critical step<br>
-                • <strong>Iceberg Principle</strong> (10% visible symptoms vs 90% real problems)<br>
-                • <strong>Funnel Technique</strong> (broad problem area to specific components)<br>
-                • <strong>Environmental factors</strong> in problem definition<br>
-                • <strong>Management Decision Problem vs Research Problem</strong><br>
-                • <strong>Tasks & steps</strong> for effective problem definition<br><br>
-                Ask me anything from Topic 2, or click any topic on the left!
-            </div>
-        </div>
-        <div class="input-row">
-            <input type="text" id="userQuery" placeholder="e.g., Explain the iceberg principle or What is the funnel technique?..." autocomplete="off">
-            <button id="sendBtn">Send →</button>
-        </div>
+    <div class="input-area">
+        <input type="text" id="input" placeholder="e.g., What is the iceberg principle?" autocomplete="off">
+        <button id="send">Send</button>
     </div>
+    <div class="footer">📘 answers based on "Topic 2 - Defining Problem and Research Objectives" (scientific marketing research)</div>
 </div>
 
 <script>
-    const messagesContainer = document.getElementById('chatMessages');
-    const userInput = document.getElementById('userQuery');
-    const sendButton = document.getElementById('sendBtn');
-
-    function scrollToBottom() {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    // Comprehensive knowledge base derived from the provided PDF material (Topic 2)
+    function getProblemDefinitionAnswer(userQuery) {
+        let q = userQuery.toLowerCase().trim();
+        
+        // --- Importance of problem definition ---
+        if ((q.includes("importance") || q.includes("critical") || q.includes("why is")) && (q.includes("problem definition") || q.includes("defining the problem"))) {
+            return "🔑 **Importance of Problem Definition**\n\nProblem identification and definition is one of the **most critical steps** in the marketing research process. A clearly defined problem enables the research to be properly conducted. If the problem is well-defined, the research can be designed and executed correctly. Poor problem definition leads to irrelevant research and wasted resources. As the material states: *'A well-identified and defined problem is possibly half-solved.'*";
+        }
+        
+        // --- Iceberg principle (symptoms vs real problem) ---
+        if ((q.includes("iceberg") || q.includes("symptom") || q.includes("symptoms") || q.includes("real problem")) && (q.includes("principle") || q.includes("iceberg principle"))) {
+            return "🧊 **Iceberg Principle**\n\nDecision makers are often aware of only **10% or less** of the actual problem — the observable symptoms (e.g., declining sales, employee complaints). The **real problem (90% or more)** is submerged below the surface, hidden from immediate observation.\n\n🔍 **Example**: High employee turnover (symptom) may be caused by low job satisfaction, poor management, or lack of motivation (real problems).\n\nResearchers must investigate comprehensively to uncover the true problem, not just treat symptoms.";
+        }
+        
+        // --- Tasks involved in problem definition (4 tasks) ---
+        if ((q.includes("tasks") || q.includes("steps to define") || q.includes("how to define")) && (q.includes("problem definition") || q.includes("define the problem"))) {
+            return "📋 **Tasks Involved in Problem Definition** (from Topic 2):\n\n1️⃣ **Discussions with decision makers** – formal/informal talks to understand the right problem and information needed.\n2️⃣ **Interviews with industry experts** – knowledgeable, experienced professionals from client organization or academia.\n3️⃣ **Literature search & secondary data analysis** – reliable published/unpublished sources provide economical, quick insights.\n4️⃣ **Qualitative research or pilot study** – focus groups, in-depth interviews, small-scale studies to gain insights and identify constraints.\n\nThese tasks help understand the environmental context and refine the research problem.";
+        }
+        
+        // --- Environmental factors (list of 10 factors) ---
+        if ((q.includes("environmental factors") || q.includes("environmental context") || q.includes("factors to consider")) && (q.includes("problem definition") || q.includes("define"))) {
+            return "🌍 **Environmental Factors in Problem Definition** (10 factors):\n\n1. Past information & forecasts\n2. Resources and constraints (money, time, expertise)\n3. Objectives (organizational or individual)\n4. Competitor environment\n5. Behaviours of consumers/individuals\n6. Legal and political environment\n7. Economic environment (interest rates, inflation, income)\n8. Technology environment\n9. Socio-cultural environment (cultural differences)\n10. Geographical and physical environment (infrastructure, climate)\n\nUnderstanding these helps translate management decision problems into researchable problems.";
+        }
+        
+        // --- Specific environmental factor queries (e.g., competitor, economic, legal) ---
+        if ((q.includes("competitor") || q.includes("competition")) && (q.includes("environment") || q.includes("factor"))) {
+            return "🏢 **Competitor Environment** – The actions and reactions of close and potential competitors must be understood. Competitor analysis reveals what problems the units of analysis face and facilitates the problem definition process. It helps identify threats and opportunities.";
+        }
+        if ((q.includes("economic environment") || q.includes("interest rate") || q.includes("inflation")) && (q.includes("factor") || q.includes("environmental"))) {
+            return "💰 **Economic Environment** – Economic variables such as interest rates, unemployment, foreign exchange, international trade, inflation, and income are closely linked to the socio-economic wellbeing of the organization and individuals. These affect purchasing power and should be considered when defining the research problem.";
+        }
+        if ((q.includes("legal") || q.includes("political")) && (q.includes("environment") || q.includes("factor"))) {
+            return "⚖️ **Legal and Political Environment** – Includes public policies, laws, government agencies, and special interest groups that influence or regulate organizations. Example: An increase in income tax rates affects disposable income and purchasing power.";
+        }
+        if ((q.includes("socio") || q.includes("cultural")) && (q.includes("environment") || q.includes("factor"))) {
+            return "👥 **Socio-cultural Environment** – Cultural characteristics and differences between potential units of analysis are crucial, especially for multicultural countries like Malaysia. These differences provide researchers with ideas about what problems should be investigated.";
+        }
+        if ((q.includes("technology") || q.includes("tech")) && (q.includes("environment") || q.includes("factor"))) {
+            return "💻 **Technology Environment** – The technological ability of organizations or individuals affects the scope of research. It influences the use of appropriate research methods and thus influences the research problem component in problem definition.";
+        }
+        if ((q.includes("resources") || q.includes("constraints")) && (q.includes("problem definition"))) {
+            return "⏳ **Resources and Constraints** – Resources like money, time, expertise, and research skills need to be considered in the problem definition process. Constraints force the problem to be defined into an appropriate scope, increasing relevance.";
+        }
+        if ((q.includes("past information") || q.includes("forecasts") || q.includes("historical"))) {
+            return "📊 **Past Information and Forecasts** – Historical data such as marketing performance records and past industry data put the current problem into context. For time-series studies, external sources like Statistical Reports and Economic Reports are also valuable.";
+        }
+        if ((q.includes("objectives") && (q.includes("organizational") || q.includes("individual")))) {
+            return "🎯 **Objectives (Organizational or Individual)** – Decisions are made to accomplish objectives. Understanding the client's or organization's objectives helps pinpoint exact desired outcomes, especially important for external researchers who don't know the organization well.";
+        }
+        if ((q.includes("geographical") || q.includes("physical environment") || q.includes("infrastructure") || q.includes("climate"))) {
+            return "🗺️ **Geographical and Physical Environment** – For unique situations, factors like infrastructure, accessibility, and climate may form a unique dimension of the problem and should be considered during problem definition.";
+        }
+        
+        // --- Management decision problem vs research problem ---
+        if ((q.includes("management decision") && q.includes("research problem")) || (q.includes("decision problem") && q.includes("research problem")) || (q.includes("difference between"))) {
+            return "📌 **Management Decision Problem vs Research Problem**\n\n| Aspect | Management Decision Problem | Research Problem |\n|--------|----------------------------|------------------|\n| **Focus** | What decision makers need to DO | What INFORMATION is needed |\n| **Question** | 'What should we do?' | 'What information is needed and how best to obtain it?' |\n| **Nature** | Action-oriented, managerial issues | Information/knowledge gaps |\n\n**Examples:**\n• 'Should employee salaries be increased?' → 'Determine employees' perception of current salary.'\n• 'What to do to improve job satisfaction?' → 'Determine determinants of job satisfaction.'";
+        }
+        
+        // --- Funnel technique (broad to specific) ---
+        if ((q.includes("funnel") || q.includes("broad to specific") || q.includes("funnel technique"))) {
+            return "🔽 **Funnel Technique** (Broad → Specific Problems)\n\nStart with a **broad problem area** to gain perspective, then identify **specific components** for investigation.\n\n**Example:**\n• Broad: 'There are more and more employee complaints. High staff turnover.'\n• Specific (after refining): 'Determinants of service quality' and 'Effects of service quality on customer loyalty.'\n\nThe technique provides clear guidelines and focuses on key aspects of the problem.";
+        }
+        
+        // --- Symptoms vs problem clarification ---
+        if ((q.includes("symptom") && !q.includes("iceberg")) || (q.includes("signs") && q.includes("problem"))) {
+            return "⚠️ **Symptoms vs Real Problem**\n\nSymptoms are **observable conditions** that signal the presence of problems (e.g., declining sales, high turnover, low morale). However, symptoms are NOT the real problem — they are effects.\n\nResearchers must dig deeper to uncover the underlying causes. Treating symptoms without solving the real problem leads to temporary fixes and wasted resources. This is why the Iceberg Principle is so important!";
+        }
+        
+        // --- Unit of analysis ---
+        if ((q.includes("unit of analysis") || q.includes("units of analysis"))) {
+            return "🔍 **Unit of Analysis** – The 'who' or 'what' being studied (e.g., individuals, dyads, groups, organizations, departments). Determining the unit of analysis is part of the problem definition process and influences research design, data collection, and analysis.";
+        }
+        
+        // --- Relevant variables ---
+        if ((q.includes("relevant variables") || q.includes("variables in problem definition"))) {
+            return "📊 **Relevant Variables** – During problem definition, researchers must identify and isolate the variables that are pertinent to the research problem. Variables can be independent, dependent, moderating, or confounding. Clear variable identification leads to precise research questions and hypotheses.";
+        }
+        
+        // --- Research questions and objectives ---
+        if ((q.includes("research questions") || q.includes("research objectives") || q.includes("hypotheses")) && (q.includes("problem definition"))) {
+            return "❓ **Research Questions, Hypotheses, and Objectives** – After defining the problem, researchers formulate:\n• **Research objectives** – what the study aims to achieve\n• **Research questions** – specific inquiries to be answered\n• **Hypotheses** – testable propositions about relationships between variables\n\nThese guide the entire research process and are part of Step 2 (Developing the Approach).";
+        }
+        
+        // --- Why problem definition is critical (general) ---
+        if ((q.includes("why important") || q.includes("critical step")) && !q.includes("importance")) {
+            return "⚠️ **Why Problem Definition is Critical**\n\n• Prevents irrelevant research and wasted resources\n• Provides clear direction for the entire marketing research process\n• Helps distinguish symptoms from real problems\n• Enables researchers to focus on what truly matters\n• As the material says: *'A well-identified and defined problem is possibly half-solved.'*\n\nWithout proper problem definition, even the most sophisticated research design will fail to deliver actionable insights.";
+        }
+        
+        // --- Broad problem examples / gaps ---
+        if ((q.includes("gap") || q.includes("gaps") || q.includes("broad problem area")) && (q.includes("example") || q.includes("examples"))) {
+            return "🔎 **Example of Broad Problem → Specific Research Gaps**\n\n**Broad problem symptoms:**\n• More and more employee complaints\n• High staff turnover\n\n**After refining (specific problems to investigate):**\n1. The determinants of service quality\n2. The effects of service quality on customer loyalty\n\n**Gap to close:** Understanding how service quality influences loyalty in a specific organizational context.";
+        }
+        
+        // --- default fallback (helpful but concise) ---
+        return "📘 I'm here to help with **Topic 2: Defining the Problem and Research Objectives**.\n\nTry asking about:\n• Iceberg principle\n• Tasks in problem definition\n• Environmental factors (economic, legal, competitive, etc.)\n• Management decision vs research problem\n• Funnel technique\n• Or just type a specific question from the chapter!";
     }
 
-    function appendMessage(text, sender) {
-        const msgDiv = document.createElement('div');
-        msgDiv.classList.add('message-bubble');
-        msgDiv.classList.add(sender === 'user' ? 'user-msg' : 'bot-msg');
-        msgDiv.innerHTML = text;
-        messagesContainer.appendChild(msgDiv);
-        scrollToBottom();
+    // UI elements
+    const messagesDiv = document.getElementById('messages');
+    const inputEl = document.getElementById('input');
+    const sendBtn = document.getElementById('send');
+
+    function addMessage(text, isUser) {
+        const messageWrapper = document.createElement('div');
+        messageWrapper.className = `msg ${isUser ? 'user-msg' : 'bot-msg'}`;
+        
+        // convert newlines to <br> for better formatting
+        const formattedText = text.replace(/\n/g, '<br>');
+        
+        messageWrapper.innerHTML = `
+            <div class="bubble ${isUser ? 'user-bubble' : 'bot-bubble'}">${formattedText}</div>
+            <div class="time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        `;
+        messagesDiv.appendChild(messageWrapper);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    function getBotAnswer(questionText) {
-        const q = questionText.toLowerCase();
-        
-        // Problem identification importance
-        if (q.includes('problem identification') || (q.includes('critical') && q.includes('step')) || (q.includes('why is problem') && q.includes('important'))) {
-            return `<b>🔍 Why Problem Identification is Critical</b><br><br>
-            The problem identification and definition stage is <b>commonly regarded as one of the most important steps</b> in the marketing research process.<br><br>
-            • A clearly identified and defined problem enables research to be properly conducted<br>
-            • Problem identification and definition is regarded as one of <b>the most important steps</b> among the entire research process<br>
-            • A well-identified and defined problem is <b>possibly half-solved</b><br>
-            • Many junior researchers don't realize systematic ways of defining a correct problem<br><br>
-            <i>"Most people consider the starting point of a research project as the selection of a topic or identification of a problem."</i>`;
-        }
-        
-        // Iceberg principle
-        if (q.includes('iceberg') || q.includes('iceberg principle')) {
-            return `<b>🧊 The Iceberg Principle</b><br><br>
-            The <b>Iceberg Principle</b> states that in many problem situations, decision makers might be aware of only <b>10% or less</b> of the actual problem.<br><br>
-            • What is thought to be the problem is often just an <b>observable outcome (symptom)</b> of the true problem<br>
-            • The real problems (<b>90% or more</b>) are submerged below the waterline of observation<br>
-            • Researchers must investigate comprehensively with help from decision makers and experts<br>
-            • A good problem definition can <b>avoid irrelevant research</b> and reduce unnecessary costs<br><br>
-            <i>Don't treat symptoms as the problem - dig deeper to find the root cause!</i>`;
-        }
-        
-        // Symptom vs real problem
-        if ((q.includes('symptom') || q.includes('symptoms')) && (q.includes('problem') || q.includes('real'))) {
-            return `<b>⚠️ Symptom vs Real Problem</b><br><br>
-            <b>Symptoms</b> are conditions, normally observable, which signal the presence of problems.<br><br>
-            <b>Example:</b><br>
-            • <b>Symptom:</b> "There are more and more employee complaints" or "High staff turnover"<br>
-            • <b>Real Problem:</b> "The determinants of service quality" or "Effects of service quality on customer loyalty"<br><br>
-            <b>Key insight:</b> What appears to be the problem is often just an observable outcome (symptom). Researchers must identify the <b>real underlying problem</b> below the surface.`;
-        }
-        
-        // Tasks in problem definition
-        if (q.includes('tasks involved') || q.includes('problem definition tasks') || (q.includes('how to define') && q.includes('problem'))) {
-            return `<b>📋 Tasks Involved in Problem Definition</b><br><br>
-            <b>1. Discussions with decision makers</b> - Formal/informal discussions to understand the right problem and information needed<br><br>
-            <b>2. Interviews with relevant industry experts</b> - Knowledgeable, experienced experts from client organization or industry; also academics/researchers<br><br>
-            <b>3. Literature search and secondary data analysis</b> - Reliable published/unpublished literature provides detailed, economical, quick insights<br><br>
-            <b>4. Qualitative research or pilot study</b> - Focus groups, in-depth interviews, small-scale studies to provide insights and understanding of problem setting`;
-        }
-        
-        // Funnel technique
-        if (q.includes('funnel') || q.includes('funnel technique')) {
-            return `<b>🔽 Funnel Technique</b><br><br>
-            In defining research problems, start with a <b>broad problem area</b>, then identify its <b>specific components</b> for investigation.<br><br>
-            • The <b>broad problem</b> provides perspective on the problem<br>
-            • <b>Specific components</b> focus on key aspects and provide clear guidelines<br>
-            • After preliminary data, the broad problem is narrowed down to more specific issues<br><br>
-            <b>Example broad problem areas:</b><br>
-            • "There are more and more employee complaints"<br>
-            • "There is a high staff turnover"<br><br>
-            <b>After refining → Specific problems:</b><br>
-            • "The determinants of service quality"<br>
-            • "The effects of service quality on customer loyalty"`;
-        }
-        
-        // Environmental factors
-        if (q.includes('environmental factors') || (q.includes('environment') && q.includes('problem definition'))) {
-            return `<b>🌍 Environmental Factors in Problem Definition</b><br><br>
-            <b>Past information and forecasts</b> - Marketing performance records, industry data, Statistical/Economic Reports<br>
-            <b>Resources and constraints</b> - Money, time, expertise, research skills that define appropriate scope<br>
-            <b>Objectives (organizational/individual)</b> - Understanding desired outcomes for the study<br>
-            <b>Competitor environment</b> - Actions/reactions of competitors help identify problems faced<br>
-            <b>Behaviors of consumers</b> - Presents both threats and opportunities<br>
-            <b>Legal and political environment</b> - Public policies, laws, government agencies<br>
-            <b>Economic environment</b> - Interest rates, unemployment, inflation, income<br>
-            <b>Technology</b> - Influences use of appropriate research methods<br>
-            <b>Socio-cultural environment</b> - Cultural differences (especially important for multi-cultural countries like Malaysia)<br>
-            <b>Geographical and physical environment</b> - Infrastructure, accessibility, climate`;
-        }
-        
-        // Management Decision Problem vs Research Problem
-        if ((q.includes('management decision') && q.includes('research problem')) || q.includes('decision problem')) {
-            return `<b>⚖️ Management Decision Problem vs Research Problem</b><br><br>
-            <b>Management Decision Problem:</b><br>
-            • Asks <b>"What do the decision makers need to do?"</b><br>
-            • Highlights managerial issues<br>
-            • More appropriate for problem-solving/applied research<br>
-            • Focuses on actions to take<br><br>
-            <b>Research Problem:</b><br>
-            • Asks <b>"What information is needed and how best can it be obtained?"</b><br>
-            • Implies something is not known - a research gap to close<br>
-            • Focuses on information needs<br><br>
-            <i>A problem is any situation where a gap exists between the actual and desired ideal state.</i>`;
-        }
-        
-        // What is a research problem
-        if ((q.includes('what is a research problem') || q.includes('define research problem')) && !q.includes('management')) {
-            return `<b>❓ What is a Research Problem?</b><br><br>
-            For <b>basic research</b>, the word "problem" relates to <b>information issues</b>.<br><br>
-            • It implies that <b>something is not known</b><br>
-            • There is a <b>research-related gap to be closed</b><br>
-            • The research problem asks <b>"What information is needed and how best can it be obtained?"</b><br><br>
-            <b>General definition:</b> A problem is any situation where a <b>gap exists between the actual and the desired ideal state</b>.<br><br>
-            Examples of gaps: between what is known and what needs to be known.`;
-        }
-        
-        // Problem half solved
-        if (q.includes('half solved') || q.includes('half the solution') || (q.includes('well defined') && q.includes('problem'))) {
-            return `<b>💡 A Well-Identified Problem is Possibly Half-Solved</b><br><br>
-            A marketing problem that is <b>appropriately identified and well-defined</b> enables researchers to:<br><br>
-            • Proceed with the rest of the research process with <b>clear direction</b><br>
-            • Focus attention on investigating specified problems <b>more effectively and efficiently</b><br>
-            • <b>Avoid irrelevant research</b> and reduce unnecessary monetary/non-monetary costs<br><br>
-            <i>"The marketing problem which is appropriately identified and well-defined will enable the marketing researchers to proceed with the rest of the marketing research process with a clear direction. A well-identified and defined problem is possibly half-solved."</i>`;
-        }
-        
-        // Broad problem area
-        if (q.includes('broad problem') || (q.includes('starting point') && q.includes('research'))) {
-            return `<b>🎯 Broad Problem Area</b><br><br>
-            The process starts with a <b>broad problem area</b>, then identifies specific components (Funnel Technique).<br><br>
-            <b>Examples of broad problem areas:</b><br>
-            • There are more and more employee complaints<br>
-            • There is a high staff turnover<br>
-            • Declining market share<br>
-            • Low customer satisfaction scores<br><br>
-            The broad problem reveals the entire situation where one sees a possible need for research. Sometimes these are just <b>symptoms</b> that signal presence of real problems.`;
-        }
-        
-        // Literature review role
-        if (q.includes('literature') || q.includes('secondary data')) {
-            return `<b>📚 Literature Search & Secondary Data Analysis</b><br><br>
-            Referring to reliable published or unpublished literature is <b>essential</b> in understanding and defining the problem.<br><br>
-            <b>Benefits:</b><br>
-            • With today's advancement in ICT, existing data provides <b>detailed, economical and quick insights</b><br>
-            • A good and precise literature review is <b>always useful</b><br>
-            • Helps understand the environmental context<br>
-            • Identifies what is already known and what gaps exist<br><br>
-            <i>Literature review guides the researcher toward a well-defined problem statement.</i>`;
-        }
-        
-        // Qualitative research / pilot study
-        if (q.includes('qualitative') || q.includes('pilot study') || q.includes('focus group')) {
-            return `<b>🔬 Qualitative Research & Pilot Study</b><br><br>
-            Explorations through appropriate qualitative research help the problem definition process.<br><br>
-            <b>Methods include:</b><br>
-            • <b>Focus groups</b> - Group discussions to generate insights<br>
-            • <b>In-depth interviews</b> - One-on-one expert interviews<br>
-            • <b>Pilot studies</b> - Small-scale studies to test approaches<br><br>
-            <b>Purpose:</b><br>
-            • Provide relevant insights about the problem setting<br>
-            • Better understanding of the problem<br>
-            • Identification of potential constraints<br>
-            • Helps refine research questions and hypotheses`;
-        }
-        
-        // Past information and forecasts
-        if (q.includes('past information') || q.includes('forecasts')) {
-            return `<b>📊 Past Information and Forecasts</b><br><br>
-            Past information and forecasts provide useful information such as:<br>
-            • Marketing performance records<br>
-            • Past industry data<br>
-            • Statistical Reports<br>
-            • Economic Reports<br><br>
-            This relevant <b>historical information</b> puts the current problem into context.<br><br>
-            For certain <b>time-series studies</b>, external sources like Statistical Reports and Economic Reports are especially needed.`;
-        }
-        
-        // Resources and constraints
-        if (q.includes('resources') && q.includes('constraints')) {
-            return `<b>💰 Resources and Constraints in Problem Definition</b><br><br>
-            Typically, in problem-solving research, <b>resources and constraints</b> force the problem to be defined into an appropriate scope.<br><br>
-            <b>Resources to consider:</b><br>
-            • Money (budget for research)<br>
-            • Time (deadlines, urgency)<br>
-            • Expertise (research skills available)<br>
-            • Data availability<br><br>
-            Considering these constraints helps <b>increase the relevance</b> of the problem definition and ensures the research is feasible.`;
-        }
-        
-        // External environment factors
-        if ((q.includes('competitor') || q.includes('economic') || q.includes('legal') || q.includes('socio-cultural')) && (q.includes('factor') || q.includes('environment'))) {
-            return `<b>🏢 External Environment Factors in Problem Definition</b><br><br>
-            <b>Competitor environment:</b> Actions/reactions of close and potential competitors need to be understood. Competitor analysis helps identify what problems the units of analysis face.<br><br>
-            <b>Legal and political environment:</b> Public policies, laws, government agencies, special interest groups that influence organizations. Example: Income tax increases affect purchasing power.<br><br>
-            <b>Economic environment:</b> Interest rates, unemployment, foreign exchange, inflation, income - all linked to socio-economic well-being.<br><br>
-            <b>Socio-cultural environment:</b> Cultural characteristics and differences - crucial for multi-cultural countries like Malaysia.<br><br>
-            <b>Geographical/physical environment:</b> Infrastructure, accessibility, climate - unique dimensions of the problem.`;
-        }
-        
-        // Default
-        return `<b>📘 Topic 2: Defining the Problem and Research Objectives</b><br><br>
-        Based on your lecture notes, I can help you with:<br><br>
-        🔍 <b>Problem Identification</b> - Why it's the most critical step<br>
-        🧊 <b>Iceberg Principle</b> - 10% visible symptoms vs 90% real problems<br>
-        📋 <b>Tasks in Problem Definition</b> - Discussions, expert interviews, literature, pilot studies<br>
-        🔽 <b>Funnel Technique</b> - Broad problem area to specific components<br>
-        🌍 <b>Environmental Factors</b> - 10 factors to consider<br>
-        ⚖️ <b>Management Decision vs Research Problem</b><br>
-        💡 <b>Problem Half-Solved</b> - Well-defined = half the solution<br><br>
-        Try asking: <i>"Explain the iceberg principle"</i> or <i>"What is the funnel technique?"</i> or <i>"Tasks involved in problem definition"</i>`;
-    }
+    // typing simulation
+    function showTypingAndRespond(questionText) {
+        const typingWrapper = document.createElement('div');
+        typingWrapper.className = 'msg bot-msg';
+        typingWrapper.id = 'typingMsg';
+        typingWrapper.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
+        messagesDiv.appendChild(typingWrapper);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-    function escapeHtmlSimple(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
+        setTimeout(() => {
+            const typingElem = document.getElementById('typingMsg');
+            if (typingElem) typingElem.remove();
+            
+            const answer = getProblemDefinitionAnswer(questionText);
+            addMessage(answer, false);
+        }, 420);
     }
-
+    
     function handleSend() {
-        let query = userInput.value.trim();
-        if (query === "") return;
+        const rawText = inputEl.value.trim();
+        if (rawText === "") return;
         
-        appendMessage(escapeHtmlSimple(query), 'user');
-        userInput.value = '';
+        addMessage(rawText, true);
+        inputEl.value = '';
         
-        const answerHtml = getBotAnswer(query);
-        appendMessage(answerHtml, 'bot');
+        showTypingAndRespond(rawText);
     }
     
-    sendButton.addEventListener('click', handleSend);
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleSend();
+    sendBtn.addEventListener('click', handleSend);
+    inputEl.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSend();
+        }
     });
     
-    const topicChips = document.querySelectorAll('.topic-chip');
-    topicChips.forEach(chip => {
-        chip.addEventListener('click', () => {
-            const preQuestion = chip.getAttribute('data-question');
-            if (preQuestion) {
-                appendMessage(preQuestion, 'user');
-                const botAns = getBotAnswer(preQuestion);
-                appendMessage(botAns, 'bot');
-            }
-        });
-    });
-    
-    window.addEventListener('load', () => {
-        scrollToBottom();
-    });
+    inputEl.focus();
 </script>
 </body>
 </html>
