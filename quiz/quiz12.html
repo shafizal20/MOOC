@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Topic 12: Marketing Metrics & Application | Quick Quiz</title>
     <style>
         * {
@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif;
             background: #eef2f8;
             min-height: 100vh;
             display: flex;
@@ -22,7 +22,7 @@
         }
 
         .quiz-box {
-            max-width: 1100px;
+            max-width: 1000px;
             width: 100%;
             background: white;
             border-radius: 2rem;
@@ -107,7 +107,7 @@
             display: flex;
             gap: 2rem;
             padding: 2rem;
-            min-height: 350px;
+            min-height: 380px;
         }
 
         .col {
@@ -152,6 +152,11 @@
         .matched-answer {
             background: #e8f5e9 !important;
             border-color: #2b8c4a !important;
+        }
+
+        .formula-card {
+            font-family: 'Courier New', 'SF Mono', monospace;
+            background: #f8f4e8;
         }
 
         .line-layer {
@@ -247,17 +252,20 @@
 <div class="quiz-box">
     <div class="quiz-header">
         <div class="title-area">
-            <h2>Topic 12: Marketing Metrics & Its Application</h2>
+            <h2>Topic 12: Marketing Metrics & Application</h2>
         </div>
         <div class="final-score-badge" id="finalScoreBadge" style="display: none;">
             <div class="final-score-label">FINAL SCORE</div>
-            <div class="final-score-value" id="finalScoreValue">0 <span>/ 2</span></div>
+            <div class="final-score-value" id="finalScoreValue">0 <span>/ 5</span></div>
         </div>
     </div>
 
     <div class="progress-text">
         <span class="progress-item" data-qidx="0">1</span>
         <span class="progress-item" data-qidx="1">2</span>
+        <span class="progress-item" data-qidx="2">3</span>
+        <span class="progress-item" data-qidx="3">4</span>
+        <span class="progress-item" data-qidx="4">5</span>
     </div>
 
     <div class="match-area" id="matchContainer">
@@ -284,32 +292,63 @@
 
 <script>
     (function() {
+        // ============= TOPIC 12: Marketing Metrics & Application =============
         const questions = [
             {
-                text: "91. Which of the followings are TRUE about Chi-square analysis?<br><br>i) Cross-tabulation<br>ii) Categorical variables<br>iii) Normal distribution of data<br>iv) Sample size is relatively small",
+                text: "Which measure of central tendency is least affected by extreme values or outliers in a dataset?",
                 answers: [
-                    { text: "A) i, ii, iii", correct: false, id: "q1_a" },
-                    { text: "B) i, ii, iv", correct: true, id: "q1_b" },
-                    { text: "C) ii, iii, iv", correct: false, id: "q1_c" },
-                    { text: "D) i, iii, iv", correct: false, id: "q1_d" }
+                    { text: "A) Mean", correct: false, id: "q1_a" },
+                    { text: "B) Median", correct: true, id: "q1_b" },
+                    { text: "C) Mode", correct: false, id: "q1_c" }
                 ],
-                correctId: "q1_b"
+                correctIds: ["q1_b"],
+                isMultiCorrect: false
             },
             {
-                text: "92. ____ is used to test the differences of means among 3 groups of populations.",
+                text: "A researcher computes a Pearson correlation coefficient of r = 0.85 between service quality and customer satisfaction. According to the strength of association table in the document, this represents:",
                 answers: [
-                    { text: "A) ANCOVA", correct: false, id: "q2_a" },
-                    { text: "B) AMOS", correct: false, id: "q2_b" },
-                    { text: "C) Cochran Test", correct: false, id: "q2_c" },
-                    { text: "D) One Way ANOVA", correct: true, id: "q2_d" }
+                    { text: "A) Weak correlation", correct: false, id: "q2_a" },
+                    { text: "B) Moderate correlation", correct: false, id: "q2_b" },
+                    { text: "C) Strong correlation", correct: true, id: "q2_c" }
                 ],
-                correctId: "q2_d"
+                correctIds: ["q2_c"],
+                isMultiCorrect: false
+            },
+            {
+                text: "In simple linear regression, the coefficient of determination (R²) is calculated as:",
+                answers: [
+                    { text: "A) The square root of the correlation coefficient", correct: false, id: "q3_a" },
+                    { text: "B) The square of the correlation coefficient (r²)", correct: true, id: "q3_b" },
+                    { text: "C) The sum of squared residuals divided by the total sum of squares", correct: false, id: "q3_c" }
+                ],
+                correctIds: ["q3_b"],
+                isMultiCorrect: false
+            },
+            {
+                text: "Which statistical test is appropriate for testing the association between two categorical variables when there is no assumption of normality and each cell has at least 5 observations?",
+                answers: [
+                    { text: "A) t-test for population mean", correct: false, id: "q4_a" },
+                    { text: "B) Pearson correlation", correct: false, id: "q4_b" },
+                    { text: "C) Chi-square test for association", correct: true, id: "q4_c" }
+                ],
+                correctIds: ["q4_c"],
+                isMultiCorrect: false
+            },
+            {
+                text: "In multiple regression analysis, what does the adjusted R² indicate?",
+                answers: [
+                    { text: "A) The percentage of variation in the dependent variable explained by all independent variables combined, adjusted for the number of predictors", correct: true, id: "q5_a" },
+                    { text: "B) The correlation between each pair of independent variables", correct: false, id: "q5_b" },
+                    { text: "C) The significance level of each regression coefficient", correct: false, id: "q5_c" }
+                ],
+                correctIds: ["q5_a"],
+                isMultiCorrect: false
             }
         ];
 
         const total = questions.length;
         let currentIdx = 0;
-        let matches = [];
+        let matches = [];        // each: { qIdx, answerId: single id }
         let quizCompleted = false;
         let confettiTriggered = false;
 
@@ -322,20 +361,34 @@
         const resultArea = document.getElementById("resultArea");
         const progressItems = document.querySelectorAll(".progress-item");
 
-        function getAnswer(qIdx) {
+        function getAnswerId(qIdx) {
             const m = matches.find(m => m.qIdx === qIdx);
             return m ? m.answerId : null;
         }
 
+        function setAnswerId(qIdx, ansId) {
+            const existingIdx = matches.findIndex(m => m.qIdx === qIdx);
+            if (existingIdx !== -1) {
+                matches[existingIdx].answerId = ansId;
+            } else {
+                matches.push({ qIdx, answerId: ansId });
+            }
+        }
+
         function isAnswered(qIdx) {
-            return matches.some(m => m.qIdx === qIdx);
+            return getAnswerId(qIdx) !== null;
+        }
+
+        function isAnswerCorrect(qIdx, ansId) {
+            const q = questions[qIdx];
+            return q.correctIds.includes(ansId);
         }
 
         function computeScore() {
             let score = 0;
             for (let i = 0; i < total; i++) {
-                const match = matches.find(m => m.qIdx === i);
-                if (match && match.answerId === questions[i].correctId) score++;
+                const ansId = getAnswerId(i);
+                if (ansId && isAnswerCorrect(i, ansId)) score++;
             }
             return score;
         }
@@ -372,7 +425,7 @@
 
         function drawLine() {
             svg.innerHTML = "";
-            const answerId = getAnswer(currentIdx);
+            const answerId = getAnswerId(currentIdx);
             if (!answerId) return;
             
             const leftCard = document.querySelector(".left .card");
@@ -400,7 +453,7 @@
 
         function render() {
             const q = questions[currentIdx];
-            const storedId = getAnswer(currentIdx);
+            const storedId = getAnswerId(currentIdx);
             
             document.getElementById("leftQuestionContainer").innerHTML = `
                 <div class="card">
@@ -423,17 +476,15 @@
                 card.onclick = () => {
                     if (quizCompleted) return;
                     const aid = card.dataset.aid;
-                    matches = matches.filter(m => m.qIdx !== currentIdx);
-                    matches.push({ qIdx: currentIdx, answerId: aid });
+                    setAnswerId(currentIdx, aid);
                     
                     document.querySelectorAll(".ans-card").forEach(c => c.classList.remove("matched-answer"));
                     card.classList.add("matched-answer");
                     
                     drawLine();
                     updateProgress();
-                    
                     if (currentIdx === total - 1) {
-                        hintMsg.innerHTML = "✓ Ready to submit! Click Submit to see your score.";
+                        hintMsg.innerHTML = "✓ Ready to submit! Click Finish to see your score.";
                     } else {
                         hintMsg.innerHTML = "✓ Matched! Click Next →";
                     }
@@ -444,7 +495,50 @@
             setTimeout(() => drawLine(), 30);
         }
 
-        function nextOrSubmit() {
+        function finishQuiz() {
+            quizCompleted = true;
+            const score = computeScore();
+            const percent = Math.round(score/total*100);
+            const perfect = score === total;
+            
+            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
+            finalBadge.style.display = "block";
+            if (perfect) {
+                finalBadge.classList.add("perfect-score-top");
+                if (!confettiTriggered) {
+                    confettiTriggered = true;
+                    burstConfetti();
+                }
+            }
+            
+            nextBtn.classList.add("hidden");
+            
+            let fb = `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 12: Marketing Metrics & Application</div>`;
+            for (let i = 0; i < total; i++) {
+                const q = questions[i];
+                const ansId = getAnswerId(i);
+                const correct = ansId && isAnswerCorrect(i, ansId);
+                const correctAnswerObj = q.answers.find(a => q.correctIds.includes(a.id));
+                const correctText = correctAnswerObj ? correctAnswerObj.text : "Unknown";
+                
+                if (correct) {
+                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
+                } else {
+                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect.<br> <span style="margin-left: 16px; font-size:0.85rem;">✔ Correct answer: ${correctText}</span></div>`;
+                }
+            }
+            fb += `<div class="score-highlight">🏅 Final Score: ${score}/${total} · ${percent}%</div>`;
+            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
+            
+            resultArea.style.display = "block";
+            resultArea.className = "result-panel";
+            resultArea.innerHTML = fb;
+            hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
+            
+            updateProgress();
+        }
+
+        function nextOrFinish() {
             if (quizCompleted) return;
             
             if (!isAnswered(currentIdx)) {
@@ -473,13 +567,13 @@
             render();
             updateProgress();
             if (currentIdx === total - 1) {
-                hintMsg.innerHTML = "Last question. Click any answer to match, then Submit.";
+                hintMsg.innerHTML = "Last question. Select answer, then Finish.";
             } else {
                 hintMsg.innerHTML = "Click any answer to match";
             }
         }
 
-        // Confetti
+        // ========== CONFETTI ==========
         const canvas = document.getElementById("confetti-canvas");
         let ctx = canvas.getContext("2d");
         let animId = null;
@@ -544,52 +638,12 @@
             animId = requestAnimationFrame(animate);
         }
 
-        function finishQuiz() {
-            quizCompleted = true;
-            const score = computeScore();
-            const percent = Math.round(score/total*100);
-            const perfect = score === total;
-            
-            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
-            finalBadge.style.display = "block";
-            if (perfect) {
-                finalBadge.classList.add("perfect-score-top");
-                if (!confettiTriggered) {
-                    confettiTriggered = true;
-                    burstConfetti();
-                }
-            }
-            
-            nextBtn.classList.add("hidden");
-            
-            let fb = `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 12: Marketing Metrics & Its Application</div>`;
-            for (let i = 0; i < total; i++) {
-                const q = questions[i];
-                const match = matches.find(m => m.qIdx === i);
-                const correct = match && match.answerId === q.correctId;
-                const correctText = q.answers.find(a => a.id === q.correctId)?.text;
-                if (correct) {
-                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
-                } else {
-                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect. Correct: ${correctText}</div>`;
-                }
-            }
-            fb += `<div class="score-highlight">🏅 Score: ${score}/${total} · ${percent}%</div>`;
-            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
-            
-            resultArea.style.display = "block";
-            resultArea.className = "result-panel";
-            resultArea.innerHTML = fb;
-            hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
-            
-            updateProgress();
-        }
-
+        // attach navigation
         progressItems.forEach((item, idx) => {
             item.onclick = () => navigateTo(idx);
         });
         
-        nextBtn.onclick = nextOrSubmit;
+        nextBtn.onclick = nextOrFinish;
         
         window.addEventListener("resize", () => setTimeout(() => drawLine(), 100));
         
