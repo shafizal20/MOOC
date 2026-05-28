@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Topic 2: Defining Problem & Research Objectives</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Topic 2: Defining Problem & Research Objectives | Quick Quiz</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif;
             background: #eef2f8;
             min-height: 100vh;
             display: flex;
@@ -22,7 +22,7 @@
         }
 
         .quiz-box {
-            max-width: 1100px;
+            max-width: 1000px;
             width: 100%;
             background: white;
             border-radius: 2rem;
@@ -107,7 +107,7 @@
             display: flex;
             gap: 2rem;
             padding: 2rem;
-            min-height: 350px;
+            min-height: 380px;
         }
 
         .col {
@@ -247,11 +247,11 @@
 <div class="quiz-box">
     <div class="quiz-header">
         <div class="title-area">
-            <h2>Topic 2: Defining Problem & Research Objectives</h2>
+            <h2>Topic 2: Defining the Problem & Research Objectives</h2>
         </div>
         <div class="final-score-badge" id="finalScoreBadge" style="display: none;">
             <div class="final-score-label">FINAL SCORE</div>
-            <div class="final-score-value" id="finalScoreValue">0 <span>/ 4</span></div>
+            <div class="final-score-value" id="finalScoreValue">0 <span>/ 5</span></div>
         </div>
     </div>
 
@@ -260,6 +260,7 @@
         <span class="progress-item" data-qidx="1">2</span>
         <span class="progress-item" data-qidx="2">3</span>
         <span class="progress-item" data-qidx="3">4</span>
+        <span class="progress-item" data-qidx="4">5</span>
     </div>
 
     <div class="match-area" id="matchContainer">
@@ -286,48 +287,58 @@
 
 <script>
     (function() {
+        // ============= TOPIC 2: Defining Problem & Research Objectives =============
         const questions = [
             {
-                text: "Marketing researchers will tend to agree that 'A problem well-defined is half-solved'?",
+                text: "According to the iceberg principle, what is the main danger when decision makers only notice observable symptoms of a problem?",
                 answers: [
-                    { text: "✅ Yes — A clear problem definition is crucial", correct: true, id: "yes_q1" },
-                    { text: "❌ No — Problem definition is not that important", correct: false, id: "no_q1" }
+                    { text: "A) The research will take too long to complete", correct: false, id: "q1_a" },
+                    { text: "B) The real problem (90% or more) may remain submerged and unaddressed", correct: true, id: "q1_b" },
+                    { text: "C) The research budget will exceed its limit", correct: false, id: "q1_c" }
                 ],
-                correctId: "yes_q1"
+                correctId: "q1_b"
             },
             {
-                text: "The important environmental aspects which the marketing researchers will consider when defining the problem are:<br><br>i) Past information<br>ii) Economic situation<br>iii) Behaviours of customers<br>iv) Legal and political",
+                text: "Which of the following best distinguishes a management decision problem from a research problem?",
                 answers: [
-                    { text: "A) i, ii, iii", correct: false, id: "q2_a" },
-                    { text: "B) ii, iii, iv", correct: false, id: "q2_b" },
-                    { text: "C) i, ii, iv", correct: false, id: "q2_c" },
-                    { text: "D) i, ii, iii, iv — All are important", correct: true, id: "q2_d" }
+                    { text: "A) A management decision problem asks 'What information is needed?' while a research problem asks 'What should managers do?'", correct: false, id: "q2_a" },
+                    { text: "B) A management decision problem asks 'What do decision makers need to do?' while a research problem asks 'What information is needed and how best can it be obtained?'", correct: true, id: "q2_b" },
+                    { text: "C) Both ask the same question but for different industries", correct: false, id: "q2_c" }
                 ],
-                correctId: "q2_d"
+                correctId: "q2_b"
             },
             {
-                text: "i) Determine patient satisfaction.<br>ii) Determine patients' experience.<br>iii) Identify determinants of satisfaction.<br><br>These are examples of ____ problem.",
+                text: "In the problem definition process, which task is intended to provide relevant insights and a better understanding of the problem setting through small-scale exploration?",
                 answers: [
-                    { text: "A) Critical", correct: false, id: "q3_a" },
-                    { text: "B) Research problem", correct: true, id: "q3_b" },
-                    { text: "C) Management decision", correct: false, id: "q3_c" },
-                    { text: "D) Social", correct: false, id: "q3_d" }
+                    { text: "A) Literature search and secondary data analysis", correct: false, id: "q3_a" },
+                    { text: "B) Qualitative research or pilot study", correct: true, id: "q3_b" },
+                    { text: "C) Discussions with decision makers only", correct: false, id: "q3_c" }
                 ],
                 correctId: "q3_b"
             },
             {
-                text: "It is recommendable to define problem specifically, then broadly.",
+                text: "Which environmental factor in problem definition includes public policies, laws, government agencies, and special interest groups that regulate organizations?",
                 answers: [
-                    { text: "✅ Yes — Start broad then narrow", correct: false, id: "q4_yes" },
-                    { text: "❌ No — That approach is incorrect", correct: true, id: "q4_no" }
+                    { text: "A) Economic environment", correct: false, id: "q4_a" },
+                    { text: "B) Legal and political environment", correct: true, id: "q4_b" },
+                    { text: "C) Socio-cultural environment", correct: false, id: "q4_c" }
                 ],
-                correctId: "q4_no"
+                correctId: "q4_b"
+            },
+            {
+                text: "What is the purpose of the 'Funnel Technique' as described in the topic?",
+                answers: [
+                    { text: "A) To collect primary data from a narrow set of respondents", correct: false, id: "q5_a" },
+                    { text: "B) To start with a broad problem area and then identify specific components for investigation", correct: true, id: "q5_b" },
+                    { text: "C) To eliminate all qualitative research from the problem definition stage", correct: false, id: "q5_c" }
+                ],
+                correctId: "q5_b"
             }
         ];
 
         const total = questions.length;
         let currentIdx = 0;
-        let matches = [];
+        let matches = [];        // { qIdx, answerId }
         let quizCompleted = false;
         let confettiTriggered = false;
 
@@ -449,9 +460,8 @@
                     
                     drawLine();
                     updateProgress();
-                    
                     if (currentIdx === total - 1) {
-                        hintMsg.innerHTML = "✓ Ready to submit! Click Submit to see your score.";
+                        hintMsg.innerHTML = "✓ Ready to submit! Click Finish to see your score.";
                     } else {
                         hintMsg.innerHTML = "✓ Matched! Click Next →";
                     }
@@ -462,7 +472,49 @@
             setTimeout(() => drawLine(), 30);
         }
 
-        function nextOrSubmit() {
+        function finishQuiz() {
+            quizCompleted = true;
+            const score = computeScore();
+            const percent = Math.round(score/total*100);
+            const perfect = score === total;
+            
+            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
+            finalBadge.style.display = "block";
+            if (perfect) {
+                finalBadge.classList.add("perfect-score-top");
+                if (!confettiTriggered) {
+                    confettiTriggered = true;
+                    burstConfetti();
+                }
+            }
+            
+            nextBtn.classList.add("hidden");
+            
+            let fb = `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 2: Defining the Problem & Research Objectives</div>`;
+            for (let i = 0; i < total; i++) {
+                const q = questions[i];
+                const match = matches.find(m => m.qIdx === i);
+                const correct = match && match.answerId === q.correctId;
+                const correctAnswerObj = q.answers.find(a => a.id === q.correctId);
+                const correctText = correctAnswerObj ? correctAnswerObj.text : "Unknown";
+                if (correct) {
+                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
+                } else {
+                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect.<br> <span style="margin-left: 16px; font-size:0.85rem;">✔ Correct answer: ${correctText}</span></div>`;
+                }
+            }
+            fb += `<div class="score-highlight">🏅 Final Score: ${score}/${total} · ${percent}%</div>`;
+            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
+            
+            resultArea.style.display = "block";
+            resultArea.className = "result-panel";
+            resultArea.innerHTML = fb;
+            hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
+            
+            updateProgress();
+        }
+
+        function nextOrFinish() {
             if (quizCompleted) return;
             
             if (!isAnswered(currentIdx)) {
@@ -491,13 +543,13 @@
             render();
             updateProgress();
             if (currentIdx === total - 1) {
-                hintMsg.innerHTML = "Last question. Click any answer to match, then Submit.";
+                hintMsg.innerHTML = "Last question. Click any answer to match, then Finish.";
             } else {
                 hintMsg.innerHTML = "Click any answer to match";
             }
         }
 
-        // Confetti
+        // ========== CONFETTI ==========
         const canvas = document.getElementById("confetti-canvas");
         let ctx = canvas.getContext("2d");
         let animId = null;
@@ -562,52 +614,12 @@
             animId = requestAnimationFrame(animate);
         }
 
-        function finishQuiz() {
-            quizCompleted = true;
-            const score = computeScore();
-            const percent = Math.round(score/total*100);
-            const perfect = score === total;
-            
-            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
-            finalBadge.style.display = "block";
-            if (perfect) {
-                finalBadge.classList.add("perfect-score-top");
-                if (!confettiTriggered) {
-                    confettiTriggered = true;
-                    burstConfetti();
-                }
-            }
-            
-            nextBtn.classList.add("hidden");
-            
-            let fb = `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 2: Defining Problem & Research Objectives</div>`;
-            for (let i = 0; i < total; i++) {
-                const q = questions[i];
-                const match = matches.find(m => m.qIdx === i);
-                const correct = match && match.answerId === q.correctId;
-                const correctText = q.answers.find(a => a.id === q.correctId)?.text;
-                if (correct) {
-                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
-                } else {
-                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect. Correct: ${correctText}</div>`;
-                }
-            }
-            fb += `<div class="score-highlight">🏅 Score: ${score}/${total} · ${percent}%</div>`;
-            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
-            
-            resultArea.style.display = "block";
-            resultArea.className = "result-panel";
-            resultArea.innerHTML = fb;
-            hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
-            
-            updateProgress();
-        }
-
+        // attach navigation
         progressItems.forEach((item, idx) => {
             item.onclick = () => navigateTo(idx);
         });
         
-        nextBtn.onclick = nextOrSubmit;
+        nextBtn.onclick = nextOrFinish;
         
         window.addEventListener("resize", () => setTimeout(() => drawLine(), 100));
         
