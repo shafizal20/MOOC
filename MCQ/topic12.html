@@ -224,84 +224,126 @@
 <body>
 
 <div class="quiz-box">
-  <h1>📈 Topic 12: Marketing Metrics and Its Application</h1>
-  <div class="sub">Questions 88–95 · measures of location & dispersion · correlation · regression · ANOVA · R²</div>
+  <h1>📊 Topic 12: Marketing Metrics and Its Application</h1>
+  <div class="sub">Cost Per Lead · CAC · CLV · SEO · Social Media Engagement · ROI — 10 MCQs + 5 Quiz Questions</div>
   <div id="questionsContainer"></div>
   <button id="submitBtn" class="btn-submit">✓ Submit & Grade</button>
   <div id="scorePanel" style="display:none;"></div>
-  <footer>Mean · median · mode · variance · standard deviation · Chi-square · ANOVA · regression · coefficient of determination</footer>
+  <footer>CPL · CAC · CLV · SEO Rankings · Social Media & Mobile Traffic · Return on Investment (ROI)</footer>
 </div>
 
 <script>
 // --------------------------------------------------------------
 // QUIZ DATA for TOPIC 12: Marketing Metrics and Its Application
-// Questions 88 through 95 fully extracted from provided H5P content
+// Total 15 questions: 10 MCQs + 5 "quiz" style (short scenario/true-false)
+// Based strictly on the provided PDF content (Marketing Metrics)
 // --------------------------------------------------------------
 const quizData = [
+  // ---- 10 MCQs ----
   {
-    id: 88,
-    text: "Which one of the followings is NOT a measure of location?",
-    options: ["A) Mean", "B) Variance", "C) Mode", "D) Median"],
-    answer: 1,  // B) Variance (measure of dispersion, not location)
+    id: 1,
+    text: "What does CPL stand for in marketing metrics?",
+    options: ["A) Cost Per Lifetime", "B) Customer Profit Loss", "C) Cost Per Lead", "D) Campaign Performance Link"],
+    answer: 2,  // C) Cost Per Lead
     listBefore: false
   },
   {
-    id: 89,
-    text: "Variance, range, standard deviation and coefficient of variation are measuring the ___?",
-    options: ["A) location", "B) representativeness", "C) dispersion", "D) discrimination"],
-    answer: 2,  // C) dispersion
+    id: 2,
+    text: "Which metric is calculated by dividing total sales and marketing costs by the number of new customers acquired?",
+    options: ["A) CPL", "B) CLV", "C) ROI", "D) CAC"],
+    answer: 3,  // D) CAC
     listBefore: false
   },
   {
-    id: 90,
-    text: "Median does not use all the information in the data set, thus it is considered as less efficient than the mean.",
+    id: 3,
+    text: "According to the document, what is the ideal LTV:CAC ratio for a healthy, sustainable business?",
+    options: ["A) 1:1", "B) 2:1", "C) 3:1 or higher", "D) 5:1 or higher"],
+    answer: 2,  // C) 3:1 or higher
+    listBefore: false
+  },
+  {
+    id: 4,
+    text: "Which of the following is NOT listed as a factor influencing SEO rankings?",
+    options: ["A) Backlinks", "B) Social media followers count", "C) Site speed", "D) Keyword optimization"],
+    answer: 1,  // B) Social media followers
+    listBefore: false
+  },
+  {
+    id: 5,
+    text: "What does the CAC Payback Period measure?",
+    options: ["A) Time to recover customer acquisition cost", "B) Time to rank on Google's first page", "C) Time to generate one lead", "D) Time to double social media engagement"],
+    answer: 0,  // A) Time to recover customer acquisition cost
+    listBefore: false
+  },
+  {
+    id: 6,
+    text: "Which metric helps determine how much a company can afford to spend to acquire a new customer (setting the CAC threshold)?",
+    options: ["A) ROI", "B) CPL", "C) CLV", "D) Mobile traffic rate"],
+    answer: 2,  // C) CLV
+    listBefore: false
+  },
+  {
+    id: 7,
+    text: "What is the correct ROI formula according to the document?",
+    options: ["A) (Revenue / Cost) × 100", "B) (Net Profit / Cost of Investment) × 100", "C) (Leads Generated / Cost) × 100", "D) (CLV / CAC) × 100"],
+    answer: 1,  // B) (Net Profit / Cost of Investment) × 100
+    listBefore: false
+  },
+  {
+    id: 8,
+    text: "Which of the following is explicitly included in Customer Acquisition Cost (CAC) as per the document?",
+    options: ["A) Only advertising spend on Google", "B) Salaries and commissions for sales and marketing teams", "C) Product manufacturing cost", "D) Customer support cost after acquisition"],
+    answer: 1,  // B) Salaries + commissions
+    listBefore: false
+  },
+  {
+    id: 9,
+    text: "When is a high CPL considered acceptable?",
+    options: ["A) When the campaign goes viral", "B) If those leads convert into high-paying customers", "C) Only when CPL is lower than industry average", "D) Never, high CPL always indicates failure"],
+    answer: 1,  // B) if leads convert into high-paying customers
+    listBefore: false
+  },
+  {
+    id: 10,
+    text: "Which formula correctly represents Customer Lifetime Value (CLV) in revenue terms (simple version from the document)?",
+    options: ["A) Average Purchase Value × Purchase Frequency × Customer Lifespan", "B) Total Sales / Number of Customers", "C) (Net Profit / Cost) × 100", "D) Total Campaign Cost / Number of Leads"],
+    answer: 0,  // APV x PF x Lifespan
+    listBefore: false
+  },
+  // ---- 5 short "quiz" style questions (concept & application) ----
+  {
+    id: 11,
+    text: "True or False: A lower CPL always guarantees better profitability, regardless of lead quality.",
     options: ["True", "False"],
-    answer: 0,  // True
+    answer: 1,  // False
     listBefore: false
   },
   {
-    id: 91,
-    text: "Which of the followings are TRUE about Chi-square analysis?\n\ni) Cross-tabulation\nii) Categorical variables\niii) Normal distribution of data\niv) Sample size is relatively small",
-    options: ["A) i, ii, iii", "B) i, ii, iv", "C) ii, iii, iv", "D) i, iii, iv"],
-    answer: 1,  // B) i, ii, iv (Chi-square uses cross-tab, categorical variables, small sample size; doesn't require normal distribution)
+    id: 12,
+    text: "Fill-in concept: The component of CLV that represents how often a customer buys in a given period is called _______.",
+    options: ["A) Average Purchase Value", "B) Purchase Frequency", "C) Gross Margin", "D) Customer Churn"],
+    answer: 1,  // B) Purchase Frequency
     listBefore: false
   },
   {
-    id: 92,
-    text: "____ is used to test the differences of means among 3 groups of populations.",
-    options: ["A) ANCOVA", "B) AMOS", "C) Cochran Test", "D) One Way ANOVA"],
-    answer: 3,  // D) One Way ANOVA
+    id: 13,
+    text: "According to the document, how does social media engagement drive mobile traffic?",
+    options: ["A) By increasing paid ad budget", "B) By signaling algorithms that content is valuable → boosting organic reach → driving more mobile users", "C) By reducing website loading time automatically", "D) By directly increasing email subscribers"],
+    answer: 1,  // B) algorithmic boost & organic reach
     listBefore: false
   },
   {
-    id: 93,
-    text: "Burns and Bush (2010) suggested that the correlation coefficient of 0.41-0.60 is categorized as:",
-    options: ["A) Very weak", "B) Weak", "C) Moderate", "D) Strong"],
-    answer: 2,  // C) Moderate
+    id: 14,
+    text: "Which of the following statements about ROI is TRUE based on the text?",
+    options: ["A) ROI accounts perfectly for the time value of money", "B) A higher ROI always means better performance and works well for comparing investments of different durations", "C) ROI doesn't account for the time it takes to generate returns, making comparisons tricky for investments of different durations", "D) ROI is calculated as (Gross Profit / Number of Leads) × 100"],
+    answer: 2,  // C) limitation about time
     listBefore: false
   },
   {
-    id: 94,
-    text: "Regression analysis is useful to establish ___ relationship between variables and forecast future results/outcomes. Nevertheless, the researcher must identify the ___ and ___ variables correctly.",
-    options: [
-      "A) intermediate, dependent, causal",
-      "B) cause-effect, independent, dependent",
-      "C) direct, indirect and mediating",
-      "D) moderate, single, multiple"
-    ],
-    answer: 1,  // B) cause-effect, independent, dependent
-    listBefore: false
-  },
-  {
-    id: 95,
-    text: "R² of 0.38 indicates that ___ in the dependent variable can be attributed to the changes in the independent variable.",
-    options: [
-      "A) 38% of the variation",
-      "B) 38% of the standard deviation",
-      "C) 0.38% of the variation",
-      "D) 0.38% of the standard deviation"
-    ],
-    answer: 0,  // A) 38% of the variation
+    id: 15,
+    text: "Which metric directly helps a business decide budget allocation between retention marketing (loyalty programs) vs. acquiring new customers?",
+    options: ["A) Cost Per Lead (CPL)", "B) Social Media Engagement Rate", "C) Customer Lifetime Value (CLV)", "D) Search Engine Rankings"],
+    answer: 2,  // CLV — document page 10: "Helps marketers decide how much budget to spend on retaining existing customers versus buying new ads"
     listBefore: false
   }
 ];
@@ -314,7 +356,7 @@ const container = document.getElementById("questionsContainer");
 const submitBtn = document.getElementById("submitBtn");
 const scorePanel = document.getElementById("scorePanel");
 
-// lightweight confetti celebration
+// lightweight confetti celebration (same style)
 function startConfetti() {
   if (confettiTriggered) return;
   confettiTriggered = true;
@@ -384,7 +426,6 @@ function renderQuestions() {
     html += `<div class="${questionClass}"><div class="q-header"><span class="q-num">${q.id}</span><div class="q-text">`;
     html += `<div>${formatTextWithLineBreaks(escapeHtml(q.text))}</div>`;
 
-    // render list items if present
     if (q.listBefore && q.listItems && q.listItems.length) {
       html += `<div class="extra-list"><ul>`;
       q.listItems.forEach(li => {
@@ -425,7 +466,7 @@ function renderQuestions() {
         radio.addEventListener("change", (e) => {
           if (!submitted) {
             selections[i] = parseInt(e.target.value);
-            renderQuestions();
+            renderQuestions(); // re-render to keep consistent UI
           }
         });
       });
@@ -443,7 +484,7 @@ function getScore() {
 
 function getResultIcon(correct, total, isPerfect) {
   const percent = (correct / total) * 100;
-  if (isPerfect) return { icon: "👑", label: "PERFECT MASTERY" };
+  if (isPerfect) return { icon: "🏅", label: "PERFECT MASTERY" };
   if (percent >= 80) return { icon: "🏆", label: "EXCELLENT" };
   if (percent >= 60) return { icon: "🎓", label: "GOOD" };
   if (percent >= 50) return { icon: "📘", label: "PASS" };
@@ -467,14 +508,14 @@ function handleSubmit() {
 
   const percent = (correct / total) * 100;
   let message = isPerfect
-    ? "Outstanding! Perfect score achieved! 🌟"
+    ? "Flawless! You've mastered Marketing Metrics — CPL, CAC, CLV, SEO, ROI and beyond. 🌟"
     : percent >= 80
-      ? "Excellent! Mastery achieved. 🎉"
+      ? "Excellent! Strong grasp of marketing metrics. Review flagged answers to polish further. 🎉"
       : percent >= 60
-        ? "Great job! Review the incorrect answers."
+        ? "Good job! Core metrics understood; revisit CPL vs CAC & CLV applications."
         : percent >= 50
-          ? "Pass. Keep practicing to improve."
-          : "Needs improvement. Review the questions above.";
+          ? "Pass. Review the applications of LTV:CAC ratio and ROI formula to strengthen."
+          : "Needs improvement. Re-read sections on acquisition cost, lifetime value, and SEO drivers.";
 
   const { icon, label } = getResultIcon(correct, total, isPerfect);
 
@@ -487,7 +528,7 @@ function handleSubmit() {
       </div>
       <div style="margin-top:6px; font-size:0.9rem; font-weight:600; color:#1e4a8a;">${label}</div>
       <div style="margin-top:8px; font-size:0.85rem; color:#2c5a6e;">${message}</div>
-      ${isPerfect ? '<div class="perfect-badge">✨ PERFECT SCORE! ✨<br>🎉 Confetti celebration! 🎉</div>' : ''}
+      ${isPerfect ? '<div class="perfect-badge">✨ PERFECT SCORE! ✨<br>📊 Confetti celebration! 🎉</div>' : ''}
     </div>
   `;
 
