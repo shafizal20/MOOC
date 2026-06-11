@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Topic 12: Marketing Metrics & Application | Quick Quiz</title>
+    <title>Topic 12: Marketing Metrics & Its Application | Interactive Quiz</title>
     <style>
         * {
             margin: 0;
@@ -44,6 +44,12 @@
         .title-area h2 {
             font-size: 1.5rem;
             color: #1a3b4f;
+        }
+
+        .title-area p {
+            font-size: 0.75rem;
+            color: #6c8e9e;
+            margin-top: 4px;
         }
 
         .final-score-badge {
@@ -107,7 +113,7 @@
             display: flex;
             gap: 2rem;
             padding: 2rem;
-            min-height: 380px;
+            min-height: 420px;
         }
 
         .col {
@@ -152,11 +158,6 @@
         .matched-answer {
             background: #e8f5e9 !important;
             border-color: #2b8c4a !important;
-        }
-
-        .formula-card {
-            font-family: 'Courier New', 'SF Mono', monospace;
-            background: #f8f4e8;
         }
 
         .line-layer {
@@ -243,6 +244,17 @@
             pointer-events: none;
             z-index: 1000;
         }
+
+        .metric-badge {
+            display: inline-block;
+            background: #e1ecf4;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            margin-left: 8px;
+            color: #2c7da0;
+            font-weight: normal;
+        }
     </style>
 </head>
 <body>
@@ -252,7 +264,8 @@
 <div class="quiz-box">
     <div class="quiz-header">
         <div class="title-area">
-            <h2>Topic 12: Marketing Metrics & Application</h2>
+            <h2>📊 Topic 12: Marketing Metrics and Its Application</h2>
+            <p>CPL · CAC · CLV · SEO · Social Media Engagement · ROI</p>
         </div>
         <div class="final-score-badge" id="finalScoreBadge" style="display: none;">
             <div class="final-score-label">FINAL SCORE</div>
@@ -292,63 +305,67 @@
 
 <script>
     (function() {
-        // ============= TOPIC 12: Marketing Metrics & Application =============
+        // ============================================================
+        // TOPIC 12: MARKETING METRICS AND ITS APPLICATION
+        // 5 questions based on the provided PDF content
+        // Topics: CPL, CAC, CLV, SEO Rankings, ROI, Social Media Engagement
+        // ============================================================
         const questions = [
             {
-                text: "Which measure of central tendency is least affected by extreme values or outliers in a dataset?",
+                text: "A company runs a digital campaign costing $5,000 and generates 250 leads. What is the Cost Per Lead (CPL), and why might a low CPL still be unprofitable?",
                 answers: [
-                    { text: "A) Mean", correct: false, id: "q1_a" },
-                    { text: "B) Median", correct: true, id: "q1_b" },
-                    { text: "C) Mode", correct: false, id: "q1_c" }
+                    { text: "A) CPL = $50; low CPL always guarantees high profitability", correct: false, id: "q1_a" },
+                    { text: "B) CPL = $20; low CPL is useless if the leads never buy (lead quality matters)", correct: true, id: "q1_b" },
+                    { text: "C) CPL = $5; low CPL means the campaign is perfect regardless of conversion", correct: false, id: "q1_c" },
+                    { text: "D) CPL = $200; low CPL is irrelevant to business success", correct: false, id: "q1_d" }
                 ],
-                correctIds: ["q1_b"],
-                isMultiCorrect: false
+                correctId: "q1_b"
             },
             {
-                text: "A researcher computes a Pearson correlation coefficient of r = 0.85 between service quality and customer satisfaction. According to the strength of association table in the document, this represents:",
+                text: "Customer Acquisition Cost (CAC) includes various expenses. Which of the following is explicitly included in CAC according to the document, and what does the LTV:CAC ratio indicate?",
                 answers: [
-                    { text: "A) Weak correlation", correct: false, id: "q2_a" },
-                    { text: "B) Moderate correlation", correct: false, id: "q2_b" },
-                    { text: "C) Strong correlation", correct: true, id: "q2_c" }
+                    { text: "A) Only product manufacturing costs; LTV:CAC ratio indicates brand awareness", correct: false, id: "q2_a" },
+                    { text: "B) Salaries, ad spend, software, content creation; a 3:1 LTV:CAC ratio suggests healthy profitability", correct: true, id: "q2_b" },
+                    { text: "C) Only Google Ads spend; LTV:CAC ratio measures social media engagement", correct: false, id: "q2_c" },
+                    { text: "D) Customer support costs only; LTV:CAC above 1:1 is always ideal", correct: false, id: "q2_d" }
                 ],
-                correctIds: ["q2_c"],
-                isMultiCorrect: false
+                correctId: "q2_b"
             },
             {
-                text: "In simple linear regression, the coefficient of determination (R²) is calculated as:",
+                text: "Customer Lifetime Value (CLV) helps determine retention and acquisition budgets. According to the formula CLV = APV × PF × Lifespan, which scenario would justify spending more on customer acquisition?",
                 answers: [
-                    { text: "A) The square root of the correlation coefficient", correct: false, id: "q3_a" },
-                    { text: "B) The square of the correlation coefficient (r²)", correct: true, id: "q3_b" },
-                    { text: "C) The sum of squared residuals divided by the total sum of squares", correct: false, id: "q3_c" }
+                    { text: "A) When CLV is lower than CAC, spend more on acquisition", correct: false, id: "q3_a" },
+                    { text: "B) When a customer has low average purchase value, acquisition budget should increase", correct: false, id: "q3_b" },
+                    { text: "C) When CLV is high (e.g., 3× CAC), companies can afford higher CAC because the customer's long-term profit covers it", correct: true, id: "q3_c" },
+                    { text: "D) CLV has no impact on acquisition spending decisions", correct: false, id: "q3_d" }
                 ],
-                correctIds: ["q3_b"],
-                isMultiCorrect: false
+                correctId: "q3_c"
             },
             {
-                text: "Which statistical test is appropriate for testing the association between two categorical variables when there is no assumption of normality and each cell has at least 5 observations?",
+                text: "Search Engine Optimization (SEO) rankings affect organic traffic. Which combination of factors most directly improves SEO rankings based on the document?",
                 answers: [
-                    { text: "A) t-test for population mean", correct: false, id: "q4_a" },
-                    { text: "B) Pearson correlation", correct: false, id: "q4_b" },
-                    { text: "C) Chi-square test for association", correct: true, id: "q4_c" }
+                    { text: "A) Paid ads, social media followers, and email subscribers", correct: false, id: "q4_a" },
+                    { text: "B) Content quality, backlinks, site speed, and mobile-friendliness", correct: true, id: "q4_b" },
+                    { text: "C) Only domain age and number of images", correct: false, id: "q4_c" },
+                    { text: "D) Keyword stuffing and pop-up ads", correct: false, id: "q4_d" }
                 ],
-                correctIds: ["q4_c"],
-                isMultiCorrect: false
+                correctId: "q4_b"
             },
             {
-                text: "In multiple regression analysis, what does the adjusted R² indicate?",
+                text: "Return on Investment (ROI) is calculated as (Net Profit / Cost) × 100. What is a key limitation of ROI mentioned in the document?",
                 answers: [
-                    { text: "A) The percentage of variation in the dependent variable explained by all independent variables combined, adjusted for the number of predictors", correct: true, id: "q5_a" },
-                    { text: "B) The correlation between each pair of independent variables", correct: false, id: "q5_b" },
-                    { text: "C) The significance level of each regression coefficient", correct: false, id: "q5_c" }
+                    { text: "A) It accounts perfectly for investment duration differences", correct: false, id: "q5_a" },
+                    { text: "B) It doesn't consider the time it takes to generate returns, making comparisons tricky for investments of different durations", correct: true, id: "q5_b" },
+                    { text: "C) It cannot be used for marketing campaigns", correct: false, id: "q5_c" },
+                    { text: "D) It only works for social media metrics", correct: false, id: "q5_d" }
                 ],
-                correctIds: ["q5_a"],
-                isMultiCorrect: false
+                correctId: "q5_b"
             }
         ];
 
         const total = questions.length;
         let currentIdx = 0;
-        let matches = [];        // each: { qIdx, answerId: single id }
+        let matches = [];        // { qIdx, answerId }
         let quizCompleted = false;
         let confettiTriggered = false;
 
@@ -361,34 +378,20 @@
         const resultArea = document.getElementById("resultArea");
         const progressItems = document.querySelectorAll(".progress-item");
 
-        function getAnswerId(qIdx) {
+        function getAnswer(qIdx) {
             const m = matches.find(m => m.qIdx === qIdx);
             return m ? m.answerId : null;
         }
 
-        function setAnswerId(qIdx, ansId) {
-            const existingIdx = matches.findIndex(m => m.qIdx === qIdx);
-            if (existingIdx !== -1) {
-                matches[existingIdx].answerId = ansId;
-            } else {
-                matches.push({ qIdx, answerId: ansId });
-            }
-        }
-
         function isAnswered(qIdx) {
-            return getAnswerId(qIdx) !== null;
-        }
-
-        function isAnswerCorrect(qIdx, ansId) {
-            const q = questions[qIdx];
-            return q.correctIds.includes(ansId);
+            return matches.some(m => m.qIdx === qIdx);
         }
 
         function computeScore() {
             let score = 0;
             for (let i = 0; i < total; i++) {
-                const ansId = getAnswerId(i);
-                if (ansId && isAnswerCorrect(i, ansId)) score++;
+                const match = matches.find(m => m.qIdx === i);
+                if (match && match.answerId === questions[i].correctId) score++;
             }
             return score;
         }
@@ -417,7 +420,7 @@
 
         function updateButtonText() {
             if (currentIdx === total - 1) {
-                nextBtn.textContent = "Submit";
+                nextBtn.textContent = "Submit Quiz";
             } else {
                 nextBtn.textContent = "Next →";
             }
@@ -425,7 +428,7 @@
 
         function drawLine() {
             svg.innerHTML = "";
-            const answerId = getAnswerId(currentIdx);
+            const answerId = getAnswer(currentIdx);
             if (!answerId) return;
             
             const leftCard = document.querySelector(".left .card");
@@ -453,7 +456,7 @@
 
         function render() {
             const q = questions[currentIdx];
-            const storedId = getAnswerId(currentIdx);
+            const storedId = getAnswer(currentIdx);
             
             document.getElementById("leftQuestionContainer").innerHTML = `
                 <div class="card">
@@ -476,7 +479,8 @@
                 card.onclick = () => {
                     if (quizCompleted) return;
                     const aid = card.dataset.aid;
-                    setAnswerId(currentIdx, aid);
+                    matches = matches.filter(m => m.qIdx !== currentIdx);
+                    matches.push({ qIdx: currentIdx, answerId: aid });
                     
                     document.querySelectorAll(".ans-card").forEach(c => c.classList.remove("matched-answer"));
                     card.classList.add("matched-answer");
@@ -484,9 +488,9 @@
                     drawLine();
                     updateProgress();
                     if (currentIdx === total - 1) {
-                        hintMsg.innerHTML = "✓ Ready to submit! Click Finish to see your score.";
+                        hintMsg.innerHTML = "✅ All questions matched! Click 'Submit Quiz' to see your score.";
                     } else {
-                        hintMsg.innerHTML = "✓ Matched! Click Next →";
+                        hintMsg.innerHTML = "✓ Matched! Click Next → to continue.";
                     }
                 };
             });
@@ -513,27 +517,35 @@
             
             nextBtn.classList.add("hidden");
             
-            let fb = `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 12: Marketing Metrics & Application</div>`;
+            // Detailed feedback based on marketing metrics
+            let fb = `<div style="font-weight:600; margin-bottom:12px;">📈 Topic 12 Results: Marketing Metrics & Its Application</div>`;
             for (let i = 0; i < total; i++) {
                 const q = questions[i];
-                const ansId = getAnswerId(i);
-                const correct = ansId && isAnswerCorrect(i, ansId);
-                const correctAnswerObj = q.answers.find(a => q.correctIds.includes(a.id));
+                const match = matches.find(m => m.qIdx === i);
+                const correct = match && match.answerId === q.correctId;
+                const correctAnswerObj = q.answers.find(a => a.id === q.correctId);
                 const correctText = correctAnswerObj ? correctAnswerObj.text : "Unknown";
-                
                 if (correct) {
                     fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
                 } else {
                     fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect.<br> <span style="margin-left: 16px; font-size:0.85rem;">✔ Correct answer: ${correctText}</span></div>`;
                 }
             }
-            fb += `<div class="score-highlight">🏅 Final Score: ${score}/${total} · ${percent}%</div>`;
-            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
+            
+            // Add metric insights
+            fb += `<div class="score-highlight">🏆 Final Score: ${score}/${total} · ${percent}%</div>`;
+            if (perfect) {
+                fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">📊 Perfect! You've mastered CPL, CAC, CLV, SEO & ROI! 🎉</div>`;
+            } else if (score >= 4) {
+                fb += `<div style="margin-top:12px; color:#2c7da0;">💡 Great grasp of marketing metrics! Review CPL vs CAC and CLV application for mastery.</div>`;
+            } else {
+                fb += `<div style="margin-top:12px; color:#5e7a93;">📚 Tip: Revisit CPL formula (campaign cost/leads), CAC components (salaries+ads), and ROI time limitation.</div>`;
+            }
             
             resultArea.style.display = "block";
             resultArea.className = "result-panel";
             resultArea.innerHTML = fb;
-            hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
+            hintMsg.innerHTML = "Quiz completed! Review your answers above.";
             
             updateProgress();
         }
@@ -542,7 +554,7 @@
             if (quizCompleted) return;
             
             if (!isAnswered(currentIdx)) {
-                hintMsg.innerHTML = "⚠️ Please select an answer first";
+                hintMsg.innerHTML = "⚠️ Please select an answer before proceeding";
                 return;
             }
             
@@ -567,13 +579,13 @@
             render();
             updateProgress();
             if (currentIdx === total - 1) {
-                hintMsg.innerHTML = "Last question. Select answer, then Finish.";
+                hintMsg.innerHTML = "Last question. Match an answer, then Submit.";
             } else {
                 hintMsg.innerHTML = "Click any answer to match";
             }
         }
 
-        // ========== CONFETTI ==========
+        // ========== CONFETTI (celebratory effect) ==========
         const canvas = document.getElementById("confetti-canvas");
         let ctx = canvas.getContext("2d");
         let animId = null;
