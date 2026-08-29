@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Topic 6: Qualitative Research Techniques | Quick Quiz</title>
+    <title>Topic 5: Secondary Data & Packaged Information | Quick Quiz</title>
     <style>
         * {
             margin: 0;
@@ -246,7 +246,7 @@
     <div class="quiz-box">
         <div class="quiz-header">
             <div class="title-area">
-                <h2>Topic 6: Qualitative Research Techniques</h2>
+                <h2>Topic 5: Secondary Data & Packaged Information</h2>
             </div>
             <div class="final-score-badge" id="finalScoreBadge" style="display: none;">
                 <div class="final-score-label">FINAL SCORE</div>
@@ -286,49 +286,50 @@
 
     <script>
         (function() {
-            // ============= TOPIC 6: Qualitative Research Techniques =============
+            // ============= TOPIC 5: Secondary Data & Packaged Information =============
             const questions = [{
-                text: "What is the primary role of qualitative research in marketing research?",
+                text: "What is the primary purpose of collecting primary data?",
                 answers: [
-                    { text: "A) To quantify data and apply statistical analysis", correct: false, id: "q1_a" },
-                    { text: "B) To provide insight and understanding of the problem setting", correct: true, id: "q1_b" },
-                    { text: "C) To replace quantitative research entirely", correct: false, id: "q1_c" }
+                    { text: "A) To solve other problems", correct: false, id: "q1_a" },
+                    { text: "B) To address the specific research problem at hand", correct: true, id: "q1_b" },
+                    { text: "C) To save time and money", correct: false, id: "q1_c" }
                 ],
                 correctId: "q1_b"
             }, {
-                text: "Which qualitative research design aims to understand a cultural or social group by immersing the researcher in their natural setting?",
+                text: "Which of the following is NOT a typical advantage of secondary data?",
                 answers: [
-                    { text: "A) Phenomenology", correct: false, id: "q2_a" },
-                    { text: "B) Ethnography", correct: true, id: "q2_b" },
-                    { text: "C) Grounded Theory", correct: false, id: "q2_c" },
-                    { text: "D) Case Study", correct: false, id: "q2_d" }
+                    { text: "A) Low cost", correct: false, id: "q2_a" },
+                    { text: "B) Saves time", correct: false, id: "q2_b" },
+                    { text: "C) Data is always specific to your research goals", correct: true, id: "q2_c" },
+                    { text: "D) Provides access to large groups", correct: false, id: "q2_d" }
                 ],
-                correctId: "q2_b"
+                correctId: "q2_c"
             }, {
-                text: "Which of the following is a key step in qualitative data analysis?",
+                text: "Packaged information is a type of secondary data. Which two broad classes does it include?",
                 answers: [
-                    { text: "A) Calculating statistical significance", correct: false, id: "q3_a" },
-                    { text: "B) Coding the data into themes", correct: true, id: "q3_b" },
-                    { text: "C) Running regression models", correct: false, id: "q3_c" },
-                    { text: "D) Conducting a survey", correct: false, id: "q3_d" }
+                    { text: "A) Internal and external data", correct: false, id: "q3_a" },
+                    { text: "B) Syndicated data and packaged services", correct: true, id: "q3_b" },
+                    { text: "C) Books and periodicals", correct: false, id: "q3_c" },
+                    { text: "D) Government and commercial sources", correct: false, id: "q3_d" }
                 ],
                 correctId: "q3_b"
             }, {
-                text: "What is the goal of phenomenological research?",
+                text: "Which of the following is a disadvantage of syndicated data?",
                 answers: [
-                    { text: "A) To build a new theory from collected data", correct: false, id: "q4_a" },
-                    { text: "B) To describe how people experience a specific event or concept", correct: true, id: "q4_b" },
-                    { text: "C) To analyze personal stories over time", correct: false, id: "q4_c" },
-                    { text: "D) To study one specific organization in depth", correct: false, id: "q4_d" }
+                    { text: "A) High cost", correct: false, id: "q4_a" },
+                    { text: "B) Data quality is often low", correct: false, id: "q4_b" },
+                    { text: "C) Competitors have access to the same information", correct: true, id: "q4_c" },
+                    { text: "D) Data is collected too slowly", correct: false, id: "q4_d" }
                 ],
-                correctId: "q4_b"
+                correctId: "q4_c"
             }, {
-                text: "Which method is commonly used in qualitative data analysis to examine personal stories and understand how people make sense of life events?",
+                text: "Marketing analytics is used to improve decisions. Which sources can data for analytics come from?",
                 answers: [
-                    { text: "A) Content analysis", correct: false, id: "q5_a" },
-                    { text: "B) Thematic analysis", correct: false, id: "q5_b" },
-                    { text: "C) Narrative analysis", correct: true, id: "q5_c" },
-                    { text: "D) Statistical analysis", correct: false, id: "q5_d" }
+                    { text: "A) Only from internal company records", correct: false, id: "q5_a" },
+                    { text: "B) Only from government publications", correct: false, id: "q5_b" },
+                    { text: "C) From a wide range including companies, sensors, social media, and retailers", correct: true,
+                        id: "q5_c" },
+                    { text: "D) Only from syndicated data providers", correct: false, id: "q5_d" }
                 ],
                 correctId: "q5_c"
             }];
@@ -488,7 +489,7 @@
                 nextBtn.classList.add("hidden");
 
                 let fb =
-                    `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 6: Qualitative Research Techniques</div>`;
+                    `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 5: Secondary Data & Packaged Information</div>`;
                 for (let i = 0; i < total; i++) {
                     const q = questions[i];
                     const match = matches.find(m => m.qIdx === i);
