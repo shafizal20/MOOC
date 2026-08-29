@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Topic 6: Qualitative Research Techniques | Quick Quiz</title>
+    <title>Topic 6: Qualitative Research Techniques | Quiz</title>
     <style>
         * {
             margin: 0;
@@ -241,392 +241,391 @@
     </style>
 </head>
 <body>
-    <canvas id="confetti-canvas"></canvas>
 
-    <div class="quiz-box">
-        <div class="quiz-header">
-            <div class="title-area">
-                <h2>Topic 6: Qualitative Research Techniques</h2>
-            </div>
-            <div class="final-score-badge" id="finalScoreBadge" style="display: none;">
-                <div class="final-score-label">FINAL SCORE</div>
-                <div class="final-score-value" id="finalScoreValue">0 <span>/ 5</span></div>
-            </div>
+<canvas id="confetti-canvas"></canvas>
+
+<div class="quiz-box">
+    <div class="quiz-header">
+        <div class="title-area">
+            <h2>Topic 6: Qualitative Research Techniques</h2>
         </div>
-
-        <div class="progress-text">
-            <span class="progress-item" data-qidx="0">1</span>
-            <span class="progress-item" data-qidx="1">2</span>
-            <span class="progress-item" data-qidx="2">3</span>
-            <span class="progress-item" data-qidx="3">4</span>
-            <span class="progress-item" data-qidx="4">5</span>
+        <div class="final-score-badge" id="finalScoreBadge" style="display: none;">
+            <div class="final-score-label">FINAL SCORE</div>
+            <div class="final-score-value" id="finalScoreValue">0 <span>/ 5</span></div>
         </div>
-
-        <div class="match-area" id="matchContainer">
-            <div class="col left">
-                <div class="col-title">QUESTION</div>
-                <div id="leftQuestionContainer"></div>
-            </div>
-            <div class="col right">
-                <div class="col-title">SELECT ANSWER</div>
-                <div id="rightAnswersContainer"></div>
-            </div>
-            <div class="line-layer">
-                <svg id="connectionSvg"></svg>
-            </div>
-        </div>
-
-        <div class="action-footer">
-            <div class="message-area" id="hintMsg">Click any answer to match</div>
-            <button class="next-btn" id="nextBtn">Next →</button>
-        </div>
-
-        <div id="resultArea" style="display: none;"></div>
     </div>
 
-    <script>
-        (function() {
-            // ============= TOPIC 6: Qualitative Research Techniques =============
-            const questions = [{
-                text: "What is the primary role of qualitative research in marketing research?",
+    <div class="progress-text">
+        <span class="progress-item" data-qidx="0">1</span>
+        <span class="progress-item" data-qidx="1">2</span>
+        <span class="progress-item" data-qidx="2">3</span>
+        <span class="progress-item" data-qidx="3">4</span>
+        <span class="progress-item" data-qidx="4">5</span>
+    </div>
+
+    <div class="match-area" id="matchContainer">
+        <div class="col left">
+            <div class="col-title">QUESTION</div>
+            <div id="leftQuestionContainer"></div>
+        </div>
+        <div class="col right">
+            <div class="col-title">SELECT ANSWER</div>
+            <div id="rightAnswersContainer"></div>
+        </div>
+        <div class="line-layer">
+            <svg id="connectionSvg"></svg>
+        </div>
+    </div>
+
+    <div class="action-footer">
+        <div class="message-area" id="hintMsg">Click any answer to match</div>
+        <button class="next-btn" id="nextBtn">Next →</button>
+    </div>
+
+    <div id="resultArea" style="display: none;"></div>
+</div>
+
+<script>
+    (function() {
+        // ============= FIVE QUESTIONS based on Topic 6 PDF =============
+        const questions = [
+            {
+                text: "What is the primary role of qualitative research in marketing?",
                 answers: [
                     { text: "A) To quantify data and apply statistical analysis", correct: false, id: "q1_a" },
-                    { text: "B) To provide insight and understanding of the problem setting", correct: true, id: "q1_b" },
-                    { text: "C) To replace quantitative research entirely", correct: false, id: "q1_c" }
+                    { text: "B) To provide insight and understanding of the problem setting through an unstructured, exploratory approach", correct: true, id: "q1_b" },
+                    { text: "C) To draw conclusive, generalizable findings for the population", correct: false, id: "q1_c" }
                 ],
                 correctId: "q1_b"
-            }, {
-                text: "Which qualitative research design aims to understand a cultural or social group by immersing the researcher in their natural setting?",
+            },
+            {
+                text: "Which qualitative research design aims to describe how people experience a specific event or concept through deep interviews?",
                 answers: [
-                    { text: "A) Phenomenology", correct: false, id: "q2_a" },
-                    { text: "B) Ethnography", correct: true, id: "q2_b" },
-                    { text: "C) Grounded Theory", correct: false, id: "q2_c" },
-                    { text: "D) Case Study", correct: false, id: "q2_d" }
+                    { text: "A) Ethnography", correct: false, id: "q2_a" },
+                    { text: "B) Phenomenology", correct: true, id: "q2_b" },
+                    { text: "C) Grounded Theory", correct: false, id: "q2_c" }
                 ],
                 correctId: "q2_b"
-            }, {
-                text: "Which of the following is a key step in qualitative data analysis?",
+            },
+            {
+                text: "In qualitative data analysis, what does 'coding the data' refer to?",
                 answers: [
-                    { text: "A) Calculating statistical significance", correct: false, id: "q3_a" },
-                    { text: "B) Coding the data into themes", correct: true, id: "q3_b" },
-                    { text: "C) Running regression models", correct: false, id: "q3_c" },
-                    { text: "D) Conducting a survey", correct: false, id: "q3_d" }
+                    { text: "A) Transcribing audio files and typing up notes", correct: false, id: "q3_a" },
+                    { text: "B) Labeling small parts of the text with short keywords that describe their meaning", correct: true, id: "q3_b" },
+                    { text: "C) Counting how often certain words appear in the text", correct: false, id: "q3_c" }
                 ],
                 correctId: "q3_b"
-            }, {
-                text: "What is the goal of phenomenological research?",
+            },
+            {
+                text: "Which qualitative method involves building a new theory directly from collected data?",
                 answers: [
-                    { text: "A) To build a new theory from collected data", correct: false, id: "q4_a" },
-                    { text: "B) To describe how people experience a specific event or concept", correct: true, id: "q4_b" },
-                    { text: "C) To analyze personal stories over time", correct: false, id: "q4_c" },
-                    { text: "D) To study one specific organization in depth", correct: false, id: "q4_d" }
+                    { text: "A) Case Study", correct: false, id: "q4_a" },
+                    { text: "B) Narrative Research", correct: false, id: "q4_b" },
+                    { text: "C) Grounded Theory", correct: true, id: "q4_c" }
                 ],
-                correctId: "q4_b"
-            }, {
-                text: "Which method is commonly used in qualitative data analysis to examine personal stories and understand how people make sense of life events?",
+                correctId: "q4_c"
+            },
+            {
+                text: "According to the PDF, how should qualitative and quantitative research be viewed?",
                 answers: [
-                    { text: "A) Content analysis", correct: false, id: "q5_a" },
-                    { text: "B) Thematic analysis", correct: false, id: "q5_b" },
-                    { text: "C) Narrative analysis", correct: true, id: "q5_c" },
-                    { text: "D) Statistical analysis", correct: false, id: "q5_d" }
+                    { text: "A) As competitors, with quantitative being more reliable", correct: false, id: "q5_a" },
+                    { text: "B) As complementary, both providing rich insights for marketing strategies", correct: true, id: "q5_b" },
+                    { text: "C) As sequential, where qualitative is only used to pre-test questionnaires", correct: false, id: "q5_c" }
                 ],
-                correctId: "q5_c"
-            }];
-
-            const total = questions.length;
-            let currentIdx = 0;
-            let matches = []; // { qIdx, answerId }
-            let quizCompleted = false;
-            let confettiTriggered = false;
-
-            const svg = document.getElementById("connectionSvg");
-            const container = document.querySelector(".match-area");
-            const nextBtn = document.getElementById("nextBtn");
-            const hintMsg = document.getElementById("hintMsg");
-            const finalBadge = document.getElementById("finalScoreBadge");
-            const finalValue = document.getElementById("finalScoreValue");
-            const resultArea = document.getElementById("resultArea");
-            const progressItems = document.querySelectorAll(".progress-item");
-
-            function getAnswer(qIdx) {
-                const m = matches.find(m => m.qIdx === qIdx);
-                return m ? m.answerId : null;
+                correctId: "q5_b"
             }
+        ];
 
-            function isAnswered(qIdx) {
-                return matches.some(m => m.qIdx === qIdx);
+        const total = questions.length;
+        let currentIdx = 0;
+        let matches = [];        // { qIdx, answerId }
+        let quizCompleted = false;
+        let confettiTriggered = false;
+
+        const svg = document.getElementById("connectionSvg");
+        const container = document.querySelector(".match-area");
+        const nextBtn = document.getElementById("nextBtn");
+        const hintMsg = document.getElementById("hintMsg");
+        const finalBadge = document.getElementById("finalScoreBadge");
+        const finalValue = document.getElementById("finalScoreValue");
+        const resultArea = document.getElementById("resultArea");
+        const progressItems = document.querySelectorAll(".progress-item");
+
+        function getAnswer(qIdx) {
+            const m = matches.find(m => m.qIdx === qIdx);
+            return m ? m.answerId : null;
+        }
+
+        function isAnswered(qIdx) {
+            return matches.some(m => m.qIdx === qIdx);
+        }
+
+        function computeScore() {
+            let score = 0;
+            for (let i = 0; i < total; i++) {
+                const match = matches.find(m => m.qIdx === i);
+                if (match && match.answerId === questions[i].correctId) score++;
             }
+            return score;
+        }
 
-            function computeScore() {
-                let score = 0;
-                for (let i = 0; i < total; i++) {
-                    const match = matches.find(m => m.qIdx === i);
-                    if (match && match.answerId === questions[i].correctId) score++;
-                }
-                return score;
-            }
-
-            function updateProgress() {
-                progressItems.forEach((item, idx) => {
-                    const answered = isAnswered(idx);
-                    if (idx === currentIdx && !quizCompleted) {
-                        item.classList.add("active-progress");
-                        item.classList.remove("completed-progress");
-                    } else if (answered) {
-                        item.classList.add("completed-progress");
-                        item.classList.remove("active-progress");
-                    } else {
-                        item.classList.remove("active-progress", "completed-progress");
-                    }
-
-                    const isFuture = idx > currentIdx && !answered;
-                    if (isFuture && !quizCompleted) {
-                        item.classList.add("disabled-progress");
-                    } else {
-                        item.classList.remove("disabled-progress");
-                    }
-                });
-            }
-
-            function updateButtonText() {
-                if (currentIdx === total - 1) {
-                    nextBtn.textContent = "Submit";
+        function updateProgress() {
+            progressItems.forEach((item, idx) => {
+                const answered = isAnswered(idx);
+                if (idx === currentIdx && !quizCompleted) {
+                    item.classList.add("active-progress");
+                    item.classList.remove("completed-progress");
+                } else if (answered) {
+                    item.classList.add("completed-progress");
+                    item.classList.remove("active-progress");
                 } else {
-                    nextBtn.textContent = "Next →";
+                    item.classList.remove("active-progress", "completed-progress");
                 }
-            }
-
-            function drawLine() {
-                svg.innerHTML = "";
-                const answerId = getAnswer(currentIdx);
-                if (!answerId) return;
-
-                const leftCard = document.querySelector(".left .card");
-                const rightCard = document.querySelector(`.right .card[data-aid='${answerId}']`);
-                if (!leftCard || !rightCard) return;
-
-                const containerRect = container.getBoundingClientRect();
-                const leftRect = leftCard.getBoundingClientRect();
-                const rightRect = rightCard.getBoundingClientRect();
-
-                const x1 = leftRect.right - containerRect.left;
-                const y1 = leftRect.top + leftRect.height / 2 - containerRect.top;
-                const x2 = rightRect.left - containerRect.left;
-                const y2 = rightRect.top + rightRect.height / 2 - containerRect.top;
-
-                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                line.setAttribute("x1", x1);
-                line.setAttribute("y1", y1);
-                line.setAttribute("x2", x2);
-                line.setAttribute("y2", y2);
-                line.setAttribute("stroke", "#4499bb");
-                line.setAttribute("stroke-width", "3");
-                svg.appendChild(line);
-            }
-
-            function render() {
-                const q = questions[currentIdx];
-                const storedId = getAnswer(currentIdx);
-
-                document.getElementById("leftQuestionContainer").innerHTML = `
-                        <div class="card">
-                            <strong>${currentIdx + 1}.</strong> ${q.text}
-                        </div>
-                    `;
-
-                let answersHtml = '';
-                q.answers.forEach(ans => {
-                    const isMatched = storedId === ans.id;
-                    answersHtml += `
-                            <div class="card ans-card ${isMatched ? 'matched-answer' : ''}" data-aid="${ans.id}">
-                                ${ans.text}
-                            </div>
-                        `;
-                });
-                document.getElementById("rightAnswersContainer").innerHTML = answersHtml;
-
-                document.querySelectorAll(".ans-card").forEach(card => {
-                    card.onclick = () => {
-                        if (quizCompleted) return;
-                        const aid = card.dataset.aid;
-                        matches = matches.filter(m => m.qIdx !== currentIdx);
-                        matches.push({ qIdx: currentIdx, answerId: aid });
-
-                        document.querySelectorAll(".ans-card").forEach(c => c.classList.remove("matched-answer"));
-                        card.classList.add("matched-answer");
-
-                        drawLine();
-                        updateProgress();
-                        if (currentIdx === total - 1) {
-                            hintMsg.innerHTML = "✓ Ready to submit! Click Finish to see your score.";
-                        } else {
-                            hintMsg.innerHTML = "✓ Matched! Click Next →";
-                        }
-                    };
-                });
-
-                updateButtonText();
-                setTimeout(() => drawLine(), 30);
-            }
-
-            function finishQuiz() {
-                quizCompleted = true;
-                const score = computeScore();
-                const percent = Math.round(score / total * 100);
-                const perfect = score === total;
-
-                finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
-                finalBadge.style.display = "block";
-                if (perfect) {
-                    finalBadge.classList.add("perfect-score-top");
-                    if (!confettiTriggered) {
-                        confettiTriggered = true;
-                        burstConfetti();
-                    }
+                
+                const isFuture = idx > currentIdx && !answered;
+                if (isFuture && !quizCompleted) {
+                    item.classList.add("disabled-progress");
+                } else {
+                    item.classList.remove("disabled-progress");
                 }
+            });
+        }
 
-                nextBtn.classList.add("hidden");
-
-                let fb =
-                    `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 6: Qualitative Research Techniques</div>`;
-                for (let i = 0; i < total; i++) {
-                    const q = questions[i];
-                    const match = matches.find(m => m.qIdx === i);
-                    const correct = match && match.answerId === q.correctId;
-                    const correctAnswerObj = q.answers.find(a => a.id === q.correctId);
-                    const correctText = correctAnswerObj ? correctAnswerObj.text : "Unknown";
-                    if (correct) {
-                        fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
-                    } else {
-                        fb +=
-                            `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect.<br> <span style="margin-left: 16px; font-size:0.85rem;">✔ Correct answer: ${correctText}</span></div>`;
-                    }
-                }
-                fb += `<div class="score-highlight">🏅 Final Score: ${score}/${total} · ${percent}%</div>`;
-                if (perfect) fb +=
-                    `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
-
-                resultArea.style.display = "block";
-                resultArea.className = "result-panel";
-                resultArea.innerHTML = fb;
-                hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
-
-                updateProgress();
+        function updateButtonText() {
+            if (currentIdx === total - 1) {
+                nextBtn.textContent = "Submit";
+            } else {
+                nextBtn.textContent = "Next →";
             }
+        }
 
-            function nextOrFinish() {
-                if (quizCompleted) return;
+        function drawLine() {
+            svg.innerHTML = "";
+            const answerId = getAnswer(currentIdx);
+            if (!answerId) return;
+            
+            const leftCard = document.querySelector(".left .card");
+            const rightCard = document.querySelector(`.right .card[data-aid='${answerId}']`);
+            if (!leftCard || !rightCard) return;
+            
+            const containerRect = container.getBoundingClientRect();
+            const leftRect = leftCard.getBoundingClientRect();
+            const rightRect = rightCard.getBoundingClientRect();
+            
+            const x1 = leftRect.right - containerRect.left;
+            const y1 = leftRect.top + leftRect.height/2 - containerRect.top;
+            const x2 = rightRect.left - containerRect.left;
+            const y2 = rightRect.top + rightRect.height/2 - containerRect.top;
+            
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("stroke", "#4499bb");
+            line.setAttribute("stroke-width", "3");
+            svg.appendChild(line);
+        }
 
-                if (!isAnswered(currentIdx)) {
-                    hintMsg.innerHTML = "⚠️ Please select an answer first";
-                    return;
-                }
-
-                if (currentIdx + 1 < total) {
-                    currentIdx++;
-                    render();
+        function render() {
+            const q = questions[currentIdx];
+            const storedId = getAnswer(currentIdx);
+            
+            document.getElementById("leftQuestionContainer").innerHTML = `
+                <div class="card">
+                    <strong>${currentIdx + 1}.</strong> ${q.text}
+                </div>
+            `;
+            
+            let answersHtml = '';
+            q.answers.forEach(ans => {
+                const isMatched = storedId === ans.id;
+                answersHtml += `
+                    <div class="card ans-card ${isMatched ? 'matched-answer' : ''}" data-aid="${ans.id}">
+                        ${ans.text}
+                    </div>
+                `;
+            });
+            document.getElementById("rightAnswersContainer").innerHTML = answersHtml;
+            
+            document.querySelectorAll(".ans-card").forEach(card => {
+                card.onclick = () => {
+                    if (quizCompleted) return;
+                    const aid = card.dataset.aid;
+                    matches = matches.filter(m => m.qIdx !== currentIdx);
+                    matches.push({ qIdx: currentIdx, answerId: aid });
+                    
+                    document.querySelectorAll(".ans-card").forEach(c => c.classList.remove("matched-answer"));
+                    card.classList.add("matched-answer");
+                    
+                    drawLine();
                     updateProgress();
-                    hintMsg.innerHTML = "Click any answer to match";
-                } else {
-                    finishQuiz();
+                    if (currentIdx === total - 1) {
+                        hintMsg.innerHTML = "✓ Ready to submit! Click Finish to see your score.";
+                    } else {
+                        hintMsg.innerHTML = "✓ Matched! Click Next →";
+                    }
+                };
+            });
+            
+            updateButtonText();
+            setTimeout(() => drawLine(), 30);
+        }
+
+        function finishQuiz() {
+            quizCompleted = true;
+            const score = computeScore();
+            const percent = Math.round(score/total*100);
+            const perfect = score === total;
+            
+            finalValue.innerHTML = `${score} <span>/ ${total}</span>`;
+            finalBadge.style.display = "block";
+            if (perfect) {
+                finalBadge.classList.add("perfect-score-top");
+                if (!confettiTriggered) {
+                    confettiTriggered = true;
+                    burstConfetti();
                 }
             }
-
-            function navigateTo(idx) {
-                if (quizCompleted) return;
-                if (idx > currentIdx && !isAnswered(currentIdx)) {
-                    hintMsg.innerHTML = "🔒 Answer current question first";
-                    return;
+            
+            nextBtn.classList.add("hidden");
+            
+            let fb = `<div style="font-weight:600; margin-bottom:12px;">📊 Quiz Results — Topic 6: Qualitative Research Techniques</div>`;
+            for (let i = 0; i < total; i++) {
+                const q = questions[i];
+                const match = matches.find(m => m.qIdx === i);
+                const correct = match && match.answerId === q.correctId;
+                const correctAnswerObj = q.answers.find(a => a.id === q.correctId);
+                const correctText = correctAnswerObj ? correctAnswerObj.text : "Unknown";
+                if (correct) {
+                    fb += `<div style="margin-bottom:8px; color:#2b6e3b;">✓ Question ${i+1}: Correct</div>`;
+                } else {
+                    fb += `<div style="margin-bottom:8px; color:#b13b2d;">✗ Question ${i+1}: Incorrect.<br> <span style="margin-left: 16px; font-size:0.85rem;">✔ Correct answer: ${correctText}</span></div>`;
                 }
-                if (idx === currentIdx) return;
-                currentIdx = idx;
+            }
+            fb += `<div class="score-highlight">🏅 Final Score: ${score}/${total} · ${percent}%</div>`;
+            if (perfect) fb += `<div style="margin-top:12px; background:#ffe5b4; padding:8px 16px; border-radius:40px; display:inline-block;">🌟 Perfect! Congratulations! 🎊</div>`;
+            
+            resultArea.style.display = "block";
+            resultArea.className = "result-panel";
+            resultArea.innerHTML = fb;
+            hintMsg.innerHTML = "Quiz completed! Your final score is shown above.";
+            
+            updateProgress();
+        }
+
+        function nextOrFinish() {
+            if (quizCompleted) return;
+            
+            if (!isAnswered(currentIdx)) {
+                hintMsg.innerHTML = "⚠️ Please select an answer first";
+                return;
+            }
+            
+            if (currentIdx + 1 < total) {
+                currentIdx++;
                 render();
                 updateProgress();
-                if (currentIdx === total - 1) {
-                    hintMsg.innerHTML = "Last question. Click any answer to match, then Finish.";
-                } else {
-                    hintMsg.innerHTML = "Click any answer to match";
-                }
+                hintMsg.innerHTML = "Click any answer to match";
+            } else {
+                finishQuiz();
             }
+        }
 
-            // ========== CONFETTI ==========
-            const canvas = document.getElementById("confetti-canvas");
-            let ctx = canvas.getContext("2d");
-            let animId = null;
-            let particles = [];
-
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+        function navigateTo(idx) {
+            if (quizCompleted) return;
+            if (idx > currentIdx && !isAnswered(currentIdx)) {
+                hintMsg.innerHTML = "🔒 Answer current question first";
+                return;
             }
-            window.addEventListener("resize", resizeCanvas);
-            resizeCanvas();
-
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = -10;
-                    this.size = Math.random() * 8 + 4;
-                    this.speedY = Math.random() * 5 + 3;
-                    this.speedX = (Math.random() - 0.5) * 4;
-                    this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
-                    this.rot = Math.random() * 360;
-                    this.rotSpeed = (Math.random() - 0.5) * 8;
-                }
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    this.rot += this.rotSpeed;
-                    return !(this.y > canvas.height + 100 || this.x < -100 || this.x > canvas.width + 100);
-                }
-                draw() {
-                    ctx.save();
-                    ctx.translate(this.x, this.y);
-                    ctx.rotate(this.rot * Math.PI / 180);
-                    ctx.fillStyle = this.color;
-                    ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
-                    ctx.restore();
-                }
+            if (idx === currentIdx) return;
+            currentIdx = idx;
+            render();
+            updateProgress();
+            if (currentIdx === total - 1) {
+                hintMsg.innerHTML = "Last question. Click any answer to match, then Finish.";
+            } else {
+                hintMsg.innerHTML = "Click any answer to match";
             }
+        }
 
-            function burstConfetti() {
-                if (animId) cancelAnimationFrame(animId);
-                particles = [];
-                for (let i = 0; i < 150; i++) particles.push(new Particle());
-                let start = performance.now();
+        // ========== CONFETTI ==========
+        const canvas = document.getElementById("confetti-canvas");
+        let ctx = canvas.getContext("2d");
+        let animId = null;
+        let particles = [];
 
-                function animate(now) {
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = -10;
+                this.size = Math.random() * 8 + 4;
+                this.speedY = Math.random() * 5 + 3;
+                this.speedX = (Math.random() - 0.5) * 4;
+                this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+                this.rot = Math.random() * 360;
+                this.rotSpeed = (Math.random() - 0.5) * 8;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.rot += this.rotSpeed;
+                return !(this.y > canvas.height + 100 || this.x < -100 || this.x > canvas.width + 100);
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rot * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        function burstConfetti() {
+            if (animId) cancelAnimationFrame(animId);
+            particles = [];
+            for (let i = 0; i < 150; i++) particles.push(new Particle());
+            let start = performance.now();
+            function animate(now) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                for (let i = 0; i < particles.length; i++) {
+                    if (particles[i].update()) {
+                        alive = true;
+                        particles[i].draw();
+                    }
+                }
+                if (!alive || now - start > 2500) {
+                    cancelAnimationFrame(animId);
+                    animId = null;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    let alive = false;
-                    for (let i = 0; i < particles.length; i++) {
-                        if (particles[i].update()) {
-                            alive = true;
-                            particles[i].draw();
-                        }
-                    }
-                    if (!alive || now - start > 2500) {
-                        cancelAnimationFrame(animId);
-                        animId = null;
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        return;
-                    }
-                    animId = requestAnimationFrame(animate);
+                    return;
                 }
                 animId = requestAnimationFrame(animate);
             }
+            animId = requestAnimationFrame(animate);
+        }
 
-            // attach navigation
-            progressItems.forEach((item, idx) => {
-                item.onclick = () => navigateTo(idx);
-            });
-
-            nextBtn.onclick = nextOrFinish;
-
-            window.addEventListener("resize", () => setTimeout(() => drawLine(), 100));
-
-            render();
-            updateProgress();
-        })();
-    </script>
+        // attach navigation
+        progressItems.forEach((item, idx) => {
+            item.onclick = () => navigateTo(idx);
+        });
+        
+        nextBtn.onclick = nextOrFinish;
+        
+        window.addEventListener("resize", () => setTimeout(() => drawLine(), 100));
+        
+        render();
+        updateProgress();
+    })();
+</script>
 </body>
 </html>
