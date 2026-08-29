@@ -1,1 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Quiz: Qualitative Research Techniques</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f2f5f9;
+      padding: 24px 16px;
+    }
+
+    .quiz-box {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 32px;
+      padding: 24px 28px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0a2b44;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .sub {
+      text-align: center;
+      color: #4a627a;
+      font-size: 0.85rem;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e9edf2;
+    }
+
+    .question {
+      background: #ffffff;
+      border: 1px solid #e9edf2;
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      transition: all 0.2s;
+    }
+
+    .question.correct-bg {
+      background: #f0fdf4;
+      border-left: 5px solid #22c55e;
+    }
+
+    .question.wrong-bg {
+      background: #fef2f2;
+      border-left: 5px solid #ef4444;
+    }
+
+    .q-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .q-num {
+      background: #e9edf2;
+      padding: 3px 12px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1a3e60;
+    }
+
+    .q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0f2b3d;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .extra-list {
+      margin: 10px 0 12px 24px;
+      font-size: 0.92rem;
+      font-weight: normal;
+      color: #2c4c6e;
+    }
+
+    .extra-list li {
+      margin: 5px 0;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: #fafcff;
+      border: 1px solid #e4e9f0;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .option:hover {
+      background: #f0f5ff;
+    }
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2563eb;
+      cursor: pointer;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    .feedback-correct {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 3px solid #22c55e;
+    }
+
+    .feedback-wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 3px solid #ef4444;
+    }
+
+    .feedback-missing {
+      background: #fff1e6;
+      color: #9a3412;
+      border-left: 3px solid #f97316;
+    }
+
+    .btn-submit {
+      background: #1e4a8a;
+      border: none;
+      width: 100%;
+      padding: 14px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      margin-top: 12px;
+      margin-bottom: 20px;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover {
+      background: #0f3a6e;
+    }
+
+    .btn-submit:disabled {
+      background: #9bb5d0;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .score-area {
+      text-align: center;
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 8px;
+      border: 1px solid #e9edf2;
+    }
+
+    .score-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #0a2b44;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .result-icon {
+      font-size: 2rem;
+    }
+
+    .perfect-badge {
+      margin-top: 8px;
+      background: linear-gradient(135deg, #f5b042, #f0a500);
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.72rem;
+      color: #7c8ea0;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-box">
+  <h1>🔍 Topic 6: Qualitative Research Techniques</h1>
+  <div class="sub">10 multiple choice questions · submit once</div>
+  <div id="questionsContainer"></div>
+  <button id="submitBtn" class="btn-submit">✓ Submit & Grade</button>
+  <div id="scorePanel" style="display:none;"></div>
+  <footer>Role · Types · Ethnography · Phenomenology · Grounded Theory · Case Study · Narrative · Analysis</footer>
+</div>
+
+<script>
+// ===================== QUIZ DATA =====================
+const quizData = [
+  {
+    text: "Qualitative research is best described as:",
+    options: [
+      "A structured methodology based on large samples and statistical analysis",
+      "An unstructured, exploratory methodology based on small samples to provide insight",
+      "A method that only uses numerical data",
+      "A conclusive research approach used to generalize findings"
+    ],
+    answer: 1,
+  },
+  {
+    text: "Which of the following is NOT a common purpose of qualitative research?",
+    options: [
+      "Define the problem more clearly",
+      "Suggest hypotheses for subsequent research",
+      "Quantify data and apply statistical analysis",
+      "Pre-test structured questionnaires"
+    ],
+    answer: 2,
+  },
+  {
+    text: "Which qualitative design aims to understand a cultural or social group by living within their natural setting?",
+    options: [
+      "Phenomenology",
+      "Grounded Theory",
+      "Ethnography",
+      "Case Study"
+    ],
+    answer: 2,
+  },
+  {
+    text: "The goal of phenomenology is to:",
+    options: [
+      "Build a new theory straight from collected data",
+      "Describe how people experience a specific event or concept through deep interviews",
+      "Do a deep dive into one specific person or small organization",
+      "Learn through personal stories and life histories"
+    ],
+    answer: 1,
+  },
+  {
+    text: "Grounded theory is characterized by:",
+    options: [
+      "Starting with a hypothesis and testing it",
+      "Gathering data first, coding it into themes, and building a theory",
+      "Using only existing literature to form conclusions",
+      "Focusing on one individual's life story"
+    ],
+    answer: 1,
+  },
+  {
+    text: "Which qualitative method combines multiple sources like interviews, field notes, and documents for a deep dive?",
+    options: [
+      "Narrative Research",
+      "Phenomenology",
+      "Ethnography",
+      "Case Study"
+    ],
+    answer: 3,
+  },
+  {
+    text: "Narrative research focuses on:",
+    options: [
+      "Cultural values and daily habits of a group",
+      "Inner feelings and subjective meaning of an experience",
+      "Personal stories and life histories",
+      "Building theory from data patterns"
+    ],
+    answer: 2,
+  },
+  {
+    text: "Which of the following is a key step in qualitative data analysis?",
+    options: [
+      "Running regression models",
+      "Coding the data with short keywords",
+      "Ensuring sample size is above 500",
+      "Only using quantitative metrics"
+    ],
+    answer: 1,
+  },
+  {
+    text: "Thematic analysis in qualitative research involves:",
+    options: [
+      "Counting how many times certain words appear",
+      "Looking for recurring topics and shared experiences",
+      "Examining personal stories to understand life events",
+      "Using statistical software to analyze numbers"
+    ],
+    answer: 1,
+  },
+  {
+    text: "According to the PDF, qualitative and quantitative research should be viewed as:",
+    options: [
+      "Competing methodologies",
+      "Complementary to each other",
+      "One is always superior",
+      "Never used together"
+    ],
+    answer: 1,
+  }
+];
+
+let selections = new Array(quizData.length).fill(-1);
+let submitted = false;
+let confettiTriggered = false;
+
+const container = document.getElementById("questionsContainer");
+const submitBtn = document.getElementById("submitBtn");
+const scorePanel = document.getElementById("scorePanel");
+
+// ========== CONFETTI ==========
+function startConfetti() {
+  if (confettiTriggered) return;
+  confettiTriggered = true;
+
+  const colors = ["#f44336", "#e91e63", "#9c27b0", "#3f51b5", "#2196f3", "#00bcd4", "#4caf50", "#ffeb3b", "#ff9800", "#ff5722"];
+  const confettiCount = 150;
+  const containerEl = document.body;
+
+  for (let i = 0; i < confettiCount; i++) {
+    const conf = document.createElement("div");
+    const size = Math.floor(Math.random() * 12 + 6);
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    conf.style.position = "fixed";
+    conf.style.width = size + "px";
+    conf.style.height = size + "px";
+    conf.style.backgroundColor = color;
+    conf.style.top = "-20px";
+    conf.style.left = Math.random() * window.innerWidth + "px";
+    conf.style.opacity = "0.9";
+    conf.style.borderRadius = Math.random() > 0.7 ? "50%" : "2px";
+    conf.style.pointerEvents = "none";
+    conf.style.zIndex = "9999";
+    conf.style.boxShadow = "0 2px 5px rgba(0,0,0,0.2)";
+    containerEl.appendChild(conf);
+
+    const duration = 1500 + Math.random() * 1500;
+    const destination = window.innerHeight + 50;
+    const rotate = Math.random() * 360;
+    conf.style.transition = `transform ${duration}ms cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity ${duration * 0.8}ms ease-out`;
+    requestAnimationFrame(() => {
+      conf.style.transform = `translateY(${destination}px) rotate(${rotate}deg)`;
+      conf.style.opacity = "0";
+    });
+
+    setTimeout(() => {
+      if (conf && conf.remove) conf.remove();
+    }, duration + 200);
+  }
+
+  setTimeout(() => {
+    confettiTriggered = false;
+  }, 2800);
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, m => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;'
+  }[m] || m));
+}
+
+function renderQuestions() {
+  let html = "";
+  for (let i = 0; i < quizData.length; i++) {
+    const q = quizData[i];
+    const selectedVal = selections[i];
+    let questionClass = "question";
+
+    if (submitted) {
+      if (selectedVal !== -1 && selectedVal === q.answer) {
+        questionClass += " correct-bg";
+      } else if (selectedVal !== -1 && selectedVal !== q.answer) {
+        questionClass += " wrong-bg";
+      } else if (selectedVal === -1) {
+        questionClass += " wrong-bg";
+      }
+    }
+
+    html += `<div class="${questionClass}"><div class="q-header"><span class="q-num">${i + 1}</span><div class="q-text">`;
+    html += `<div>${escapeHtml(q.text)}</div>`;
+    html += `</div></div><div class="options">`;
+
+    q.options.forEach((opt, idx) => {
+      html += `<label class="option">
+        <input type="radio" name="q${i}" value="${idx}" ${selectedVal === idx ? 'checked' : ''} ${submitted ? 'disabled' : ''}>
+        <span>${escapeHtml(opt)}</span>
+      </label>`;
+    });
+
+    html += `</div>`;
+
+    if (submitted) {
+      if (selectedVal === -1) {
+        html += `<div class="feedback feedback-missing">⚠️ Not answered · Correct: ${escapeHtml(q.options[q.answer])}</div>`;
+      } else if (selectedVal !== q.answer) {
+        html += `<div class="feedback feedback-wrong">❌ Incorrect · Your answer: ${escapeHtml(q.options[selectedVal])}<br>✅ Correct: ${escapeHtml(q.options[q.answer])}</div>`;
+      } else {
+        html += `<div class="feedback feedback-correct">✓ Correct</div>`;
+      }
+    }
+    html += `</div>`;
+  }
+  container.innerHTML = html;
+
+  if (!submitted) {
+    for (let i = 0; i < quizData.length; i++) {
+      const radios = document.querySelectorAll(`input[name="q${i}"]`);
+      radios.forEach(radio => {
+        radio.addEventListener("change", (e) => {
+          if (!submitted) {
+            selections[i] = parseInt(e.target.value);
+            renderQuestions();
+          }
+        });
+      });
+    }
+  }
+}
+
+function getScore() {
+  let correct = 0;
+  for (let i = 0; i < quizData.length; i++) {
+    if (selections[i] !== -1 && selections[i] === quizData[i].answer) correct++;
+  }
+  return correct;
+}
+
+function getResultIcon(correct, total, isPerfect) {
+  const percent = (correct / total) * 100;
+  if (isPerfect) return { icon: "👑", label: "PERFECT MASTERY" };
+  if (percent >= 80) return { icon: "🏆", label: "EXCELLENT" };
+  if (percent >= 60) return { icon: "🎓", label: "GOOD" };
+  if (percent >= 50) return { icon: "📘", label: "PASS" };
+  return { icon: "📚", label: "NEEDS REVIEW" };
+}
+
+function handleSubmit() {
+  if (submitted) return;
+
+  const answeredCount = selections.filter(s => s !== -1).length;
+  if (answeredCount < quizData.length && !confirm(`You answered ${answeredCount} out of ${quizData.length}. Submit anyway?`)) {
+    return;
+  }
+
+  submitted = true;
+  const correct = getScore();
+  const total = quizData.length;
+  const isPerfect = correct === total;
+
+  renderQuestions();
+
+  const percent = (correct / total) * 100;
+  let message = isPerfect
+    ? "Outstanding! Perfect score achieved! 🌟"
+    : percent >= 80
+      ? "Excellent! Mastery achieved. 🎉"
+      : percent >= 60
+        ? "Great job! Review the incorrect answers."
+        : percent >= 50
+          ? "Pass. Keep practicing to improve."
+          : "Needs improvement. Review the questions above.";
+
+  const { icon, label } = getResultIcon(correct, total, isPerfect);
+
+  scorePanel.style.display = "block";
+  scorePanel.innerHTML = `
+    <div class="score-area">
+      <div class="score-number">
+        <span class="result-icon">${icon}</span>
+        <span>${correct} / ${total}</span>
+      </div>
+      <div style="margin-top:6px; font-size:0.9rem; font-weight:600; color:#1e4a8a;">${label}</div>
+      <div style="margin-top:8px; font-size:0.85rem; color:#2c5a6e;">${message}</div>
+      ${isPerfect ? '<div class="perfect-badge">✨ PERFECT SCORE! ✨<br>🎉 Confetti celebration! 🎉</div>' : ''}
+    </div>
+  `;
+
+  if (isPerfect) {
+    startConfetti();
+  }
+
+  submitBtn.disabled = true;
+}
+
+submitBtn.addEventListener("click", handleSubmit);
+renderQuestions();
+</script>
+</body>
+</html>
